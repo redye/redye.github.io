@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="本地添加私有库1234pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程1pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置 12">
+<meta name="description" content="本地添加私有库pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置">
 <meta name="keywords" content="iOS,Cocoapods">
 <meta property="og:type" content="article">
 <meta property="og:title" content="创建私有库">
 <meta property="og:url" content="http://redye.com/2018/09/19/create-private-pods/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="本地添加私有库1234pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程1pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置 12">
+<meta property="og:description" content="本地添加私有库pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-10T03:03:17.907Z">
+<meta property="og:updated_time" content="2019-01-10T05:58:55.933Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建私有库">
-<meta name="twitter:description" content="本地添加私有库1234pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程1pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置 12">
+<meta name="twitter:description" content="本地添加私有库pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置">
 
 
 
@@ -352,12 +352,13 @@
       
 
       
-        <h2 id="本地添加私有库"><a href="#本地添加私有库" class="headerlink" title="本地添加私有库"></a>本地添加私有库</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pod repo add specsName gitURL</span><br><span class="line"></span><br><span class="line">/<span class="regexp">/ example</span></span><br><span class="line"><span class="regexp">pod repo add YHSpecs https:/</span><span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git</span></span><br></pre></td></tr></table></figure>
-<h2 id="创建私有工程"><a href="#创建私有工程" class="headerlink" title="创建私有工程"></a>创建私有工程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod lib create WFRFoundation // WFRFoundation 是私有工程的名称</span><br></pre></td></tr></table></figure>
+        <h2 id="本地添加私有库"><a href="#本地添加私有库" class="headerlink" title="本地添加私有库"></a>本地添加私有库</h2><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod repo add specsName gitURL</span><br><span class="line"></span><br><span class="line">/<span class="regexp">/ example</span></span><br><span class="line"><span class="regexp">pod repo add YHSpecs https:/</span><span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git</span></span><br></pre></td></tr></table></figure>
+<h2 id="创建私有工程"><a href="#创建私有工程" class="headerlink" title="创建私有工程"></a>创建私有工程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pod lib create WFRFoundation // WFRFoundation 是私有工程的名称</span><br></pre></td></tr></table></figure>
 <p>在创建的时候，会去下载模板，并且会询问你一些基础的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">What platform do you want to use?? [ iOS / macOS ]</span><br><span class="line"> &gt; iOS</span><br><span class="line"></span><br><span class="line">What language do you want to use?? [ Swift / ObjC ]</span><br><span class="line"> &gt; ObjC</span><br><span class="line"></span><br><span class="line">Would you like to include a demo application with your library? [ Yes / No ]</span><br><span class="line"> &gt; Yes</span><br><span class="line"></span><br><span class="line">Which testing frameworks will you use? [ Specta / Kiwi / None ]</span><br><span class="line"> &gt; None</span><br><span class="line"></span><br><span class="line">Would you like to do view based testing? [ Yes / No ]</span><br><span class="line"> &gt; No  </span><br><span class="line"></span><br><span class="line">What is your class prefix?</span><br><span class="line"> &gt; WFR</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">What platform do you want to use?? [ iOS / macOS ]</span><br><span class="line"> &gt; iOS</span><br><span class="line"></span><br><span class="line">What language do you want to use?? [ Swift / ObjC ]</span><br><span class="line"> &gt; ObjC</span><br><span class="line"></span><br><span class="line">Would you like to include a demo application with your library? [ Yes / No ]</span><br><span class="line"> &gt; Yes</span><br><span class="line"></span><br><span class="line">Which testing frameworks will you use? [ Specta / Kiwi / None ]</span><br><span class="line"> &gt; None</span><br><span class="line"></span><br><span class="line">Would you like to do view based testing? [ Yes / No ]</span><br><span class="line"> &gt; No  </span><br><span class="line"></span><br><span class="line">What is your class prefix?</span><br><span class="line"> &gt; WFR</span><br></pre></td></tr></table></figure>
 <p>接下来就等待初始化工程就好了 😊</p>
-<h2 id="私有工程的目录结构"><a href="#私有工程的目录结构" class="headerlink" title="私有工程的目录结构"></a>私有工程的目录结构</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">|———— WFRFoundation</span><br><span class="line">| 	  |———— Podspec Metadata</span><br><span class="line">| 	  |———— Example for WFRFoundation</span><br><span class="line">| 	  |———— Tests</span><br><span class="line">| 	  |———— Frameworks</span><br><span class="line">| 	  |———— Products</span><br><span class="line">| 	  |———— Pods</span><br><span class="line">|———— Pods</span><br><span class="line">| 	  |———— Podfile</span><br><span class="line">| 	  |———— Development Pods</span><br><span class="line">| 	  |———— Frameworks</span><br><span class="line">| 	  |———— Pods</span><br><span class="line">| 	  |———— Products</span><br><span class="line">| 	  |———— Targets Support Files</span><br></pre></td></tr></table></figure>
+<h2 id="私有工程的目录结构"><a href="#私有工程的目录结构" class="headerlink" title="私有工程的目录结构"></a>私有工程的目录结构</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">|———— WFRFoundation</span><br><span class="line">| 	  |———— Podspec Metadata</span><br><span class="line">| 	  |———— Example for WFRFoundation</span><br><span class="line">| 	  |———— Tests</span><br><span class="line">| 	  |———— Frameworks</span><br><span class="line">| 	  |———— Products</span><br><span class="line">| 	  |———— Pods</span><br><span class="line">|———— Pods</span><br><span class="line">| 	  |———— Podfile</span><br><span class="line">| 	  |———— Development Pods</span><br><span class="line">| 	  |———— Frameworks</span><br><span class="line">| 	  |———— Pods</span><br><span class="line">| 	  |———— Products</span><br><span class="line">| 	  |———— Targets Support Files</span><br></pre></td></tr></table></figure>
 <p>工程的目录结构与在使用 pod 工程时相似，只是在工程目录下面多了 <em>私有仓库</em> 的元数据，在 <em>pod</em> 目录下增加了 开发目录 <code>Development Pods</code>。我们在开发私有库的时候，代码就写在这个目录下面。<code>Example</code> 用于我们调试我们编写的代码。</p>
 <h2 id="podspec"><a href="#podspec" class="headerlink" title="podspec"></a>podspec</h2><p>在我们创作私有库的过程中，与我们平时编写代码并没有什么不同，但是我们怎么样才能将我们写的代码变成库来引用，这就需要依靠 <code>podspec</code> 文件了。</p>
 <p>podspec 文件是 cocoapods 引入第三方代码库的配置索引文件，它是采用 ruby 编写的。</p>
@@ -481,7 +482,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -503,7 +504,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
