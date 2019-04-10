@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="iOS,">
 
 
 
@@ -79,17 +79,22 @@
 
 
 
-<meta name="description" content="欢迎来到小红家，折腾了一下午的成果，终于有个自己的小地方。 希望后面能坚持写一些东西~">
+<meta name="description" content="最近项目中经常遇到 app 莫名卡住不动的情况，也没有 crash，但就是不给你一点反应。而且也只在真机上出现。最开始一直以为可能是自己手机太年长的缘故(6s表示这个锅我不背🙅‍♂️)，直到则测试小姐姐那亲眼目睹了同样的情况/(ㄒoㄒ)/~~ 想到自己集成了 bugly，就上去瞅了瞅，嗯，很干净，why?? app 页面卡住不动，主线程被阻塞了？ 仔细想来，好像并没有什么阻塞主线程的情况 ┑(￣">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="小红家の">
-<meta property="og:url" content="http://redye.com/2018/10/25/hello-redye/index.html">
+<meta property="og:title" content="崩溃日志符号化">
+<meta property="og:url" content="http://redye.com/2019/04/10/crash-symbol/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="欢迎来到小红家，折腾了一下午的成果，终于有个自己的小地方。 希望后面能坚持写一些东西~">
+<meta property="og:description" content="最近项目中经常遇到 app 莫名卡住不动的情况，也没有 crash，但就是不给你一点反应。而且也只在真机上出现。最开始一直以为可能是自己手机太年长的缘故(6s表示这个锅我不背🙅‍♂️)，直到则测试小姐姐那亲眼目睹了同样的情况/(ㄒoㄒ)/~~ 想到自己集成了 bugly，就上去瞅了瞅，嗯，很干净，why?? app 页面卡住不动，主线程被阻塞了？ 仔细想来，好像并没有什么阻塞主线程的情况 ┑(￣">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-10T03:23:58.105Z">
+<meta property="og:image" content="https://i.loli.net/2019/04/10/5cadcea9b1a63.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/04/10/5cadcf31c8404.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/04/10/5cadcf345eeac.jpg">
+<meta property="og:updated_time" content="2019-04-10T11:16:03.896Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小红家の">
-<meta name="twitter:description" content="欢迎来到小红家，折腾了一下午的成果，终于有个自己的小地方。 希望后面能坚持写一些东西~">
+<meta name="twitter:title" content="崩溃日志符号化">
+<meta name="twitter:description" content="最近项目中经常遇到 app 莫名卡住不动的情况，也没有 crash，但就是不给你一点反应。而且也只在真机上出现。最开始一直以为可能是自己手机太年长的缘故(6s表示这个锅我不背🙅‍♂️)，直到则测试小姐姐那亲眼目睹了同样的情况/(ㄒoㄒ)/~~ 想到自己集成了 bugly，就上去瞅了瞅，嗯，很干净，why?? app 页面卡住不动，主线程被阻塞了？ 仔细想来，好像并没有什么阻塞主线程的情况 ┑(￣">
+<meta name="twitter:image" content="https://i.loli.net/2019/04/10/5cadcea9b1a63.jpg">
 
 
 
@@ -119,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://redye.com/2018/10/25/hello-redye/">
+  <link rel="canonical" href="http://redye.com/2019/04/10/crash-symbol/">
 
 
 
 
 
-  <title>小红家の | 红红の</title>
+  <title>崩溃日志符号化 | 红红の</title>
   
 
 
@@ -262,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://redye.com/2018/10/25/hello-redye/">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2019/04/10/crash-symbol/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小红">
@@ -279,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">小红家の</h1>
+          <h1 class="post-title" itemprop="name headline">崩溃日志符号化</h1>
         
 
         <div class="post-meta">
@@ -291,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T15:44:57+08:00">
-                2018-10-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-10T19:12:41+08:00">
+                2019-04-10
               </time>
             
 
@@ -314,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">生活随笔</span>
+                  <a href="/categories/工具代码/" itemprop="url" rel="index">
+                    <span itemprop="name">工具代码</span>
                   </a>
                 </span>
 
@@ -351,8 +356,46 @@
       
 
       
-        <p>欢迎来到小红家，折腾了一下午的成果，终于有个自己的小地方。</p>
-<p>希望后面能坚持写一些东西~</p>
+        <p>最近项目中经常遇到 app 莫名卡住不动的情况，也没有 crash，但就是不给你一点反应。而且也只在真机上出现。最开始一直以为可能是自己手机太年长的缘故(6s表示这个锅我不背🙅‍♂️)，直到则测试小姐姐那亲眼目睹了同样的情况/(ㄒoㄒ)/~~</p>
+<p>想到自己集成了 bugly，就上去瞅了瞅，嗯，很干净，why??</p>
+<p>app 页面卡住不动，主线程被阻塞了？</p>
+<p>仔细想来，好像并没有什么阻塞主线程的情况 ┑(￣Д ￣)┍</p>
+<p>因为手机上也遇到类似的情况，那就去看看手机上的崩溃日志吧。</p>
+<p>虽然 bugly 并没有捕捉到这些 crash，但是手机上的崩溃日志是诚实的，他们都好好的待在他们该在的地方，等着你 (╯﹏╰)</p>
+<p>打开崩溃日志，你以为你会看到完整的崩溃调用栈？oh，你真是太天真了</p>
+<a id="more"></a>
+<p>当然了，你能看到 crash 的类型，和原因，就类似于下面这种 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Exception Type:  EXC_BREAKPOINT (SIGTRAP)</span><br><span class="line">Exception Codes: 0x0000000000000001, 0x000000019d0df774</span><br><span class="line">Termination Signal: Trace/BPT trap: 5</span><br><span class="line">Termination Reason: Namespace SIGNAL, Code 0x5</span><br><span class="line">Terminating Process: exc handler [8199]</span><br><span class="line">Triggered by Thread:  0</span><br></pre></td></tr></table></figure>
+<p>当你接着去看触发线程的调用栈的时候，你会发现，除了系统提供的 API 被符号化出来之外，你自己的代码只能看到十六进制的符号和地址，参考下面</p>
+<p><img src="https://i.loli.net/2019/04/10/5cadcea9b1a63.jpg" alt="carsh callee"></p>
+<p>Excuse me？我兴致勃勃的来，你就给我看这个？</p>
+<p>好吧，尽管你虐我千百遍，我还是会待你如初恋，那我要怎样揭开挡在眼前的面纱呢，答案就是对他进行 <strong>符号化</strong></p>
+<p>进行符号化之前，我们需要准备几样东西</p>
+<ul>
+<li>.crash 文件，就是崩溃日志，这个简单，直接导出就好</li>
+<li>.dSYM 文件，打包 app 时生成的，.xcarchive 文件包内容</li>
+<li>.app 文件，ipa 包解压后</li>
+<li>符号化工具 symbolicatecrash</li>
+</ul>
+<h4 id="符号化工具-symbolicatecrash"><a href="#符号化工具-symbolicatecrash" class="headerlink" title="符号化工具 symbolicatecrash"></a>符号化工具 symbolicatecrash</h4><p>符号化工具位置在</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
+<p>你也可以通过下面的命令找到他</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find /Applications/Xcode.app -name symbolicatecrash -type f</span><br></pre></td></tr></table></figure>
+<p>拿到 <code>symbolicatecrash</code> 后，复制到你进行符号化的目录下即可。</p>
+<p>在进行符号化之前，要确保 .crash 文件和 .dSYM 文件对应的 UUID 是否一致。你可以通过下面的命令看到 .dSYM 的 UUID</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dwarfdump --uuid xxx.app.dSYM</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">UUID: FA7B0745-5ED4-3CF0-A985-AD96EC8A557B (armv7) HocDev.app.dSYM/Contents/Resources/DWARF/xxx</span><br><span class="line">UUID: 39F50F1D-560B-3D0B-9FA7-45BE60FFFA3A (arm64) HocDev.app.dSYM/Contents/Resources/DWARF/xxx</span><br></pre></td></tr></table></figure>
+<p>崩溃日志的UUID位于日志中Binary Images第一行尖括号内。</p>
+<p><img src="https://i.loli.net/2019/04/10/5cadcf31c8404.jpg" alt="uuid"></p>
+<p>四件套准备齐全后，就可以愉快的进行我们的符号化啦</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">./symbolicatecrash xxx.crash xxx.app.dSYM xxx.app &gt; crash.cransh</span><br></pre></td></tr></table></figure>
+<p>你可能会遇到 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Error: &quot;DEVELOPER_DIR&quot; is not defined at ./symbolicatecrash line 69.</span><br></pre></td></tr></table></figure>
+<p>这个时候就需要你配置环境变量 <code>DEVELOPER_DIR</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export DEVELOPER_DIR=&quot;/Applications/Xcode.app/Contents/Developer&quot;</span><br></pre></td></tr></table></figure>
+<p>后面在执行上面的符号化命令就可以了。</p>
+<p><img src="https://i.loli.net/2019/04/10/5cadcf345eeac.jpg" alt="symbol.crash"></p>
 
       
     </div>
@@ -368,6 +411,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
 
       
       
@@ -377,8 +426,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/09/private-pods-framework/" rel="next" title="私有库打包 framework">
-                <i class="fa fa-chevron-left"></i> 私有库打包 framework
+              <a href="/2018/12/17/weex-pratice/" rel="next" title="Weex 初体验">
+                <i class="fa fa-chevron-left"></i> Weex 初体验
               </a>
             
           </div>
@@ -386,10 +435,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/17/weex-pratice/" rel="prev" title="Weex 初体验">
-                Weex 初体验 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -441,8 +486,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -520,6 +574,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#符号化工具-symbolicatecrash"><span class="nav-number">1.</span> <span class="nav-text">符号化工具 symbolicatecrash</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
