@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="打包 frameworkiOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一">
+<meta name="description" content="iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你 Coco">
 <meta name="keywords" content="iOS,Cocoapods">
 <meta property="og:type" content="article">
 <meta property="og:title" content="私有库打包 framework">
 <meta property="og:url" content="http://redye.com/2018/10/09/private-pods-framework/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="打包 frameworkiOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一">
+<meta property="og:description" content="iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你 Coco">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2018/09/29/5baf282dc3a1c.png">
 <meta property="og:image" content="https://i.loli.net/2018/09/29/5baf282fc137b.png">
-<meta property="og:updated_time" content="2019-01-10T05:59:29.141Z">
+<meta property="og:updated_time" content="2019-04-18T06:44:26.787Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="私有库打包 framework">
-<meta name="twitter:description" content="打包 frameworkiOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一">
+<meta name="twitter:description" content="iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你 Coco">
 <meta name="twitter:image" content="https://i.loli.net/2018/09/29/5baf282dc3a1c.png">
 
 
@@ -355,14 +355,14 @@
       
 
       
-        <h2 id="打包-framework"><a href="#打包-framework" class="headerlink" title="打包 framework"></a>打包 framework</h2><p>iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。</p>
+        <p>iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。</p>
 <p>制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。<br>cocoapods 提供了一个插件来帮助你</p>
 <p><a href="https://github.com/CocoaPods/cocoapods-packager" target="_blank" rel="noopener">CocoaPods-Packager</a></p>
-<p>接下来就是，使用下面的命令安装它</p>
+<a id="more"></a>
+<h3 id="CocoaPods-Packager-安装与使用"><a href="#CocoaPods-Packager-安装与使用" class="headerlink" title="CocoaPods-Packager 安装与使用"></a>CocoaPods-Packager 安装与使用</h3><p>接下来就是，使用下面的命令安装它</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo gem install cocoapods-packager</span><br></pre></td></tr></table></figure>
 <p>安装完成后，使用下面的命令打包 framework</p>
 <figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod package WFRFoundation.podspec [--force] [--library] [--verbose] ...</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
 <p>命令后面的参数说明：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 强制覆盖之前已经生成过的二进制库</span><br><span class="line">--force </span><br><span class="line"></span><br><span class="line"># 生成嵌入式 .framework (静态 framework)</span><br><span class="line">--embedded </span><br><span class="line"></span><br><span class="line"># 生成静态 .a </span><br><span class="line">--library </span><br><span class="line"></span><br><span class="line"># 生成动态 .framework </span><br><span class="line">--dynamic </span><br><span class="line"></span><br><span class="line"># 动态 .framework 是需要签名的，所以只有生成动态库的时候需要这个 BundleId </span><br><span class="line">--bundle-identifier</span><br><span class="line"></span><br><span class="line"># 不包含依赖的符号表，生成动态库的时候不能包含这个命令</span><br><span class="line"># 动态库一定需要包含依赖的符号表。 </span><br><span class="line">--exclude-deps</span><br><span class="line"></span><br><span class="line"># 表示生成的库是 debug 还是 release，默认是 release</span><br><span class="line"># --configuration=Debug </span><br><span class="line">--configuration</span><br><span class="line"></span><br><span class="line"># 表示不使用 name mangling 技术，pod package 默认是使用这个技术的。</span><br><span class="line"># * 我们能在用 pod package 生成二进制库的时候会看到终端有输出 Mangling symbols 和 Building mangled framework，表示使用了这个技术。</span><br><span class="line"># * 如果你的 pod 库没有其他静态库(*.a/*.framework)依赖的话，那么不使用这个命令也不会报错。</span><br><span class="line"># * 但是如果有其他静态库依赖，不使用 --no-mangle 这个命令的话，那么你在工程里使用生成的二进制库的时候就会报错：Undefined symbols for architecture x86_64。</span><br><span class="line">--no-mangle</span><br><span class="line"></span><br><span class="line"># 如果你的 pod 库有 subspec，那么加上这个命名表示只给某个或几个 subspec 生成二进制库</span><br><span class="line"># * --subspecs=subspec1,subspec2</span><br><span class="line"># * 生成的库的名字就是你 podspec 的名字，如果你想生成的库的名字跟 subspec 的名字一样，那么就需要修改 podspec 的名字。 </span><br><span class="line"># * 这个脚本就是批量生成 subspec 的二进制库</span><br><span class="line">--subspecs</span><br><span class="line"></span><br><span class="line"># 一些依赖的 source</span><br><span class="line"># * 如果你有依赖是来自于私有库的，那就需要加上那个私有库的 source</span><br><span class="line"># * 默认是 cocoapods 的 Specs 仓库。</span><br><span class="line"># * --spec-sources=private,https://github.com/CocoaPods/Specs.git。</span><br><span class="line">--spec-sources</span><br></pre></td></tr></table></figure>
 <p><strong>注意，在 <code>pod package</code> 之前，你需要将代码提交到远程，并且打上 tag，因为 pod package 是通过git 的 commit 索引或者 tag 来找源码的.因此对外发布时候一定要在 s.version 中指定tag 的标签，在 git 中给定的 commit 打上 tag。</strong></p>
@@ -424,10 +424,10 @@
 <figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">/<span class="regexp">/ 本地文件</span></span><br><span class="line"><span class="regexp">s.source = &#123; :path =&gt; '~/</span>Document/WFRFoundation<span class="string">', :tag =&gt; s.version.to_s &#125;    </span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">// git</span></span><br><span class="line"><span class="string">s.source = &#123; :git =&gt; '</span><span class="symbol">https:</span>/<span class="regexp">/github.com/redye</span><span class="regexp">/wfrfoundation.git', :tag =&gt; s.version.to_s &#125;    </span></span><br><span class="line"><span class="regexp">	</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ zip </span></span><br><span class="line"><span class="regexp">s.source = &#123; :http=&gt; 'http:/</span><span class="regexp">/xxx.zip', :tag =&gt; "1.0.0" &#125;</span></span><br><span class="line"><span class="regexp">	</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ svn</span></span><br><span class="line"><span class="regexp">s.source = &#123; :svn=&gt; 'http:/</span><span class="regexp">/path', :tag =&gt; "1.0.0" &#125;</span></span><br></pre></td></tr></table></figure>
 <p>很可惜，pod package 并不支持 path 的方式</p>
 <figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">Unsupported download strategy <span class="string">`&#123;:path=&gt;"~/Documents/WFRFoundation", :tag=&gt;"0.1.0"&#125;`</span>.</span><br></pre></td></tr></table></figure>
-<h2 id="use-frameworks"><a href="#use-frameworks" class="headerlink" title="use_frameworks!"></a>use_frameworks!</h2><p>如果不使用 <code>use_frameworks!</code>，Pods 项目最终会编译成一个名为 libPods-ProjectName.a 的文件，主项目只需要依赖这个 .a 文件即可。</p>
+<h3 id="use-frameworks"><a href="#use-frameworks" class="headerlink" title="use_frameworks!"></a>use_frameworks!</h3><p>如果不使用 <code>use_frameworks!</code>，Pods 项目最终会编译成一个名为 libPods-ProjectName.a 的文件，主项目只需要依赖这个 .a 文件即可。</p>
 <p>使用 <code>use_frameworks!</code>，Pods 项目最终会编译成一个名为 Pods-ProjectName.framework 的文件，主项目只需要依赖这个 .framework 文件即可。</p>
 <p>在 Swift 项目中是不支持静态库的，所以在 Swift 项目，CocoaPods 提供了动态 Framework 的支持，通过 use_frameworks! 选项控制。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h4 id="静态库传递问题"><a href="#静态库传递问题" class="headerlink" title="静态库传递问题"></a>静态库传递问题</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">target has transitive dependencies that include static binaries</span><br></pre></td></tr></table></figure>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h4 id="静态库传递问题"><a href="#静态库传递问题" class="headerlink" title="静态库传递问题"></a>静态库传递问题</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">target has transitive dependencies that include static binaries</span><br></pre></td></tr></table></figure>
 <p>场景：</p>
 <blockquote>
 <p>libB dependency libA <br><br>use_frameworks! <br><br>libA 是一个静态 framework</p>
@@ -463,7 +463,7 @@
 <p>参考</p>
 <p><a href="https://github.com/CocoaPods/CocoaPods/issues/2926" target="_blank" rel="noopener">iOS 7 &amp; Dynamic Frameworks</a></p>
 <p><a href="https://github.com/qiuxiang/react-native-amap3d/issues/370" target="_blank" rel="noopener">Static Transitive Dependencies</a></p>
-<h3 id="pod-package-时依赖库传递问题"><a href="#pod-package-时依赖库传递问题" class="headerlink" title="pod package 时依赖库传递问题"></a>pod package 时依赖库传递问题</h3><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">[!] Unable to find a specification <span class="keyword">for</span> <span class="string">`WFRFoundation`</span> depended upon by <span class="string">`WFRXxx/Core`</span></span><br></pre></td></tr></table></figure>
+<h4 id="pod-package-时依赖库传递问题"><a href="#pod-package-时依赖库传递问题" class="headerlink" title="pod package 时依赖库传递问题"></a>pod package 时依赖库传递问题</h4><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">[!] Unable to find a specification <span class="keyword">for</span> <span class="string">`WFRFoundation`</span> depended upon by <span class="string">`WFRXxx/Core`</span></span><br></pre></td></tr></table></figure>
 <p>场景：</p>
 <blockquote>
 <p>B dependency A <br><br>pod package <br></p>
@@ -471,10 +471,10 @@
 <p>原因：找不到依赖的私有库</p>
 <p>解决方法：指定私有库地址</p>
 <figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod package WFRFoundation.podspec --force --spec-sources=<span class="symbol">https:</span>/<span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git,https:/</span><span class="regexp">/github.com/</span>CocoaPods/Specs.git</span><br></pre></td></tr></table></figure>
-<h3 id="pod-repo-push-时依赖库传递问题"><a href="#pod-repo-push-时依赖库传递问题" class="headerlink" title="pod repo push 时依赖库传递问题"></a>pod repo push 时依赖库传递问题</h3><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">Encountered an unknown error (Unable to find a specification <span class="keyword">for</span> <span class="string">`WFRFoundation`</span> depended upon by <span class="string">`WFRXxx`</span></span><br></pre></td></tr></table></figure>
+<h4 id="pod-repo-push-时依赖库传递问题"><a href="#pod-repo-push-时依赖库传递问题" class="headerlink" title="pod repo push 时依赖库传递问题"></a>pod repo push 时依赖库传递问题</h4><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">Encountered an unknown error (Unable to find a specification <span class="keyword">for</span> <span class="string">`WFRFoundation`</span> depended upon by <span class="string">`WFRXxx`</span></span><br></pre></td></tr></table></figure>
 <p>添加依赖库所在私有库地址</p>
 <figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod repo push YHSpecs WFRFoundation.podspec --allow-warnings --sources=<span class="symbol">https:</span>/<span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git,https:/</span><span class="regexp">/github.com/</span>CocoaPods/Specs.git</span><br></pre></td></tr></table></figure>
-<h3 id="私有库相互依赖时的导入问题"><a href="#私有库相互依赖时的导入问题" class="headerlink" title="私有库相互依赖时的导入问题"></a>私有库相互依赖时的导入问题</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Include of non-modular header inside framework module &apos;WFRXxx.WFXxxMacros&apos;: &apos;~/WFRXxx/Example/Pods/WFRFoundation/WFRFoundation-Framework/ios/WFRFoundation.embeddedframework/WFRFoundation.framework/Headers/WFRFoundation.h&apos;</span><br></pre></td></tr></table></figure>
+<h4 id="私有库相互依赖时的导入问题"><a href="#私有库相互依赖时的导入问题" class="headerlink" title="私有库相互依赖时的导入问题"></a>私有库相互依赖时的导入问题</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Include of non-modular header inside framework module &apos;WFRXxx.WFXxxMacros&apos;: &apos;~/WFRXxx/Example/Pods/WFRFoundation/WFRFoundation-Framework/ios/WFRFoundation.embeddedframework/WFRFoundation.framework/Headers/WFRFoundation.h&apos;</span><br></pre></td></tr></table></figure>
 <p>原因：</p>
 <p>在使用 <code>use_frameworks!</code> 时，因为链接方式是通过 embeded framework，Framework 中都包涵了一个自动生成的 Module 和一个 umbrella 文件，Module 文件在工程中是不可见的，是在编译时生成的一个文件，我们可以在生成的.framework文件中找到module.modulemap这个文件，就是前面我们所说的 Module。依赖第三方静态库时，第三方的静态库 Framework 并没有使用 Module，在 .h 文件中直接引入，在进行Framework 化的过程中，一旦引用了这样的 Framework，就会报错。</p>
 <p>解决方法：</p>
@@ -484,14 +484,14 @@
 <li>需要升级 Cocoapods 和 cocoapods-packager，在 2.7 版本以上修复了 modulemap 的问题。</li>
 </ul>
 <p>参考 <a href="https://www.jianshu.com/p/a1d2d148fdd3" target="_blank" rel="noopener">让CocoaPods static library支持Module</a></p>
-<h3 id="依赖静态库时打包错误"><a href="#依赖静态库时打包错误" class="headerlink" title="依赖静态库时打包错误"></a>依赖静态库时打包错误</h3><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">[!] podspec has binary-only depedencies, mangling <span class="keyword">not</span> possible.</span><br></pre></td></tr></table></figure>
+<h4 id="依赖静态库时打包错误"><a href="#依赖静态库时打包错误" class="headerlink" title="依赖静态库时打包错误"></a>依赖静态库时打包错误</h4><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">[!] podspec has binary-only depedencies, mangling <span class="keyword">not</span> possible.</span><br></pre></td></tr></table></figure>
 <p>场景：<br>依赖了第三方的静态库</p>
 <p>解决方法：</p>
 <p>加上 <code>--no-mangle</code> 选项，表示有依赖。</p>
 <p>加上 <code>--exclude-deps</code> 选项，表示在打包的时候排除依赖库的符号表，如果没有这个选项，同样会报错 <code>Undefined symbols for architecture x86_64</code> 。</p>
 <p>即 <code>--no-mangle</code> 与 <code>--exclude-deps</code> 需要同时使用。</p>
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h3><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod cache clean WFFoundation</span><br></pre></td></tr></table></figure>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://nshipster.cn/cocoapods/" target="_blank" rel="noopener">Cocoa​Pods</a></p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod cache clean WFFoundation</span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://nshipster.cn/cocoapods/" target="_blank" rel="noopener">Cocoa​Pods</a></p>
 <p><a href="https://www.zybuluo.com/qidiandasheng/note/595740" target="_blank" rel="noopener">Pod二进制化</a></p>
 <p><a href="https://www.jianshu.com/p/a243b62b2e72" target="_blank" rel="noopener">iOS经典错误Undefined symbols for architecture XXX</a></p>
 <p><a href="https://www.zybuluo.com/qidiandasheng/note/603907" target="_blank" rel="noopener">iOS里的动态库和静态库</a></p>
@@ -690,7 +690,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#打包-framework"><span class="nav-number">1.</span> <span class="nav-text">打包 framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-frameworks"><span class="nav-number">2.</span> <span class="nav-text">use_frameworks!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">3.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态库传递问题"><span class="nav-number">3.0.1.</span> <span class="nav-text">静态库传递问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pod-package-时依赖库传递问题"><span class="nav-number">3.1.</span> <span class="nav-text">pod package 时依赖库传递问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pod-repo-push-时依赖库传递问题"><span class="nav-number">3.2.</span> <span class="nav-text">pod repo push 时依赖库传递问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#私有库相互依赖时的导入问题"><span class="nav-number">3.3.</span> <span class="nav-text">私有库相互依赖时的导入问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖静态库时打包错误"><span class="nav-number">3.4.</span> <span class="nav-text">依赖静态库时打包错误</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#常用命令"><span class="nav-number">4.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#清除缓存"><span class="nav-number">4.1.</span> <span class="nav-text">清除缓存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CocoaPods-Packager-安装与使用"><span class="nav-number">1.</span> <span class="nav-text">CocoaPods-Packager 安装与使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#use-frameworks"><span class="nav-number">2.</span> <span class="nav-text">use_frameworks!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">3.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态库传递问题"><span class="nav-number">3.1.</span> <span class="nav-text">静态库传递问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pod-package-时依赖库传递问题"><span class="nav-number">3.2.</span> <span class="nav-text">pod package 时依赖库传递问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pod-repo-push-时依赖库传递问题"><span class="nav-number">3.3.</span> <span class="nav-text">pod repo push 时依赖库传递问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#私有库相互依赖时的导入问题"><span class="nav-number">3.4.</span> <span class="nav-text">私有库相互依赖时的导入问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖静态库时打包错误"><span class="nav-number">3.5.</span> <span class="nav-text">依赖静态库时打包错误</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用命令"><span class="nav-number">4.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#清除缓存"><span class="nav-number">4.1.</span> <span class="nav-text">清除缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

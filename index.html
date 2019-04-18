@@ -1089,13 +1089,9 @@
 
       
         
-          <h2 id="打包-framework"><a href="#打包-framework" class="headerlink" title="打包 framework"></a>打包 framework</h2><p>iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。</p>
+          <p>iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。</p>
 <p>制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。<br>cocoapods 提供了一个插件来帮助你</p>
 <p><a href="https://github.com/CocoaPods/cocoapods-packager" target="_blank" rel="noopener">CocoaPods-Packager</a></p>
-<p>接下来就是，使用下面的命令安装它</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo gem install cocoapods-packager</span><br></pre></td></tr></table></figure>
-<p>安装完成后，使用下面的命令打包 framework</p>
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod package WFRFoundation.podspec [--force] [--library] [--verbose] ...</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/10/09/private-pods-framework/#more" rel="contents">
