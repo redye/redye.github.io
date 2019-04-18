@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你 Coco">
+<meta name="description" content="制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你。">
 <meta name="keywords" content="iOS,Cocoapods">
 <meta property="og:type" content="article">
 <meta property="og:title" content="私有库打包 framework">
 <meta property="og:url" content="http://redye.com/2018/10/09/private-pods-framework/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你 Coco">
+<meta property="og:description" content="制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2018/09/29/5baf282dc3a1c.png">
 <meta property="og:image" content="https://i.loli.net/2018/09/29/5baf282fc137b.png">
-<meta property="og:updated_time" content="2019-04-18T06:44:26.787Z">
+<meta property="og:updated_time" content="2019-04-18T07:05:07.945Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="私有库打包 framework">
-<meta name="twitter:description" content="iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。 制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你 Coco">
+<meta name="twitter:description" content="制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你。">
 <meta name="twitter:image" content="https://i.loli.net/2018/09/29/5baf282dc3a1c.png">
 
 
@@ -355,10 +355,9 @@
       
 
       
-        <p>iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。</p>
-<p>制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。<br>cocoapods 提供了一个插件来帮助你</p>
-<p><a href="https://github.com/CocoaPods/cocoapods-packager" target="_blank" rel="noopener">CocoaPods-Packager</a></p>
+        <p>制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。<br>cocoapods 提供了一个插件来帮助你。</p>
 <a id="more"></a>
+<p><a href="https://github.com/CocoaPods/cocoapods-packager" target="_blank" rel="noopener">CocoaPods-Packager</a></p>
 <h3 id="CocoaPods-Packager-安装与使用"><a href="#CocoaPods-Packager-安装与使用" class="headerlink" title="CocoaPods-Packager 安装与使用"></a>CocoaPods-Packager 安装与使用</h3><p>接下来就是，使用下面的命令安装它</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo gem install cocoapods-packager</span><br></pre></td></tr></table></figure>
 <p>安装完成后，使用下面的命令打包 framework</p>

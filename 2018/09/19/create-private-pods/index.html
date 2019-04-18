@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="本地添加私有库pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置">
+<meta name="description" content="现在，一个 iOS 项目依赖的第三方库越来越多，如果手动管理起来，会越来越麻烦。越来越多的小伙伴们选择 Cocoapods 来管理我们的项目。 随着技术的发展，各种设计模式也层出不穷，终究目的都是为了让我们的项目看上去更加的清晰，最终做到高内聚，低耦合。在项目的开始，我们会设计合适的架构。一般都采用分层的方式，上层服务依赖下层服务。那么各层之间通过什么样的方式呈现呢？这很容易猜到 – 私有库。">
 <meta name="keywords" content="iOS,Cocoapods">
 <meta property="og:type" content="article">
 <meta property="og:title" content="创建私有库">
 <meta property="og:url" content="http://redye.com/2018/09/19/create-private-pods/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="本地添加私有库pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置">
+<meta property="og:description" content="现在，一个 iOS 项目依赖的第三方库越来越多，如果手动管理起来，会越来越麻烦。越来越多的小伙伴们选择 Cocoapods 来管理我们的项目。 随着技术的发展，各种设计模式也层出不穷，终究目的都是为了让我们的项目看上去更加的清晰，最终做到高内聚，低耦合。在项目的开始，我们会设计合适的架构。一般都采用分层的方式，上层服务依赖下层服务。那么各层之间通过什么样的方式呈现呢？这很容易猜到 – 私有库。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-10T05:58:55.933Z">
+<meta property="og:updated_time" content="2019-04-18T07:02:51.729Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建私有库">
-<meta name="twitter:description" content="本地添加私有库pod repo add specsName gitURL// examplepod repo add YHSpecs https://github.com/redye/YHSpecs.git 创建私有工程pod lib create WFRFoundation // WFRFoundation 是私有工程的名称 在创建的时候，会去下载模板，并且会询问你一些基础的配置">
+<meta name="twitter:description" content="现在，一个 iOS 项目依赖的第三方库越来越多，如果手动管理起来，会越来越麻烦。越来越多的小伙伴们选择 Cocoapods 来管理我们的项目。 随着技术的发展，各种设计模式也层出不穷，终究目的都是为了让我们的项目看上去更加的清晰，最终做到高内聚，低耦合。在项目的开始，我们会设计合适的架构。一般都采用分层的方式，上层服务依赖下层服务。那么各层之间通过什么样的方式呈现呢？这很容易猜到 – 私有库。">
 
 
 
@@ -352,15 +352,17 @@
       
 
       
-        <h2 id="本地添加私有库"><a href="#本地添加私有库" class="headerlink" title="本地添加私有库"></a>本地添加私有库</h2><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod repo add specsName gitURL</span><br><span class="line"></span><br><span class="line">/<span class="regexp">/ example</span></span><br><span class="line"><span class="regexp">pod repo add YHSpecs https:/</span><span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git</span></span><br></pre></td></tr></table></figure>
-<h2 id="创建私有工程"><a href="#创建私有工程" class="headerlink" title="创建私有工程"></a>创建私有工程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pod lib create WFRFoundation // WFRFoundation 是私有工程的名称</span><br></pre></td></tr></table></figure>
-<p>在创建的时候，会去下载模板，并且会询问你一些基础的配置</p>
+        <p>现在，一个 iOS 项目依赖的第三方库越来越多，如果手动管理起来，会越来越麻烦。越来越多的小伙伴们选择 <code>Cocoapods</code> 来管理我们的项目。</p>
+<p>随着技术的发展，各种设计模式也层出不穷，终究目的都是为了让我们的项目看上去更加的清晰，最终做到高内聚，低耦合。在项目的开始，我们会设计合适的架构。一般都采用分层的方式，上层服务依赖下层服务。那么各层之间通过什么样的方式呈现呢？这很容易猜到 – 私有库。</p>
 <a id="more"></a>
+<h3 id="本地添加私有库"><a href="#本地添加私有库" class="headerlink" title="本地添加私有库"></a>本地添加私有库</h3><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod repo add specsName gitURL</span><br><span class="line"></span><br><span class="line">/<span class="regexp">/ example</span></span><br><span class="line"><span class="regexp">pod repo add YHSpecs https:/</span><span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建私有工程"><a href="#创建私有工程" class="headerlink" title="创建私有工程"></a>创建私有工程</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pod lib create WFRFoundation // WFRFoundation 是私有工程的名称</span><br></pre></td></tr></table></figure>
+<p>在创建的时候，会去下载模板，并且会询问你一些基础的配置</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">What platform do you want to use?? [ iOS / macOS ]</span><br><span class="line"> &gt; iOS</span><br><span class="line"></span><br><span class="line">What language do you want to use?? [ Swift / ObjC ]</span><br><span class="line"> &gt; ObjC</span><br><span class="line"></span><br><span class="line">Would you like to include a demo application with your library? [ Yes / No ]</span><br><span class="line"> &gt; Yes</span><br><span class="line"></span><br><span class="line">Which testing frameworks will you use? [ Specta / Kiwi / None ]</span><br><span class="line"> &gt; None</span><br><span class="line"></span><br><span class="line">Would you like to do view based testing? [ Yes / No ]</span><br><span class="line"> &gt; No  </span><br><span class="line"></span><br><span class="line">What is your class prefix?</span><br><span class="line"> &gt; WFR</span><br></pre></td></tr></table></figure>
 <p>接下来就等待初始化工程就好了 😊</p>
-<h2 id="私有工程的目录结构"><a href="#私有工程的目录结构" class="headerlink" title="私有工程的目录结构"></a>私有工程的目录结构</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">|———— WFRFoundation</span><br><span class="line">| 	  |———— Podspec Metadata</span><br><span class="line">| 	  |———— Example for WFRFoundation</span><br><span class="line">| 	  |———— Tests</span><br><span class="line">| 	  |———— Frameworks</span><br><span class="line">| 	  |———— Products</span><br><span class="line">| 	  |———— Pods</span><br><span class="line">|———— Pods</span><br><span class="line">| 	  |———— Podfile</span><br><span class="line">| 	  |———— Development Pods</span><br><span class="line">| 	  |———— Frameworks</span><br><span class="line">| 	  |———— Pods</span><br><span class="line">| 	  |———— Products</span><br><span class="line">| 	  |———— Targets Support Files</span><br></pre></td></tr></table></figure>
+<h3 id="私有工程的目录结构"><a href="#私有工程的目录结构" class="headerlink" title="私有工程的目录结构"></a>私有工程的目录结构</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">|———— WFRFoundation</span><br><span class="line">| 	  |———— Podspec Metadata</span><br><span class="line">| 	  |———— Example for WFRFoundation</span><br><span class="line">| 	  |———— Tests</span><br><span class="line">| 	  |———— Frameworks</span><br><span class="line">| 	  |———— Products</span><br><span class="line">| 	  |———— Pods</span><br><span class="line">|———— Pods</span><br><span class="line">| 	  |———— Podfile</span><br><span class="line">| 	  |———— Development Pods</span><br><span class="line">| 	  |———— Frameworks</span><br><span class="line">| 	  |———— Pods</span><br><span class="line">| 	  |———— Products</span><br><span class="line">| 	  |———— Targets Support Files</span><br></pre></td></tr></table></figure>
 <p>工程的目录结构与在使用 pod 工程时相似，只是在工程目录下面多了 <em>私有仓库</em> 的元数据，在 <em>pod</em> 目录下增加了 开发目录 <code>Development Pods</code>。我们在开发私有库的时候，代码就写在这个目录下面。<code>Example</code> 用于我们调试我们编写的代码。</p>
-<h2 id="podspec"><a href="#podspec" class="headerlink" title="podspec"></a>podspec</h2><p>在我们创作私有库的过程中，与我们平时编写代码并没有什么不同，但是我们怎么样才能将我们写的代码变成库来引用，这就需要依靠 <code>podspec</code> 文件了。</p>
+<h3 id="podspec"><a href="#podspec" class="headerlink" title="podspec"></a>podspec</h3><p>在我们创作私有库的过程中，与我们平时编写代码并没有什么不同，但是我们怎么样才能将我们写的代码变成库来引用，这就需要依靠 <code>podspec</code> 文件了。</p>
 <p>podspec 文件是 cocoapods 引入第三方代码库的配置索引文件，它是采用 ruby 编写的。</p>
 <p>这里推荐阅读 <a href="http://mo.rakuyo.cn/2018/04/23/48-iOS%E5%BC%80%E5%8F%91%E4%B9%8Bpodspec%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99/" target="_blank" rel="noopener">iOS开发之podspec文件编写</a>，作者写的很清楚详细。那些前人踩过的坑，现在都变成了我们的财富，感谢~</p>
 
@@ -553,7 +555,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本地添加私有库"><span class="nav-number">1.</span> <span class="nav-text">本地添加私有库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建私有工程"><span class="nav-number">2.</span> <span class="nav-text">创建私有工程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#私有工程的目录结构"><span class="nav-number">3.</span> <span class="nav-text">私有工程的目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#podspec"><span class="nav-number">4.</span> <span class="nav-text">podspec</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地添加私有库"><span class="nav-number">1.</span> <span class="nav-text">本地添加私有库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建私有工程"><span class="nav-number">2.</span> <span class="nav-text">创建私有工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#私有工程的目录结构"><span class="nav-number">3.</span> <span class="nav-text">私有工程的目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#podspec"><span class="nav-number">4.</span> <span class="nav-text">podspec</span></a></li></ol></div>
             
 
           </div>

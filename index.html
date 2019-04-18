@@ -645,12 +645,6 @@
       
         
           <p>最近项目中经常遇到 app 莫名卡住不动的情况，也没有 crash，但就是不给你一点反应。而且也只在真机上出现。最开始一直以为可能是自己手机太年长的缘故(6s表示这个锅我不背🙅‍♂️)，直到则测试小姐姐那亲眼目睹了同样的情况/(ㄒoㄒ)/~~</p>
-<p>想到自己集成了 bugly，就上去瞅了瞅，嗯，很干净，why??</p>
-<p>app 页面卡住不动，主线程被阻塞了？</p>
-<p>仔细想来，好像并没有什么阻塞主线程的情况 ┑(￣Д ￣)┍</p>
-<p>因为手机上也遇到类似的情况，那就去看看手机上的崩溃日志吧。</p>
-<p>虽然 bugly 并没有捕捉到这些 crash，但是手机上的崩溃日志是诚实的，他们都好好的待在他们该在的地方，等着你 (╯﹏╰)</p>
-<p>打开崩溃日志，你以为你会看到完整的崩溃调用栈？oh，你真是太天真了</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/04/10/crash-symbol/#more" rel="contents">
@@ -798,9 +792,6 @@
         
           <p>最近看了一篇很赞的文章，是讲 weex、react-native 和 JSPatch 之间的对比，作为一枚 iOS 程序猿，当然了，我使用过 react-native，JSPatch 也了解过（由于苹果爸爸禁止使用 hotfix，并没有派上用场），weex 当然也有必要去体验一下。</p>
 <p>这里先贴下<a href="http://awhisper.github.io/2016/07/22/Weex-ReactNative-JSPatch/" target="_blank" rel="noopener">原文</a>。</p>
-<p>作为小白，最快了解和体验 weex 的办法，当然是寻求<a href="https://weex.apache.org/cn/" target="_blank" rel="noopener">weex 官方文档</a>的帮助。</p>
-<p>Weex有一个<a href="http://dotwe.org/vue/" target="_blank" rel="noopener">在线编写代码的平台</a>，可以先去感受一下，weex 使用 vue 语法开发，如果你以前写过 vue，那就太棒了。</p>
-<p>如果想要在自己的本本上感觉一下，那么就需要安装 weex 的环境了。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/12/17/weex-pratice/#more" rel="contents">
@@ -1089,9 +1080,7 @@
 
       
         
-          <p>iOS 8 之后开始支持动态 framework 了，使用 framework 与 .a 库之间的区别，以及使用她带来的好处自不用多说。</p>
-<p>制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。<br>cocoapods 提供了一个插件来帮助你</p>
-<p><a href="https://github.com/CocoaPods/cocoapods-packager" target="_blank" rel="noopener">CocoaPods-Packager</a></p>
+          <p>制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。<br>cocoapods 提供了一个插件来帮助你。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/10/09/private-pods-framework/#more" rel="contents">
@@ -1237,9 +1226,8 @@
 
       
         
-          <h2 id="本地添加私有库"><a href="#本地添加私有库" class="headerlink" title="本地添加私有库"></a>本地添加私有库</h2><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod repo add specsName gitURL</span><br><span class="line"></span><br><span class="line">/<span class="regexp">/ example</span></span><br><span class="line"><span class="regexp">pod repo add YHSpecs https:/</span><span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git</span></span><br></pre></td></tr></table></figure>
-<h2 id="创建私有工程"><a href="#创建私有工程" class="headerlink" title="创建私有工程"></a>创建私有工程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pod lib create WFRFoundation // WFRFoundation 是私有工程的名称</span><br></pre></td></tr></table></figure>
-<p>在创建的时候，会去下载模板，并且会询问你一些基础的配置</p>
+          <p>现在，一个 iOS 项目依赖的第三方库越来越多，如果手动管理起来，会越来越麻烦。越来越多的小伙伴们选择 <code>Cocoapods</code> 来管理我们的项目。</p>
+<p>随着技术的发展，各种设计模式也层出不穷，终究目的都是为了让我们的项目看上去更加的清晰，最终做到高内聚，低耦合。在项目的开始，我们会设计合适的架构。一般都采用分层的方式，上层服务依赖下层服务。那么各层之间通过什么样的方式呈现呢？这很容易猜到 – 私有库。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/09/19/create-private-pods/#more" rel="contents">
