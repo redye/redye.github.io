@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="iOS,Static-Analyze,Clang,">
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="欢迎来到小红家，折腾了一下午的成果，终于有个自己的小地方。 希望后面能坚持写一些东西~">
+<meta name="description" content="苹果公司早期使用 GCC 作为编译器。GCC 最初是作为 GNU(GNU是“GNU is Not Unix”)操作系统的编译器编写的，是一套由 GNU 开发的编程语言编译器，不属于苹果维护也不能完全控制开发进程，Apple为 Objective-C 增加许多新特性，但是 GCC 开发者对这些支持却不友好，效率和性能都没有办法达到苹果公司的要求，而且还难以推动 GCC 团队。">
+<meta name="keywords" content="iOS,Static-Analyze,Clang">
 <meta property="og:type" content="article">
-<meta property="og:title" content="小红家の">
-<meta property="og:url" content="http://redye.com/2018/10/25/hello-redye/index.html">
+<meta property="og:title" content="强大的 Clang">
+<meta property="og:url" content="http://redye.com/2019/04/18/clang-compile/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="欢迎来到小红家，折腾了一下午的成果，终于有个自己的小地方。 希望后面能坚持写一些东西~">
+<meta property="og:description" content="苹果公司早期使用 GCC 作为编译器。GCC 最初是作为 GNU(GNU是“GNU is Not Unix”)操作系统的编译器编写的，是一套由 GNU 开发的编程语言编译器，不属于苹果维护也不能完全控制开发进程，Apple为 Objective-C 增加许多新特性，但是 GCC 开发者对这些支持却不友好，效率和性能都没有办法达到苹果公司的要求，而且还难以推动 GCC 团队。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-10T03:23:58.105Z">
+<meta property="og:updated_time" content="2019-04-22T10:29:30.904Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小红家の">
-<meta name="twitter:description" content="欢迎来到小红家，折腾了一下午的成果，终于有个自己的小地方。 希望后面能坚持写一些东西~">
+<meta name="twitter:title" content="强大的 Clang">
+<meta name="twitter:description" content="苹果公司早期使用 GCC 作为编译器。GCC 最初是作为 GNU(GNU是“GNU is Not Unix”)操作系统的编译器编写的，是一套由 GNU 开发的编程语言编译器，不属于苹果维护也不能完全控制开发进程，Apple为 Objective-C 增加许多新特性，但是 GCC 开发者对这些支持却不友好，效率和性能都没有办法达到苹果公司的要求，而且还难以推动 GCC 团队。">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://redye.com/2018/10/25/hello-redye/">
+  <link rel="canonical" href="http://redye.com/2019/04/18/clang-compile/">
 
 
 
 
 
-  <title>小红家の | 红红の</title>
+  <title>强大的 Clang | 红红の</title>
   
 
 
@@ -262,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://redye.com/2018/10/25/hello-redye/">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2019/04/18/clang-compile/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小红">
@@ -279,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">小红家の</h1>
+          <h1 class="post-title" itemprop="name headline">强大的 Clang</h1>
         
 
         <div class="post-meta">
@@ -291,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T15:44:57+08:00">
-                2018-10-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-18T18:32:29+08:00">
+                2019-04-18
               </time>
             
 
@@ -314,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">生活随笔</span>
+                  <a href="/categories/工具代码/" itemprop="url" rel="index">
+                    <span itemprop="name">工具代码</span>
                   </a>
                 </span>
 
@@ -351,8 +352,52 @@
       
 
       
-        <p>欢迎来到小红家，折腾了一下午的成果，终于有个自己的小地方。</p>
-<p>希望后面能坚持写一些东西~</p>
+        <p>苹果公司早期使用 GCC 作为编译器。GCC 最初是作为 GNU(GNU是“GNU is Not Unix”)操作系统的编译器编写的，是一套由 GNU 开发的编程语言编译器，不属于苹果维护也不能完全控制开发进程，Apple为 Objective-C 增加许多新特性，但是 GCC 开发者对这些支持却不友好，效率和性能都没有办法达到苹果公司的要求，而且还难以推动 GCC 团队。</p>
+<a id="more"></a>
+<p>于是，苹果公司决定给自己来账务编译相关的工具链，将天才克里斯·拉特纳（Chris·Lattner）赵茹麾下后开发了 LLVM 工具套件，将 GCC 全面替换成了 LLVM。</p>
+<p>Clang 是基于 C++ 开发的。 Clang 是 LLVM 的一个编译前端。在 Xcode 编译 iOS 项目的时候，都是使用的LLVM，其实在编写代码以及调试的时候都在接触LLVM提供的功能，例如：代码的亮度（Clang）、实时代码检查（Clang）、代码提示（Clang）、debug断点调试（LLDB）。</p>
+<h3 id="Xcode-编译器发展史"><a href="#Xcode-编译器发展史" class="headerlink" title="Xcode 编译器发展史"></a>Xcode 编译器发展史</h3><ul>
+<li>Xcode3 以前： GCC；</li>
+<li>Xcode3： 增加LLVM，GCC(前端) + LLVM(后端)；</li>
+<li>Xcode4.2： 出现Clang - LLVM 3.0成为默认编译器；</li>
+<li>Xcode4.6： LLVM 升级到4.2版本；</li>
+<li>Xcode5： GCC被废弃，新的编译器是LLVM 5.0，从GCC过渡到Clang-LLVM的时代正式完成</li>
+</ul>
+<h3 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h3><p>LLVM 与 GCC 一样，都是采用的三相设计（编译前端-中间代码IR-编译后端），前端 Clang 负责解析，验证和诊断输入代码中的错误，然后将解析的代码转换为 LLVM IR，后端 LLVM 编译把IR通过一系列改进代码的分析和优化过程提供，然后被发送到代码生成器以生成本机机器代码。</p>
+<h3 id="Clang-的工作"><a href="#Clang-的工作" class="headerlink" title="Clang 的工作"></a>Clang 的工作</h3><p>Clang 作为编译前端，首先预编译 -&gt; 词法分析 -&gt; 语法分析。</p>
+<p>这里首推《程序员的自我修养》一书，虽然还没有啃完。</p>
+<h3 id="Clang-的基础设施"><a href="#Clang-的基础设施" class="headerlink" title="Clang 的基础设施"></a>Clang 的基础设施</h3><h4 id="LibClang"><a href="#LibClang" class="headerlink" title="LibClang"></a>LibClang</h4><p>提供稳定的高级 C 接口，Xcode 使用的就是 LibClang。</p>
+<p>LibClang 可以访问 Clang 的上层高级抽象的能力，比如获取所有 Token、遍历语法树、代码补全等。API 很稳定，Clang 版本更新对其影响不大。并不能完全访问到 Clang AST 信息。</p>
+<h4 id="Clang-Plugins"><a href="#Clang-Plugins" class="headerlink" title="Clang Plugins"></a>Clang Plugins</h4><p>Clang Plugins 可以让你在 AST 上做些操作，这些操作能集成到编译中，称为编译的一部分。插件是在运行时由编译器加载的动态库，方便集成到构建系统中。</p>
+<h4 id="LibTooling"><a href="#LibTooling" class="headerlink" title="LibTooling"></a>LibTooling</h4><p>LibTooling 是一个 C++ 接口，通过 LibTooling 能够编写独立运行的语法检查和代码和代码重构工具。</p>
+<h3 id="Clang-搭建开发环境"><a href="#Clang-搭建开发环境" class="headerlink" title="Clang 搭建开发环境"></a>Clang 搭建开发环境</h3><h4 id="安装-CMake"><a href="#安装-CMake" class="headerlink" title="安装 CMake"></a>安装 CMake</h4><p>CMake 是一个跨平台的构建生成器工具。 CMake 不构建项目，它生成构建工具（GNU make，Visual Studio等）所需的文件，用于构建LLVM。</p>
+<p><a href="https://cmake.org/download/" target="_blank" rel="noopener">下载地址</a></p>
+<ul>
+<li><a href="https://cmake.org/install" target="_blank" rel="noopener">源码安装</a></li>
+<li>安装包安装</li>
+<li><p>通过 Homebrew 安装</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew install cmake</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="下载-LLVM-源码"><a href="#下载-LLVM-源码" class="headerlink" title="下载 LLVM 源码"></a>下载 LLVM 源码</h4><p><a href="http://llvm.org/docs/GettingStarted.html#checkout-llvm-from-subversion" target="_blank" rel="noopener">Getting Started with the LLVM System</a></p>
+<ul>
+<li><p>下载 llvm 源码</p>
+<ul>
+<li>git clone <a href="https://github.com/llvm/llvm-project.git" target="_blank" rel="noopener">https://github.com/llvm/llvm-project.git</a></li>
+</ul>
+</li>
+<li><p>配置并构建 llvm 和 clang</p>
+<ul>
+<li>cd llvm-project</li>
+<li>mkdir build</li>
+<li><p>cmake -G <generator> [options] ../llvm</generator></p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cmake -G Xcode -DLLVM_ENABLE_PROJECTS=&quot;clang;libcxx;libcxxabi&quot; ../llvm</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-clang/" target="_blank" rel="noopener">结构化编译器前端 Clang 介绍</a></p>
+<p><a href="https://www.jianshu.com/p/01c988cae897" target="_blank" rel="noopener">打造基于Clang LibTooling的iOS自动打点系统CLAS</a></p>
 
       
     </div>
@@ -368,6 +413,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Static-Analyze/" rel="tag"># Static-Analyze</a>
+          
+            <a href="/tags/Clang/" rel="tag"># Clang</a>
+          
+        </div>
+      
 
       
       
@@ -377,8 +432,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/09/private-pods-framework/" rel="next" title="私有库打包 framework">
-                <i class="fa fa-chevron-left"></i> 私有库打包 framework
+              <a href="/2019/04/18/xcodebuild-usage/" rel="next" title="xcodebuild 文档">
+                <i class="fa fa-chevron-left"></i> xcodebuild 文档
               </a>
             
           </div>
@@ -387,8 +442,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/17/weex-pratice/" rel="prev" title="Weex 初体验">
-                Weex 初体验 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/04/22/method-swizzling/" rel="prev" title="Method Swizzling">
+                Method Swizzling <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -441,8 +496,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -520,6 +584,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Xcode-编译器发展史"><span class="nav-number">1.</span> <span class="nav-text">Xcode 编译器发展史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译过程"><span class="nav-number">2.</span> <span class="nav-text">编译过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Clang-的工作"><span class="nav-number">3.</span> <span class="nav-text">Clang 的工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Clang-的基础设施"><span class="nav-number">4.</span> <span class="nav-text">Clang 的基础设施</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LibClang"><span class="nav-number">4.1.</span> <span class="nav-text">LibClang</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Clang-Plugins"><span class="nav-number">4.2.</span> <span class="nav-text">Clang Plugins</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LibTooling"><span class="nav-number">4.3.</span> <span class="nav-text">LibTooling</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Clang-搭建开发环境"><span class="nav-number">5.</span> <span class="nav-text">Clang 搭建开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-CMake"><span class="nav-number">5.1.</span> <span class="nav-text">安装 CMake</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下载-LLVM-源码"><span class="nav-number">5.2.</span> <span class="nav-text">下载 LLVM 源码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
