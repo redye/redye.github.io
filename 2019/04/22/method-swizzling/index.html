@@ -82,14 +82,14 @@
 <meta name="description" content="iOS 运行时是每一个 iOS 开发者离不开的话题。利用运行时的消息转发，能够帮助我们完成很多动作。我们熟悉的 Method Swizzling(又称黑魔法)，切面编程(AOP)、无侵入埋点等都是依靠此来完成的。">
 <meta name="keywords" content="iOS,Swizzling,Runtime">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Method Swizzling">
+<meta property="og:title" content="OC-Runtime：Method Swizzling">
 <meta property="og:url" content="http://redye.com/2019/04/22/method-swizzling/index.html">
 <meta property="og:site_name" content="红红の">
 <meta property="og:description" content="iOS 运行时是每一个 iOS 开发者离不开的话题。利用运行时的消息转发，能够帮助我们完成很多动作。我们熟悉的 Method Swizzling(又称黑魔法)，切面编程(AOP)、无侵入埋点等都是依靠此来完成的。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-22T10:54:14.303Z">
+<meta property="og:updated_time" content="2019-04-23T10:20:04.829Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Method Swizzling">
+<meta name="twitter:title" content="OC-Runtime：Method Swizzling">
 <meta name="twitter:description" content="iOS 运行时是每一个 iOS 开发者离不开的话题。利用运行时的消息转发，能够帮助我们完成很多动作。我们熟悉的 Method Swizzling(又称黑魔法)，切面编程(AOP)、无侵入埋点等都是依靠此来完成的。">
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>Method Swizzling | 红红の</title>
+  <title>OC-Runtime：Method Swizzling | 红红の</title>
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Method Swizzling</h1>
+          <h1 class="post-title" itemprop="name headline">OC-Runtime：Method Swizzling</h1>
         
 
         <div class="post-meta">
@@ -379,6 +379,9 @@
 <p>如果直接交换方法的实现，输出会变成下面这样，即执行上述代码注释部分</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><span class="line">Car *car = [[Car alloc] init];</span><br><span class="line">[car run]; <span class="comment">// Car is running fast</span></span><br><span class="line">	</span><br><span class="line">Truck *truck = [[Truck alloc] init];</span><br><span class="line">[truck run]; <span class="comment">// Truck is running fast</span></span><br><span class="line">[truck run_fast]; <span class="comment">// Truck is running</span></span><br></pre></td></tr></table></figure>
 <p>仔细观察，你会发现，父类的方法实现也被交换了。</p>
+<h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><ul>
+<li><a href="http://www.tanhao.me/code/160723.html" target="_blank" rel="noopener">Method Swizzling的各种姿势</a></li>
+</ul>
 
       
     </div>
@@ -422,6 +425,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/22/objc_msgForward/" rel="prev" title="OC-Runtime：iOS 的消息转发流程篇">
+                OC-Runtime：iOS 的消息转发流程篇 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -500,7 +507,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -522,7 +529,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -571,7 +578,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#class-addMethod"><span class="nav-number">1.</span> <span class="nav-text">class_addMethod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#class-replaceMethod"><span class="nav-number">2.</span> <span class="nav-text">class_replaceMethod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#method-exchangeImplementations"><span class="nav-number">3.</span> <span class="nav-text">method_exchangeImplementations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这是一个例子"><span class="nav-number">4.</span> <span class="nav-text">这是一个例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#当源方法在类中有实现时"><span class="nav-number">4.1.</span> <span class="nav-text">当源方法在类中有实现时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#当源方法只在父类中有实现"><span class="nav-number">4.2.</span> <span class="nav-text">当源方法只在父类中有实现</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#class-addMethod"><span class="nav-number">1.</span> <span class="nav-text">class_addMethod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#class-replaceMethod"><span class="nav-number">2.</span> <span class="nav-text">class_replaceMethod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#method-exchangeImplementations"><span class="nav-number">3.</span> <span class="nav-text">method_exchangeImplementations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这是一个例子"><span class="nav-number">4.</span> <span class="nav-text">这是一个例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#当源方法在类中有实现时"><span class="nav-number">4.1.</span> <span class="nav-text">当源方法在类中有实现时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#当源方法只在父类中有实现"><span class="nav-number">4.2.</span> <span class="nav-text">当源方法只在父类中有实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推荐阅读"><span class="nav-number">5.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
             
 
           </div>
