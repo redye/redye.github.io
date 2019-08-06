@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/04/25/5cc15f767cdb3.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/04/26/5cc26cbb6f46e.jpg">
-<meta property="og:updated_time" content="2019-04-26T09:55:34.593Z">
+<meta property="og:updated_time" content="2019-08-05T06:31:17.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OC-Runtime：iOS 的消息转发实例篇">
 <meta name="twitter:description" content="OC-Runtime：iOS 的消息转发流程篇 讲述了消息在发送阶段的转发流程，这里会结合实例，更直观的看一下消息转发的流程。">
@@ -372,8 +372,6 @@
 <li><p>官方示例文档上面解释说当给接受者成功添加实现的时候返回 YES，否则返回 NO。</p>
 <blockquote>
 <p>Returns</p>
-</blockquote>
-<blockquote>
 <p>YES if the method was found and added to the receiver, otherwise NO.</p>
 </blockquote>
 </li>
@@ -398,8 +396,6 @@
 <p><code>- forwardingTargetForSelector:</code> 是第一个被调用的方法。引用官方的摘要：</p>
 <h4 id="forwardingTargetForSelector"><a href="#forwardingTargetForSelector" class="headerlink" title="forwardingTargetForSelector"></a>forwardingTargetForSelector</h4><blockquote>
 <p><strong>Summary</strong></p>
-</blockquote>
-<blockquote>
 <p>Returns the object to which unrecognized messages should first be directed.</p>
 </blockquote>
 <p>意思就是把这个不识别的消息转发到一个新的对象去执行。这个需要我们返回一个已经实现了对应 selector 的实例对象。</p>
@@ -411,11 +407,7 @@
 <p>此时的 IMP 就是 <code>_objc_msgForward_impcache</code>，然后跳转到 <code>_objc_msgForward_impcache</code> 去执行，就是👇</p>
 <blockquote>
 <p><code>id _objc_msgForward(id self, SEL _cmd,...);</code></p>
-</blockquote>
-<blockquote>
 <p><code>_objc_msgForward</code> and <code>_objc_msgForward_stret</code> are the externally-callable functions returned by things like method_getImplementation().</p>
-</blockquote>
-<blockquote>
 <p><code>_objc_msgForward_impcache</code> is the function pointer actually stored in<br> method caches.</p>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">STATIC_ENTRY __objc_msgForward_impcache</span><br><span class="line"><span class="comment">// Method cache version</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// THIS IS NOT A CALLABLE C FUNCTION</span></span><br><span class="line"><span class="comment">// Out-of-band condition register is NE for stret, EQ otherwise.</span></span><br><span class="line"></span><br><span class="line">jne	__objc_msgForward_stret</span><br><span class="line">jmp	__objc_msgForward</span><br><span class="line"></span><br><span class="line">END_ENTRY __objc_msgForward_impcache</span><br><span class="line">	</span><br><span class="line">ENTRY __objc_msgForward</span><br><span class="line"><span class="comment">// Non-stret version</span></span><br><span class="line"></span><br><span class="line">movq	__objc_forward_handler(%rip), %r11</span><br><span class="line">jmp	*%r11</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
@@ -440,7 +432,7 @@
 </li>
 <li><p>在 <code>forwardInvocation:</code> 中可以对入参进行修改。</p>
 </li>
-<li><p>关于为什么入参的下表从 2 开始，OC 方法里默认有 <code>self</code> 和 <code>_cmd</code> 两个参数，方法的入参从第三个开始，即下标为 2 开始。<code>NSInvocation</code>的参数传递与方法签名对应，所以虽然方法签名可以通过字符串生成，但是最好还是要和方法对应上。</p>
+<li><p>关于为什么入参的下标从 2 开始，OC 方法里默认有 <code>self</code> 和 <code>_cmd</code> 两个参数，方法的入参从第三个开始，即下标为 2 开始。<code>NSInvocation</code>的参数传递与方法签名对应，所以虽然方法签名可以通过字符串生成，但是最好还是要和方法对应上。</p>
   <figure class="highlight objc"><table><tr><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"--------4.-----------[%@] - [%@]"</span>, <span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]), <span class="built_in">NSStringFromSelector</span>(anInvocation.selector));</span><br><span class="line">    <span class="built_in">NSString</span> *selName = <span class="built_in">NSStringFromSelector</span>(anInvocation.selector);</span><br><span class="line">    <span class="keyword">if</span> ([selName hasPrefix:forwardPrefix]) &#123;</span><br><span class="line">        <span class="keyword">id</span> target = [[ExceptionHandler alloc] init];</span><br><span class="line">        <span class="built_in">NSInteger</span> numberOfArguments = anInvocation.methodSignature.numberOfArguments;</span><br><span class="line">        <span class="keyword">if</span> (numberOfArguments &gt; <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; numberOfArguments; i ++) &#123;</span><br><span class="line">                <span class="keyword">const</span> <span class="keyword">char</span> *argumentType = [anInvocation.methodSignature getArgumentTypeAtIndex:i];</span><br><span class="line">                <span class="keyword">if</span> (strcmp(argumentType, <span class="string">"@"</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="built_in">NSString</span> *argument = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"test%d"</span>, i];</span><br><span class="line">                    [anInvocation setArgument:&amp;argument atIndex:i];</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (strcmp(argumentType, <span class="string">"i"</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">                    [anInvocation setArgument:&amp;i atIndex:i];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        [anInvocation invokeWithTarget:target];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [<span class="keyword">super</span> forwardInvocation:anInvocation];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
@@ -573,7 +565,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -595,7 +587,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

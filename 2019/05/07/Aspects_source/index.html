@@ -88,7 +88,7 @@
 <meta property="og:description" content="切面编程 Aspects 就是利用 Method Swizzling 与 _objc_msgForward 的典型实例。下面就对 Aspects 做一个深度的解读。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/04/30/5cc81ae585991.jpg">
-<meta property="og:updated_time" content="2019-05-07T08:13:45.999Z">
+<meta property="og:updated_time" content="2019-08-05T06:31:57.257Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OC-Runtime：Aspects 解读篇">
 <meta name="twitter:description" content="切面编程 Aspects 就是利用 Method Swizzling 与 _objc_msgForward 的典型实例。下面就对 Aspects 做一个深度的解读。">
@@ -370,7 +370,7 @@
 <ul>
 <li>block 参数个数必须小于等于方法的参数个数；</li>
 <li>block 的参数大于 1 个时，第 1 个参数类型必须是 SEL 或 <code>id&lt;AspectInfo&gt;</code> 类型；第 0 个参数类型是 self/block</li>
-<li>block 的参数大于 2 时，block 参数类型必须与 方法参数类型一致‘</li>
+<li>block 的参数大于 2 时，block 参数类型必须与 方法参数类型一致</li>
 </ul>
 <p><strong>AspectsContainer</strong> </p>
 <p>记录被 Hook 方法的方式。被关联到 self 上，并以别名作为被关联的 key。</p>
@@ -470,6 +470,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/08/06/javascriptcore/" rel="prev" title="JavaScriptCore">
+                JavaScriptCore <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -547,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -569,7 +573,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
