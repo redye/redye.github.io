@@ -88,7 +88,9 @@
 <meta property="og:description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png">
-<meta property="og:updated_time" content="2020-01-10T05:48:20.913Z">
+<meta property="og:image" content="https://i.loli.net/2020/01/11/mFsXGOR6ZNf7VHD.png">
+<meta property="og:image" content="https://i.loli.net/2020/01/11/WG6Bgszq9ZtAY2k.png">
+<meta property="og:updated_time" content="2020-01-13T14:58:16.116Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内存优化与编译优化">
 <meta name="twitter:description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
@@ -362,6 +364,14 @@
 <p>我们分析，<code>SMPerson</code> 需要的内存空间仍是 <code>40</code> 字节，开辟的内存空间是 <code>48</code>字节。</p>
 <p>对于 <code>int</code>，<code>char</code> 类型，OC 会自动帮我们进行内存优化。</p>
 <p><img src="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png" alt="var_display.png"></p>
+<h3 id="编译优化"><a href="#编译优化" class="headerlink" title="编译优化"></a>编译优化</h3><p>编译优化一般是编译器完成的，在开发过程中，一般我们都是在 debug 模式下，debug 模式下我们可以打印一些日志，开启僵尸对象等。在 debug/release 模式下编译后的汇编代码也有所不同：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        <span class="keyword">int</span> r = add(<span class="number">10</span>, <span class="number">5</span>);</span><br><span class="line">        NSLog(@<span class="string">"a + b = %d"</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/01/11/mFsXGOR6ZNf7VHD.png" alt="optinmization.png"></p>
+<p>能够明显的看出，release 模式下的汇编代码更短。</p>
+<p>我们可以在 <code>build setting</code> -&gt; <code>Optimization Level</code> 查看：</p>
+<p><img src="https://i.loli.net/2020/01/11/WG6Bgszq9ZtAY2k.png" alt="optimization_level.png"></p>
+<p>release 模式下默认开启编译优化。</p>
+<p>编译优化可以减少编译时间、链接时间、运行时间等。</p>
 
       
     </div>
@@ -403,6 +413,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/05/对象的本质/" rel="prev" title="对象的本质">
+                对象的本质 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -481,7 +495,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -552,7 +566,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存优化"><span class="nav-number">1.</span> <span class="nav-text">内存优化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存优化"><span class="nav-number">1.</span> <span class="nav-text">内存优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译优化"><span class="nav-number">2.</span> <span class="nav-text">编译优化</span></a></li></ol></div>
             
 
           </div>
