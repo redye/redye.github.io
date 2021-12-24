@@ -376,7 +376,7 @@
 <p>如果要符合不同平台，需要定义个宏定义，其实上面的宏定义里面已经定义好了，即</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><span class="line">(x + WORD_MASK) &gt;&gt; WORD_SHIFT &lt;&lt; WORD_SHIFT</span><br></pre></td></tr></table></figure>
 <h3 id="这是一个例子"><a href="#这是一个例子" class="headerlink" title="这是一个例子"></a>这是一个例子</h3><p>现在我们给出我们的一个类 <code>SMPerson</code>，计算一下他所占的内存空间：</p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SMPerson</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name; <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *address; <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> age; <span class="comment">// 4 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> height; <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">char</span> ch; <span class="comment">// 1 byte</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SMPerson</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;      <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *address;   <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> age;           <span class="comment">// 4 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> height;    <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">char</span> ch;           <span class="comment">// 1 byte</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 <p>OC 类在底层实现还有一个隐藏的 <code>isa</code> 指针，这里如果不考虑成员变量在内存中是如何分布（至于这里为什么不需要考虑内存分布，是因为这部分编译器已经帮我们处理好了），计算出来的实例对象的大小为<code>40</code>字节，下面我们验证一下：</p>
 <p>在 main.m 文件中</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        SMPerson *person = [[SMPerson alloc] init];</span><br><span class="line">        person.name = <span class="string">@"CC"</span>;</span><br><span class="line">        person.age = <span class="number">18</span>;</span><br><span class="line">        person.address = <span class="string">@"上海"</span>;</span><br><span class="line">        person.height = <span class="number">180</span>;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%lu"</span>, class_getInstanceSize([person <span class="keyword">class</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -506,7 +506,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -528,7 +528,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -597,7 +597,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/01/10/5ApVxlY31Nd4cqh.png">
 <meta property="og:image" content="https://i.loli.net/2020/01/10/aMeFs7jCkTVm4Ww.png">
-<meta property="og:updated_time" content="2020-02-23T10:09:33.561Z">
+<meta property="og:updated_time" content="2020-03-07T13:29:03.378Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="对象的本质">
 <meta name="twitter:description" content="前面我们分析了对象的创建过程，那么对象的本质是什么呢？我们知道，OC 是通过 LLVM 编译的，而 clang 是 LLVM 的编译前端，我们可以通过 clang 来一探究竟。">
@@ -391,14 +391,14 @@
 </li>
 <li><p>属性的 <code>setter</code> 方法:</p>
   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> _I_SMBook_setName_(SMBook * self, SEL _cmd, NSString *name) &#123; objc_setProperty (self, _cmd, __OFFSETOFIVAR__(struct SMBook, _name), (id)name, <span class="number">0</span>, <span class="number">1</span>); &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
 <p>从上面两个方法中观察到两个参数：</p>
-<pre><code>* `self`
-* `_cmd`
-</code></pre><ul>
+<ul>
+<li><code>self</code></li>
+<li><code>_cmd</code></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><p>实例方法：</p>
   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">	<span class="keyword">static</span> <span class="keyword">void</span> _I_SMBook_sayHello(SMBook * self, SEL _cmd) &#123;</span><br><span class="line">   	NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_yb_37j_8lyx0g1_dtywfftgmc880000gn_T_main_7812b7_mi_0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
@@ -591,7 +591,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -613,7 +613,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -682,7 +682,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

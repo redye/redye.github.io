@@ -412,7 +412,7 @@
 <p>  我们二进制计算一下：</p>
   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">(lldb) p/t <span class="number">0x00000001000029f0</span></span><br><span class="line">(<span class="keyword">long</span>) $<span class="number">0</span> = <span class="number">0b0000000000000000000000000000000100000000000000000010100111110000</span></span><br><span class="line">(lldb) p/t $<span class="number">0</span> &gt;&gt; <span class="number">3</span></span><br><span class="line">(<span class="keyword">long</span>) $<span class="number">1</span> = <span class="number">0b0000000000000000000000000000000000100000000000000000010100111110</span></span><br><span class="line">(lldb) p/t $<span class="number">1</span> &lt;&lt; <span class="number">3</span></span><br><span class="line">(<span class="keyword">long</span>) $<span class="number">2</span> = <span class="number">0b0000000000000000000000000000000100000000000000000010100111110000</span></span><br><span class="line">(lldb) po $<span class="number">0</span> == $<span class="number">2</span></span><br><span class="line"><span class="literal">true</span></span><br></pre></td></tr></table></figure>
 <p>  现在 <code>cls</code> 的地址已经放到 <code>isa</code> 的 <code>shiftcls</code> 段里面了，在 <code>arm64</code> 里面占了 <code>33</code> 位，但是 <code>cls</code> 的地址是 <code>64</code> 位能存下吗？</p>
-<p>  类和元类只需要创建一个，而且是在编译时期就已经完成了的(我们可以从 <code>machO</code> 文件中看到这些类信息，所以他们在编译时期就已经确定了)。但是从实际问题出发，真的需要这么多的类吗？<code>shiftcls</code> 在 <code>arm64</code> 架构下有 <code>33</code> 位，加上右移的 <code>3</code> 位，所以分配的内存空间为 <code>2^34 bit = 2 * 2^33 G = 2G</code>，我们的程序类信息(代码段)一般都不会这么大(我们打包完的程序还包含其他一下资源文件)，所以是完全足够的。</p>
+<p>  类和元类只需要创建一个，而且是在编译时期就已经完成了的(我们可以从 <code>machO</code> 文件中看到这些类信息，所以他们在编译时期就已经确定了)。但是从实际问题出发，真的需要这么多的类吗？<code>shiftcls</code> 在 <code>arm64</code> 架构下有 <code>33</code> 为，加上右移的 <code>3</code> 位，所以分配的内存空间为 <code>2^34 bit = 2 * 2^33 G = 2G</code>，我们的程序类信息(代码段)一般都不会这么大(我们打包完的程序还包含其他一下资源文件)，所以是完全足够的。</p>
 <p>  接下来就是如何将 <code>cls</code> 的地址如何从 <code>shiftcls</code> 中取出来了。上面的分析都是依据  <code>arm64</code>的，下面的我们从程序中跑一下，犹如我们是在模拟器上运行的，<code>shiftcls</code> 取的 <code>44</code>位。</p>
 <p>  取出 <code>cls</code> 地址的方法有两种:</p>
 <ul>
@@ -592,7 +592,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -614,7 +614,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -683,7 +683,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

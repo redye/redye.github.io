@@ -88,7 +88,7 @@
 <meta property="og:description" content="在对 OC 对象创建的探究过程中，我们发现一个很有趣的实现 isa。isa 是将对象内存空间与 class 之间联结起来的桥梁，而他的实现也很精妙，在有限的存储空间(一个寄存器的存储空间，在 64 位架构为 16 个字节，在 32 位的架构为 8 个字节)里，记录了很多的内容。他的实现方式正是我们今天的主角 – 联合体与位域。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/12/31/C7Fq9RusYZHm6Jk.png">
-<meta property="og:image" content="https://i.loli.net/2021/07/22/z92V1PFiyGvkxcX.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/31/9ahrAtBNw7kOK3f.png">
 <meta property="og:image" content="https://i.loli.net/2020/01/01/KYCHeXF5d2nhviV.png">
 <meta property="og:image" content="https://i.loli.net/2020/01/02/1c7LQqZe6IED8Kn.png">
 <meta property="og:updated_time" content="2020-01-10T06:23:51.725Z">
@@ -375,7 +375,7 @@
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">data.c = <span class="string">'g'</span>;</span><br><span class="line">NSLog(@<span class="string">"a: %d, b: %d, c: %c"</span>, data.a, data.b, data.c);</span><br><span class="line">data.b = <span class="number">0x5341</span>;</span><br><span class="line">NSLog(@<span class="string">"a: %d, b: %d, c: %c"</span>, data.a, data.b, data.c);</span><br><span class="line">data.a = <span class="number">0x123a4e63</span>;</span><br><span class="line">NSLog(@<span class="string">"a: %d, b: %d, c: %c"</span>, data.a, data.b, data.c);</span><br></pre></td></tr></table></figure>
 <p><img src="https://i.loli.net/2019/12/31/C7Fq9RusYZHm6Jk.png" alt="union_covery.png"></p>
 <p>结合图中的输出，即验证了共用体的长度，也验证了共用体成员之间会相互影响，修改一个成员的值会影响其他成员。</p>
-<p>为了更好的理解上面的输出结构，简单画了下其各个成员在内存中的分布：<br><img src="https://i.loli.net/2021/07/22/z92V1PFiyGvkxcX.png" alt="union_2.png"></p>
+<p>为了更好的理解上面的输出结构，简单画了下其各个成员在内存中的分布：<br><img src="https://i.loli.net/2019/12/31/9ahrAtBNw7kOK3f.png" alt="union_2.png"></p>
 <p>在计算机中，数据多以小端模式（即从低地址开始存储，数据的高字节保存在内存的高地址中，而数据的低字节保存在内存的低地址中）存储，上图就是以小端模式的内存分布。</p>
 <h3 id="位域"><a href="#位域" class="headerlink" title="位域"></a>位域</h3><p>在理解位域之前，我们先来看一个例子：</p>
 <p>我们有一辆坦克，他可以向前、后、左、右四个方向中其中几个方向前进。</p>
@@ -516,7 +516,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -538,7 +538,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -607,7 +607,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
