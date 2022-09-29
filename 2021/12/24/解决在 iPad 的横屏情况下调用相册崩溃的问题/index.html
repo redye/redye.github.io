@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="iOS,objc,">
+  <meta name="keywords" content="iOS,">
 
 
 
@@ -79,22 +79,23 @@
 
 
 
-<meta name="description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
-<meta name="keywords" content="iOS,objc">
+<meta name="description" content="在最近的项目中，因为要给设置头像，需要访问到相册，本来觉得这是一个很简单的问题，直接调用 UIImagePickerController 从相册选择照片就可以了，一直以来也是这么做的，但是以前都是在 iPhone 上实现的，这次是在 iPad 上实现，并且我们的项目是只支持横屏的，所以在调用相册的时候，程序直接就 crash 了，这是让我没有想到的，错误原因是：">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存优化与编译优化">
-<meta property="og:url" content="http://redye.com/2020/01/05/内存优化与编译优化/index.html">
+<meta property="og:title" content="解决在 iPad 的横屏情况下调用相册崩溃的问题">
+<meta property="og:url" content="http://redye.com/2021/12/24/解决在 iPad 的横屏情况下调用相册崩溃的问题/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
+<meta property="og:description" content="在最近的项目中，因为要给设置头像，需要访问到相册，本来觉得这是一个很简单的问题，直接调用 UIImagePickerController 从相册选择照片就可以了，一直以来也是这么做的，但是以前都是在 iPhone 上实现的，这次是在 iPad 上实现，并且我们的项目是只支持横屏的，所以在调用相册的时候，程序直接就 crash 了，这是让我没有想到的，错误原因是：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png">
-<meta property="og:image" content="https://i.loli.net/2020/01/11/mFsXGOR6ZNf7VHD.png">
-<meta property="og:image" content="https://i.loli.net/2020/01/11/WG6Bgszq9ZtAY2k.png">
-<meta property="og:updated_time" content="2020-01-13T14:58:16.116Z">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/vGgILsO34Vye16K.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/xOiTmZ4ScAgUVdW.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/jfJwPO61kRCbAuy.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/MDY591n6kK3lIWj.png">
+<meta property="og:updated_time" content="2022-09-29T13:37:52.468Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内存优化与编译优化">
-<meta name="twitter:description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
-<meta name="twitter:image" content="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png">
+<meta name="twitter:title" content="解决在 iPad 的横屏情况下调用相册崩溃的问题">
+<meta name="twitter:description" content="在最近的项目中，因为要给设置头像，需要访问到相册，本来觉得这是一个很简单的问题，直接调用 UIImagePickerController 从相册选择照片就可以了，一直以来也是这么做的，但是以前都是在 iPhone 上实现的，这次是在 iPad 上实现，并且我们的项目是只支持横屏的，所以在调用相册的时候，程序直接就 crash 了，这是让我没有想到的，错误原因是：">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/24/vGgILsO34Vye16K.png">
 
 
 
@@ -124,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://redye.com/2020/01/05/内存优化与编译优化/">
+  <link rel="canonical" href="http://redye.com/2021/12/24/解决在 iPad 的横屏情况下调用相册崩溃的问题/">
 
 
 
 
 
-  <title>内存优化与编译优化 | 红红の</title>
+  <title>解决在 iPad 的横屏情况下调用相册崩溃的问题 | 红红の</title>
   
 
 
@@ -267,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://redye.com/2020/01/05/内存优化与编译优化/">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2021/12/24/解决在 iPad 的横屏情况下调用相册崩溃的问题/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小红">
@@ -284,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">内存优化与编译优化</h1>
+          <h1 class="post-title" itemprop="name headline">解决在 iPad 的横屏情况下调用相册崩溃的问题</h1>
         
 
         <div class="post-meta">
@@ -296,8 +297,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T01:19:00+08:00">
-                2020-01-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-24T16:26:23+08:00">
+                2021-12-24
               </time>
             
 
@@ -319,8 +320,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS源码探究/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS源码探究</span>
+                  <a href="/categories/疑难杂症/" itemprop="url" rel="index">
+                    <span itemprop="name">疑难杂症</span>
                   </a>
                 </span>
 
@@ -356,22 +357,26 @@
       
 
       
-        <p>作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。</p>
+        <p>在最近的项目中，因为要给设置头像，需要访问到相册，本来觉得这是一个很简单的问题，直接调用 UIImagePickerController 从相册选择照片就可以了，一直以来也是这么做的，但是以前都是在 iPhone 上实现的，这次是在 iPad 上实现，并且我们的项目是只支持横屏的，所以在调用相册的时候，程序直接就 crash 了，这是让我没有想到的，错误原因是：</p>
 <a id="more"></a>
-<h3 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h3><p>了解了对象的创建过程，现在我们来看看对象的成员变量在内存中是如何分布的。</p>
-<p>还是以 <code>SMPerson</code> 为例，这次我们新加了一个 <code>char</code> 类型的字段：</p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SMPerson</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;      <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *address;   <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> age;           <span class="comment">// 4 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> height;    <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">char</span> ch1;           <span class="comment">// 1 byte</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">char</span> ch2;           <span class="comment">// 1 byte</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>我们分析，<code>SMPerson</code> 需要的内存空间仍是 <code>40</code> 字节，开辟的内存空间是 <code>48</code>字节。</p>
-<p>对于 <code>int</code>，<code>char</code> 类型，OC 会自动帮我们进行内存优化。</p>
-<p><img src="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png" alt="var_display.png"></p>
-<h3 id="编译优化"><a href="#编译优化" class="headerlink" title="编译优化"></a>编译优化</h3><p>编译优化一般是编译器完成的，在开发过程中，一般我们都是在 debug 模式下，debug 模式下我们可以打印一些日志，开启僵尸对象等。在 debug/release 模式下编译后的汇编代码也有所不同：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        <span class="keyword">int</span> r = add(<span class="number">10</span>, <span class="number">5</span>);</span><br><span class="line">        NSLog(@<span class="string">"a + b = %d"</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2020/01/11/mFsXGOR6ZNf7VHD.png" alt="optinmization.png"></p>
-<p>能够明显的看出，release 模式下的汇编代码更短。</p>
-<p>我们可以在 <code>build setting</code> -&gt; <code>Optimization Level</code> 查看：</p>
-<p><img src="https://i.loli.net/2020/01/11/WG6Bgszq9ZtAY2k.png" alt="optimization_level.png"></p>
-<p>release 模式下默认开启编译优化。</p>
-<p>编译优化可以减少编译时间、链接时间、运行时间等。</p>
+<p>Supported orientations has no common orientation with the application, and [PUUIAlbumListViewController shouldAutorotate] is returning YES</p>
+<p>在网上查阅到的解决办法大都是该 UIImagePickerViewController 添加一个类别，重写它的设备方向的方法，下面是一个 stack overflow 上面的<a href="http://stackoverflow.com/questions/12540597/supported-orientations-has-no-common-orientation-with-the-application-and-shoul?lq=1" target="_blank" rel="noopener">答案</a></p>
+<p><img src="https://s2.loli.net/2021/12/24/vGgILsO34Vye16K.png" alt="nonrotating.png"></p>
+<p>在程序中我试过这种方法，然而并没有什么用。</p>
+<p>同时在这个答案的下面还有另外一种方法，是可以解决程序崩溃的，但是这种呈现的效果，好吧，我不想吐槽 ╮(╯▽╰)╭</p>
+<p>将图片的取景框放在当前的视图上，sourceRect 决定放的位置，直接截取了</p>
+<p><img src="https://s2.loli.net/2021/12/24/xOiTmZ4ScAgUVdW.png" alt="popover.png"></p>
+<p>这种呈现的效果就是像 <code>UIPopoverController</code> 的效果。</p>
+<p>但是的但是，这并不是我要的效果，难道就没有其他的解决办法了吗，哦，my god .</p>
+<p>被这个问题困扰了挺长一段时间的，但是庆幸，后来还是解决了，先给自己赞一个  (<em>^__^</em>)</p>
+<p>还是受 stack overflow 上面的解决办法的启发，既然相册不支持横屏，那就是说在调用相册的时候让设备支持所有方向就好了，当取消相册的时候在让设备又只支持横屏好了，当时只是在调用相册的那个 viewController 中重写设备支持方法，结果自然是没有什么卵用，后来尝试在入口类里重写方法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- (NSUInteger)application:(UIApplication*)application supportedInterfaceOrientationsForWindow:(UIWindow*)window &#123;        </span><br><span class="line">	returnUIInterfaceOrientationMaskAll;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样自然是可以的，但是这样造成的问题就是，当取消相册的时候，设备并没能切回只支持横屏，到了这一步，能想到的是就是当调用和取消调用相册的时候通知设备应该支持哪些方向，设置头像的 <code>viewController</code> 层次比较深，本来准备使用通知，但是并没有成功，具体的原因有些忘记了，⊙﹏⊙b汗</p>
+<p>正在冥思苦想的时候，突然意识到我在项目里有运用到 单例类，就想说我是不是能给单例类一个标识，用来标识是否在调用相册，最后的结果是这样的</p>
+<p><img src="https://s2.loli.net/2021/12/24/jfJwPO61kRCbAuy.png" alt="photo.png"></p>
+<p>实验的结果自然是成功的，切回当前程序的时候，旋转屏幕，并没有发生 UI 离开位置的情况，但使用过程中，还有一个地方不是很好，就是调用相册的时候，相册显示是以竖屏的状态呈现的，用户在使用的时候要先旋转屏幕到竖屏，切回程序的时候又要旋转回横屏，使用起来不是很舒服，最后想到的解决办法是给 UIImagePickerController 指定支持的方向为 横屏方向</p>
+<p><img src="https://s2.loli.net/2021/12/24/MDY591n6kK3lIWj.png" alt="non.png"></p>
+<p>总结了一下，每次调用一个 视图控制器 的时候，都会调用指定支持屏幕的方法 <code>- (UIInterfaceOrientationMask)application:(UIApplication*)application supportedInterfaceOrientationsForWindow:(UIWindow *)window</code> 同时在一个视图控制器显示的时候，会调用自己的 支持屏幕方向<code>supportedInterfaceOrientations</code>的方法，所以才能在<code>UIImagePickerController</code>显示的时候通过指定支持方向来改变 其在用户面前展现的方向。</p>
 
       
     </div>
@@ -391,8 +396,6 @@
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/objc/" rel="tag"># objc</a>
-          
         </div>
       
 
@@ -404,8 +407,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/04/关联 isa/" rel="next" title="关联 isa">
-                <i class="fa fa-chevron-left"></i> 关联 isa
+              <a href="/2021/12/24/UIScrollView 动画过程中视图不响应 touch 事件/" rel="next" title="UIScrollView 动画过程中视图不响应 touch 事件">
+                <i class="fa fa-chevron-left"></i> UIScrollView 动画过程中视图不响应 touch 事件
               </a>
             
           </div>
@@ -413,10 +416,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/01/05/对象的本质/" rel="prev" title="对象的本质">
-                对象的本质 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -468,17 +467,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -556,22 +546,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存优化"><span class="nav-number">1.</span> <span class="nav-text">内存优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译优化"><span class="nav-number">2.</span> <span class="nav-text">编译优化</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="iOS,objc,">
+  <meta name="keywords" content="iOS,">
 
 
 
@@ -79,22 +79,20 @@
 
 
 
-<meta name="description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
-<meta name="keywords" content="iOS,objc">
+<meta name="description" content="微信新添加了一个很有趣的东西 – 微信运动，相信已经有很多人都已经关注了，然后会每天都去看一眼自己今天走的步数，如果抢占了封面那就更好了。其实早在 iOS7 苹果就已经有计步器的接口了，但是在微信运动出现之前我还不知道它的存在而已。">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存优化与编译优化">
-<meta property="og:url" content="http://redye.com/2020/01/05/内存优化与编译优化/index.html">
+<meta property="og:title" content="计步器 -- 做自己的微信运动">
+<meta property="og:url" content="http://redye.com/2021/12/24/计步器 -- 做自己的微信运动/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
+<meta property="og:description" content="微信新添加了一个很有趣的东西 – 微信运动，相信已经有很多人都已经关注了，然后会每天都去看一眼自己今天走的步数，如果抢占了封面那就更好了。其实早在 iOS7 苹果就已经有计步器的接口了，但是在微信运动出现之前我还不知道它的存在而已。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png">
-<meta property="og:image" content="https://i.loli.net/2020/01/11/mFsXGOR6ZNf7VHD.png">
-<meta property="og:image" content="https://i.loli.net/2020/01/11/WG6Bgszq9ZtAY2k.png">
-<meta property="og:updated_time" content="2020-01-13T14:58:16.116Z">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/wKvJcfbug1yrh5M.png">
+<meta property="og:updated_time" content="2021-12-24T07:41:03.043Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内存优化与编译优化">
-<meta name="twitter:description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
-<meta name="twitter:image" content="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png">
+<meta name="twitter:title" content="计步器 -- 做自己的微信运动">
+<meta name="twitter:description" content="微信新添加了一个很有趣的东西 – 微信运动，相信已经有很多人都已经关注了，然后会每天都去看一眼自己今天走的步数，如果抢占了封面那就更好了。其实早在 iOS7 苹果就已经有计步器的接口了，但是在微信运动出现之前我还不知道它的存在而已。">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/24/wKvJcfbug1yrh5M.png">
 
 
 
@@ -124,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://redye.com/2020/01/05/内存优化与编译优化/">
+  <link rel="canonical" href="http://redye.com/2021/12/24/计步器 -- 做自己的微信运动/">
 
 
 
 
 
-  <title>内存优化与编译优化 | 红红の</title>
+  <title>计步器 -- 做自己的微信运动 | 红红の</title>
   
 
 
@@ -267,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://redye.com/2020/01/05/内存优化与编译优化/">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2021/12/24/计步器 -- 做自己的微信运动/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小红">
@@ -284,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">内存优化与编译优化</h1>
+          <h1 class="post-title" itemprop="name headline">计步器 -- 做自己的微信运动</h1>
         
 
         <div class="post-meta">
@@ -296,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T01:19:00+08:00">
-                2020-01-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-24T15:32:31+08:00">
+                2021-12-24
               </time>
             
 
@@ -319,8 +317,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS源码探究/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS源码探究</span>
+                  <a href="/categories/工具代码/" itemprop="url" rel="index">
+                    <span itemprop="name">工具代码</span>
                   </a>
                 </span>
 
@@ -356,22 +354,31 @@
       
 
       
-        <p>作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。</p>
+        <p>微信新添加了一个很有趣的东西 – 微信运动，相信已经有很多人都已经关注了，然后会每天都去看一眼自己今天走的步数，如果抢占了封面那就更好了。<br>其实早在 iOS7 苹果就已经有计步器的接口了，但是在微信运动出现之前我还不知道它的存在而已。</p>
 <a id="more"></a>
-<h3 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h3><p>了解了对象的创建过程，现在我们来看看对象的成员变量在内存中是如何分布的。</p>
-<p>还是以 <code>SMPerson</code> 为例，这次我们新加了一个 <code>char</code> 类型的字段：</p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SMPerson</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;      <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *address;   <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> age;           <span class="comment">// 4 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> height;    <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">char</span> ch1;           <span class="comment">// 1 byte</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">char</span> ch2;           <span class="comment">// 1 byte</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>我们分析，<code>SMPerson</code> 需要的内存空间仍是 <code>40</code> 字节，开辟的内存空间是 <code>48</code>字节。</p>
-<p>对于 <code>int</code>，<code>char</code> 类型，OC 会自动帮我们进行内存优化。</p>
-<p><img src="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png" alt="var_display.png"></p>
-<h3 id="编译优化"><a href="#编译优化" class="headerlink" title="编译优化"></a>编译优化</h3><p>编译优化一般是编译器完成的，在开发过程中，一般我们都是在 debug 模式下，debug 模式下我们可以打印一些日志，开启僵尸对象等。在 debug/release 模式下编译后的汇编代码也有所不同：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        <span class="keyword">int</span> r = add(<span class="number">10</span>, <span class="number">5</span>);</span><br><span class="line">        NSLog(@<span class="string">"a + b = %d"</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2020/01/11/mFsXGOR6ZNf7VHD.png" alt="optinmization.png"></p>
-<p>能够明显的看出，release 模式下的汇编代码更短。</p>
-<p>我们可以在 <code>build setting</code> -&gt; <code>Optimization Level</code> 查看：</p>
-<p><img src="https://i.loli.net/2020/01/11/WG6Bgszq9ZtAY2k.png" alt="optimization_level.png"></p>
-<p>release 模式下默认开启编译优化。</p>
-<p>编译优化可以减少编译时间、链接时间、运行时间等。</p>
+<h3 id="计步器"><a href="#计步器" class="headerlink" title="计步器"></a>计步器</h3><p>要使用计步器的功能，要使用到 CoreMotion 框架，CoreMotion 封装了与一系列与运动相关的 API:<br><img src="https://s2.loli.net/2021/12/24/wKvJcfbug1yrh5M.png" alt="motion.png"></p>
+<p>从 CoreMotion 头文件中可以很明显的看出，与计步相关的 API 乃是 CMStepCounter.h，很好，我们进入到头文件查看一下，好吧，看到的第一句是什么呢？   </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NS_CLASS_DEPRECATED_IOS(7_0,8_0,&quot;Use CMPedometer instead&quot;) __TVOS_PROHIBITED __WATCHOS_PROHIBITED </span><br><span class="line">@interface CMStepCounter : NSObject</span><br></pre></td></tr></table></figure>
+<p>也就是说，<code>CMStepCounter</code> 在 iOS7 启用，iOS8 已经被废弃了，你可以使用 <code>CMPedometer</code> 代替(Pedometer 计步器、计数器，好吧，请原谅我的英语水平，就光看名字直奔 stepCounter 去了╮(╯▽╰)╭)。</p>
+<p>好了，那我们还是去看看 <code>CMPedometer</code> 吧。</p>
+<h3 id="CMPedometer"><a href="#CMPedometer" class="headerlink" title="CMPedometer"></a>CMPedometer</h3><p>在使用 CMPedometer 之前，你需要了解到一件事情 – 并不是所有的设备都支持记步功能的，所以在使用之前，你需要判断你的设备是否支持。还记得吗，在加入微信运动的时候，会提示你查看你的设备是否支持微信运动，下面列出了一堆支持微信运动，怎么支持微信运动的用户引导。</p>
+<ul>
+<li><p>第一步，判断设备是否支持</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//判断是否支持记步</span><br><span class="line">  if (![CMPedometer isStepCountingAvailable]) &#123;</span><br><span class="line">     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@&quot;温馨提示&quot; message:@&quot;您的设备不支持记步&quot; preferredStyle:UIAlertControllerStyleAlert];</span><br><span class="line">     UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@&quot;我知道了&quot; style:UIAlertActionStyleDefault handler:nil];</span><br><span class="line">     [alertController addAction:alertAction];</span><br><span class="line">     [self presentViewController:alertController animated:YES completion:nil];</span><br><span class="line">     return;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>  在 <code>CMPedometer</code> 的头文件中，你可以看到一系列包括 <strong>distance</strong>、<strong>floor</strong>、<strong>pace</strong>、<strong>cadence</strong> 是否支持在内的判断（后两者在 iOS9 以后支持），所以判断设备是否支持着希望功能是必要的，当然这些都需要在真机上测试才可以，而且我试过在 mini 上是不支持的（我使用的 mini4）。</p>
+</li>
+<li><p>第二步，可以查询过去某段时间内走过的步数</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[_pedometer queryPedometerDataFromDate:[NSDate dateWithTimeInterval:-24*60*60 sinceDate:localDate] toDate:localDate withHandler:^(CMPedometerData * _Nullable pedometerData, NSError * _Nullable error) &#123;</span><br><span class="line">    if (error) &#123;</span><br><span class="line">        NSLog(@&quot;查询错误 %@&quot;, error);</span><br><span class="line">        return ;</span><br><span class="line">    &#125;</span><br><span class="line">    NSLog(@&quot;%@&quot;, pedometerData);</span><br><span class="line">    dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        weakSelf.stepLabel.text = [NSString stringWithFormat:@&quot;%@&quot;, pedometerData];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第三步，更新从某个时间开始的步数变化</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[_pedometer startPedometerUpdatesFromDate:[NSDate dateWithTimeInterval:-24*60*60 sinceDate:localDate] withHandler:^(CMPedometerData * _Nullable pedometerData, NSError * _Nullable error) &#123;</span><br><span class="line">     if (error) &#123;</span><br><span class="line">           NSLog(@&quot;更新错误 %@&quot;, error);</span><br><span class="line">           return ;</span><br><span class="line">     &#125;</span><br><span class="line">     NSLog(@&quot;%@&quot;, pedometerData);</span><br><span class="line">     dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">         weakSelf.stepLabel.text = [NSString stringWithFormat:@&quot;%@&quot;, pedometerData];</span><br><span class="line">     &#125;);</span><br><span class="line"> 	&#125;];</span><br></pre></td></tr></table></figure>
+<p>  试着走几步，你回发现数据是在变化的，可能会有一点延迟。<code>CMPedometerData</code> 类对象 pedometerData 中可以访问到你当前走过的步数、距离、上楼、下楼、步速、节奏等数据，可以根据需要解析。</p>
+</li>
+<li><p>第四步，停止更新</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[_pedometer stopPedometerUpdates];</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><p>Demo 戳<a href="https://github.com/redye/Demo/tree/master/Pedometer" target="_blank" rel="noopener">这里</a>下载。</p>
 
       
     </div>
@@ -391,8 +398,6 @@
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/objc/" rel="tag"># objc</a>
-          
         </div>
       
 
@@ -404,8 +409,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/04/关联 isa/" rel="next" title="关联 isa">
-                <i class="fa fa-chevron-left"></i> 关联 isa
+              <a href="/2021/12/24/距离传感器/" rel="next" title="距离传感器">
+                <i class="fa fa-chevron-left"></i> 距离传感器
               </a>
             
           </div>
@@ -414,8 +419,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/01/05/对象的本质/" rel="prev" title="对象的本质">
-                对象的本质 <i class="fa fa-chevron-right"></i>
+              <a href="/2021/12/24/CAGradientLayer 的前世今生/" rel="prev" title="CAGradientLayer">
+                CAGradientLayer <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -566,7 +571,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存优化"><span class="nav-number">1.</span> <span class="nav-text">内存优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译优化"><span class="nav-number">2.</span> <span class="nav-text">编译优化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#计步器"><span class="nav-number">1.</span> <span class="nav-text">计步器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMPedometer"><span class="nav-number">2.</span> <span class="nav-text">CMPedometer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Demo"><span class="nav-number">2.1.</span> <span class="nav-text">Demo</span></a></li></ol></li></ol></div>
             
 
           </div>

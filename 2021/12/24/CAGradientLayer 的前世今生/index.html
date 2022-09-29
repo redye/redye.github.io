@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="iOS,objc,">
+  <meta name="keywords" content="iOS,">
 
 
 
@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
-<meta name="keywords" content="iOS,objc">
+<meta name="description" content="CAGradientLayer 继承自 CALayer, CALayer 有的属性 CAGradientLayer都有，同时 CAGradientLayer 又新增了一些属性，用以实现渐变色。">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存优化与编译优化">
-<meta property="og:url" content="http://redye.com/2020/01/05/内存优化与编译优化/index.html">
+<meta property="og:title" content="CAGradientLayer">
+<meta property="og:url" content="http://redye.com/2021/12/24/CAGradientLayer 的前世今生/index.html">
 <meta property="og:site_name" content="红红の">
-<meta property="og:description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
+<meta property="og:description" content="CAGradientLayer 继承自 CALayer, CALayer 有的属性 CAGradientLayer都有，同时 CAGradientLayer 又新增了一些属性，用以实现渐变色。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png">
-<meta property="og:image" content="https://i.loli.net/2020/01/11/mFsXGOR6ZNf7VHD.png">
-<meta property="og:image" content="https://i.loli.net/2020/01/11/WG6Bgszq9ZtAY2k.png">
-<meta property="og:updated_time" content="2020-01-13T14:58:16.116Z">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/LX9dKwzVJxsQMeo.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/XVlAs64NBIeyj8J.gif">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/zCAQ8OmVWcdnpkX.gif">
+<meta property="og:updated_time" content="2021-12-24T08:21:32.987Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内存优化与编译优化">
-<meta name="twitter:description" content="作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。">
-<meta name="twitter:image" content="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png">
+<meta name="twitter:title" content="CAGradientLayer">
+<meta name="twitter:description" content="CAGradientLayer 继承自 CALayer, CALayer 有的属性 CAGradientLayer都有，同时 CAGradientLayer 又新增了一些属性，用以实现渐变色。">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/24/LX9dKwzVJxsQMeo.png">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://redye.com/2020/01/05/内存优化与编译优化/">
+  <link rel="canonical" href="http://redye.com/2021/12/24/CAGradientLayer 的前世今生/">
 
 
 
 
 
-  <title>内存优化与编译优化 | 红红の</title>
+  <title>CAGradientLayer | 红红の</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://redye.com/2020/01/05/内存优化与编译优化/">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2021/12/24/CAGradientLayer 的前世今生/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小红">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">内存优化与编译优化</h1>
+          <h1 class="post-title" itemprop="name headline">CAGradientLayer</h1>
         
 
         <div class="post-meta">
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-05T01:19:00+08:00">
-                2020-01-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-24T16:08:41+08:00">
+                2021-12-24
               </time>
             
 
@@ -319,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS源码探究/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS源码探究</span>
+                  <a href="/categories/工具代码/" itemprop="url" rel="index">
+                    <span itemprop="name">工具代码</span>
                   </a>
                 </span>
 
@@ -356,22 +356,25 @@
       
 
       
-        <p>作为程序员，我们在开发时，尤其是在写业务的过程中，我们大都不关系编译器做了什么，其实编译器帮我们做了很多工作。这篇文章很浅显的分析下内存优化与编译优化。这里很推荐一本书《程序员的自我修养》，对于我们了解程序从编译、链接到执行很有帮助，虽然还没有啃完。</p>
+        <p><code>CAGradientLayer</code> 继承自 <code>CALayer</code>, <code>CALayer</code> 有的属性 <code>CAGradientLayer</code>都有，同时 <code>CAGradientLayer</code> 又新增了一些属性，用以实现渐变色。</p>
 <a id="more"></a>
-<h3 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h3><p>了解了对象的创建过程，现在我们来看看对象的成员变量在内存中是如何分布的。</p>
-<p>还是以 <code>SMPerson</code> 为例，这次我们新加了一个 <code>char</code> 类型的字段：</p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SMPerson</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;      <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *address;   <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> age;           <span class="comment">// 4 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> height;    <span class="comment">// 8 bytes</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">char</span> ch1;           <span class="comment">// 1 byte</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">char</span> ch2;           <span class="comment">// 1 byte</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>我们分析，<code>SMPerson</code> 需要的内存空间仍是 <code>40</code> 字节，开辟的内存空间是 <code>48</code>字节。</p>
-<p>对于 <code>int</code>，<code>char</code> 类型，OC 会自动帮我们进行内存优化。</p>
-<p><img src="https://i.loli.net/2020/01/04/kXJOuNH72cmoiYz.png" alt="var_display.png"></p>
-<h3 id="编译优化"><a href="#编译优化" class="headerlink" title="编译优化"></a>编译优化</h3><p>编译优化一般是编译器完成的，在开发过程中，一般我们都是在 debug 模式下，debug 模式下我们可以打印一些日志，开启僵尸对象等。在 debug/release 模式下编译后的汇编代码也有所不同：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        <span class="keyword">int</span> r = add(<span class="number">10</span>, <span class="number">5</span>);</span><br><span class="line">        NSLog(@<span class="string">"a + b = %d"</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2020/01/11/mFsXGOR6ZNf7VHD.png" alt="optinmization.png"></p>
-<p>能够明显的看出，release 模式下的汇编代码更短。</p>
-<p>我们可以在 <code>build setting</code> -&gt; <code>Optimization Level</code> 查看：</p>
-<p><img src="https://i.loli.net/2020/01/11/WG6Bgszq9ZtAY2k.png" alt="optimization_level.png"></p>
-<p>release 模式下默认开启编译优化。</p>
-<p>编译优化可以减少编译时间、链接时间、运行时间等。</p>
+<h3 id="GradientLayer-的用法"><a href="#GradientLayer-的用法" class="headerlink" title="GradientLayer 的用法"></a>GradientLayer 的用法</h3><p> 关于<code>CAGradientLayer</code>的用法，网络上已经有很多优秀的文章来介绍了，这里就不多做赘述，贴上链接共参考  <a href="http://www.tuicool.com/articles/RZBFBn" target="_blank" rel="noopener">CAGradientLayer的一些属性解析</a>。</p>
+<h3 id="使用CAGradientLayer"><a href="#使用CAGradientLayer" class="headerlink" title="使用CAGradientLayer"></a>使用CAGradientLayer</h3><h4 id="CAGradiengLayer-的渐变方向"><a href="#CAGradiengLayer-的渐变方向" class="headerlink" title="CAGradiengLayer 的渐变方向"></a>CAGradiengLayer 的渐变方向</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@property CGPoint startPoint;</span><br><span class="line">@property CGPoint endPoint</span><br></pre></td></tr></table></figure>
+<p>大家在使用<code>CAGradientLayer</code>的过程中，肯定都用过这两个属性，见名知意，这两个属性告诉<code>Layer</code>的起点和终点（注意这里的坐标系），在深入研究就会发现，这两个属性组合在一起时可以决定渐变的<strong>方向</strong>的，并且这两个属性都有默认值，分别是[.5,0] 和 [.5,1]。<br><img src="https://s2.loli.net/2021/12/24/LX9dKwzVJxsQMeo.png" alt="gra.png"></p>
+<p>从上图中的坐标空间中也可看出，在结合着两个属性的默认值，不难发现默认的渐变方向是<strong>竖直方向</strong>的。要改变渐变方向，只需要对这两个属性做操作就可实现。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"> <span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, GradientOrientationStyle) &#123;</span><br><span class="line">        GradientOrientationStyleVertical = <span class="number">0</span>, <span class="comment">//竖直方向</span></span><br><span class="line">        GradientOrientationStyleHorizontal,   <span class="comment">//水平方向</span></span><br><span class="line">        GradientOrientationStyleArriswise     <span class="comment">//对角线方向</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>下面的代码是根据方向来设置 <code>endPoint</code></p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line">- (<span class="built_in">CGPoint</span>)endPoint &#123;</span><br><span class="line">        <span class="built_in">CGFloat</span> endX = <span class="number">1</span> * <span class="keyword">self</span>.ratio;</span><br><span class="line">        <span class="built_in">CGFloat</span> endY = <span class="number">1</span> * <span class="keyword">self</span>.ratio;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.orientationStyle == GradientOrientationStyleVertical) &#123;</span><br><span class="line">            endX = <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">self</span>.orientationStyle == GradientOrientationStyleHorizontal) &#123;</span><br><span class="line">            endY = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">CGPointMake</span>(endX, endY);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.loli.net/2021/12/24/XVlAs64NBIeyj8J.gif" alt="direction.gif"></p>
+<h4 id="CAGradientLayer-的动画效果"><a href="#CAGradientLayer-的动画效果" class="headerlink" title="CAGradientLayer 的动画效果"></a>CAGradientLayer 的动画效果</h4><p>中所周知 CALayer 默认是有隐士动画的，动画的持续时间是 1/4 s，但有时候你不想要这个动画怎么办呢？</p>
+<ul>
+<li><p>CATransaction 可以关闭隐式动画</p>
+ <figure class="highlight objc"><table><tr><td class="code"><pre><span class="line">[<span class="built_in">CATransaction</span> begin];</span><br><span class="line">[<span class="built_in">CATransaction</span> setDisableActions:!_animated];</span><br><span class="line">[<span class="built_in">CATransaction</span> commit];</span><br></pre></td></tr></table></figure>
+<p> 利用空余时间写了个进度条的 demo，有个地方没有处理好，还请各路大神指导。</p>
+<p> <img src="https://s2.loli.net/2021/12/24/zCAQ8OmVWcdnpkX.gif" alt="progress.gif"></p>
+</li>
+</ul>
+<p>最后附上一篇<a href="https://zsisme.gitbooks.io/ios-/content/chapter6/cagradientLayer.html" target="_blank" rel="noopener">高级动画技巧</a>。<br>demo 链接请戳<a href="https://github.com/redye/Demo/tree/master/GradientDemo" target="_blank" rel="noopener">这里</a>，不对的地方还请多加指正。</p>
 
       
     </div>
@@ -391,8 +394,6 @@
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/objc/" rel="tag"># objc</a>
-          
         </div>
       
 
@@ -404,8 +405,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/04/关联 isa/" rel="next" title="关联 isa">
-                <i class="fa fa-chevron-left"></i> 关联 isa
+              <a href="/2021/12/24/计步器 -- 做自己的微信运动/" rel="next" title="计步器 -- 做自己的微信运动">
+                <i class="fa fa-chevron-left"></i> 计步器 -- 做自己的微信运动
               </a>
             
           </div>
@@ -414,8 +415,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/01/05/对象的本质/" rel="prev" title="对象的本质">
-                对象的本质 <i class="fa fa-chevron-right"></i>
+              <a href="/2021/12/24/UIScrollView 动画过程中视图不响应 touch 事件/" rel="prev" title="UIScrollView 动画过程中视图不响应 touch 事件">
+                UIScrollView 动画过程中视图不响应 touch 事件 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -566,7 +567,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存优化"><span class="nav-number">1.</span> <span class="nav-text">内存优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译优化"><span class="nav-number">2.</span> <span class="nav-text">编译优化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#GradientLayer-的用法"><span class="nav-number">1.</span> <span class="nav-text">GradientLayer 的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用CAGradientLayer"><span class="nav-number">2.</span> <span class="nav-text">使用CAGradientLayer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CAGradiengLayer-的渐变方向"><span class="nav-number">2.1.</span> <span class="nav-text">CAGradiengLayer 的渐变方向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CAGradientLayer-的动画效果"><span class="nav-number">2.2.</span> <span class="nav-text">CAGradientLayer 的动画效果</span></a></li></ol></li></ol></div>
             
 
           </div>
