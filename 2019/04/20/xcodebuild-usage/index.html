@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,xcodebuild," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="xcodebuild 是苹果发布自动构建的工具。一般持续集成的时候都需要用到它。可以在终端输入 man xcodebuild 查看用法及介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xcodebuild 文档">
+<meta property="og:url" content="http://redye.com/2019/04/20/xcodebuild-usage/index.html">
+<meta property="og:site_name" content="红红の">
+<meta property="og:description" content="xcodebuild 是苹果发布自动构建的工具。一般持续集成的时候都需要用到它。可以在终端输入 man xcodebuild 查看用法及介绍。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-20T09:20:23.000Z">
+<meta property="article:modified_time" content="2022-09-28T07:01:46.754Z">
+<meta property="article:author" content="小红">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="xcodebuild">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://redye.com/2019/04/20/xcodebuild-usage/"/>
+
+
+
+
+
+  <title>xcodebuild 文档 | 红红の</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红红の</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2019/04/20/xcodebuild-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红红の">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">xcodebuild 文档</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-20T17:20:23+08:00">
+                2019-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BB%A3%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">工具代码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>xcodebuild</strong> 是苹果发布自动构建的工具。一般持续集成的时候都需要用到它。可以在终端输入 <code>man xcodebuild</code> 查看用法及介绍。</p>
+<span id="more"></span>
+
+<p>以下是终端输出的 xcodebuild 的文档。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">XCODEBUILD(1)             BSD General Commands Manual            XCODEBUILD(1)           </span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line">     xcodebuild -- build Xcode projects and workspaces</span><br><span class="line">     </span><br><span class="line"> SYNOPSIS</span><br><span class="line"> xcodebuild [-project name.xcodeproj]</span><br><span class="line">            [[-target targetname] ... | -alltargets]</span><br><span class="line">            [-configuration configurationname]</span><br><span class="line">            [-sdk [sdkfullpath | sdkname]] [action ...]</span><br><span class="line">            [buildsetting=value ...] [-userdefault=value ...]</span><br><span class="line"></span><br><span class="line"> xcodebuild [-project name.xcodeproj] -scheme schemename</span><br><span class="line">            [[-destination destinationspecifier] ...]</span><br><span class="line">            [-destination-timeout value]</span><br><span class="line">            [-configuration configurationname]</span><br><span class="line">            [-sdk [sdkfullpath | sdkname]] [action ...]</span><br><span class="line">            [buildsetting=value ...] [-userdefault=value ...]</span><br><span class="line"></span><br><span class="line"> xcodebuild -workspace name.xcworkspace -scheme schemename</span><br><span class="line">            [[-destination destinationspecifier] ...]</span><br><span class="line">            [-destination-timeout value]</span><br><span class="line">            [-configuration configurationname]</span><br><span class="line">            [-sdk [sdkfullpath | sdkname]] [action ...]</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line"> xcodebuild -version [-sdk [sdkfullpath | sdkname]] [infoitem]</span><br><span class="line"></span><br><span class="line"> xcodebuild -showsdks</span><br><span class="line"></span><br><span class="line"> xcodebuild -showBuildSettings</span><br><span class="line">            [-project name.xcodeproj | [-workspace name.xcworkspace -scheme schemename]]</span><br><span class="line">            </span><br><span class="line"> xcodebuild -showdestinations</span><br><span class="line">                [-project name.xcodeproj | [-workspace name.xcworkspace -scheme schemename]]</span><br><span class="line"></span><br><span class="line"> xcodebuild -list [-project name.xcodeproj | -workspace name.xcworkspace]</span><br><span class="line"></span><br><span class="line"> xcodebuild -exportArchive -archivePath xcarchivepath -exportPath</span><br><span class="line">            destinationpath -exportOptionsPlist path</span><br><span class="line"> xcodebuild -exportNotarizedApp -archivePath xcarchivepath -exportPath</span><br><span class="line">            destinationpath</span><br><span class="line"></span><br><span class="line"> xcodebuild -exportLocalizations -project name.xcodeproj -localizationPath</span><br><span class="line">            path [[-exportLanguage language] ...]</span><br><span class="line"> xcodebuild -importLocalizations -project name.xcodeproj -localizationPath</span><br><span class="line">            path</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">     xcodebuild builds one or more targets contained in an Xcode project, or</span><br><span class="line">     builds a scheme contained in an Xcode workspace or Xcode project.</span><br><span class="line"></span><br><span class="line">   Usage</span><br><span class="line">     To build an Xcode project, run xcodebuild from the directory containing</span><br><span class="line">     your project (i.e. the directory containing the name.xcodeproj package).</span><br><span class="line">     If you have multiple projects in the this directory you will need to use</span><br><span class="line">     -project to indicate which project should be built.  By default,</span><br><span class="line">     xcodebuild builds the first target listed in the project, with the</span><br><span class="line">     default build configuration. The order of the targets is a property of</span><br><span class="line">     the project and is the same for all users of the project.</span><br><span class="line"></span><br><span class="line">     To build an Xcode workspace, you must pass both the -workspace and</span><br><span class="line">     -scheme options to define the build.  The parameters of the scheme will</span><br><span class="line">     control which targets are built and how they are built, although you may</span><br><span class="line">     pass other options to xcodebuild to override some parameters of the</span><br><span class="line">     scheme.</span><br><span class="line">     </span><br><span class="line">     There are also several options that display info about the installed ver-</span><br><span class="line">     sion of Xcode or about projects or workspaces in the local directory, but</span><br><span class="line">     which do not initiate an action.  These include -list,</span><br><span class="line">     -showBuildSettings, -showdestinations, -showsdks, -usage, and -version.</span><br><span class="line"></span><br><span class="line">   Options</span><br><span class="line">	-project name.xcodeproj</span><br><span class="line">           Build the project name.xcodeproj.  Required if there are multiple</span><br><span class="line">           project files in the same directory.</span><br><span class="line"></span><br><span class="line">	-target targetname</span><br><span class="line">           Build the target specified by targetname.</span><br><span class="line"></span><br><span class="line">	-alltargets</span><br><span class="line">           Build all the targets in the specified project.</span><br><span class="line"></span><br><span class="line">	-workspace name.xcworkspace</span><br><span class="line">           Build the workspace name.xcworkspace.</span><br><span class="line"></span><br><span class="line">	-scheme schemename</span><br><span class="line">           Build the scheme specified by schemename.  Required if building a workspace.</span><br><span class="line">           </span><br><span class="line">	-destination destinationspecifier</span><br><span class="line">           Use the destination device described by destinationspecifier.</span><br><span class="line">           Defaults to a destination that is compatible with the selected scheme.  </span><br><span class="line">           See the Destinations section below for more details.</span><br><span class="line">   	 </span><br><span class="line">	-destination-timeout timeout</span><br><span class="line">           Use the specified timeout when searching for a destination device.</span><br><span class="line">           The default is 30 seconds.</span><br><span class="line"></span><br><span class="line">	-configuration configurationname</span><br><span class="line">           Use the build configuration specified by configurationname when</span><br><span class="line">           building each target.</span><br><span class="line"></span><br><span class="line">	-arch architecture</span><br><span class="line">           Use the architecture specified by architecture when building each</span><br><span class="line">           target.</span><br><span class="line"></span><br><span class="line">	-sdk [sdkfullpath | sdkname]</span><br><span class="line">           Build an Xcode project or workspace against the specified SDK,</span><br><span class="line">           using build tools appropriate for that SDK. The argument may be an</span><br><span class="line">           absolute path to an SDK, or the canonical name of an SDK.</span><br><span class="line"></span><br><span class="line">	-showsdks</span><br><span class="line">           Lists all available SDKs that Xcode knows about, including their</span><br><span class="line">           canonical names suitable for use with -sdk.  Does not initiate a</span><br><span class="line">           build.</span><br><span class="line"></span><br><span class="line">	-showBuildSettings</span><br><span class="line">           Lists the build settings in a project or workspace and scheme. Does</span><br><span class="line">           not initiate a build. Use with -project or -workspace and -scheme.</span><br><span class="line"></span><br><span class="line">	-showdestinations</span><br><span class="line">           Lists the valid destinations for a project or workspace and scheme.</span><br><span class="line">           Does not initiate a build. Use with -project or -workspace and -scheme.</span><br><span class="line"></span><br><span class="line">	-showBuildTimingSummary</span><br><span class="line">           Display a report of the timings of all the commands invoked during the build.</span><br><span class="line"></span><br><span class="line">	-list</span><br><span class="line">           Lists the targets and configurations in a project, or the schemes</span><br><span class="line">           in a workspace. Does not initiate a build. Use with -project or -workspace.</span><br><span class="line">           </span><br><span class="line">	-enableAddressSanitizer [YES | NO]</span><br><span class="line">           Turns the address sanitizer on or off. This overrides the setting</span><br><span class="line">           for the launch action of a scheme in a workspace.</span><br><span class="line"></span><br><span class="line">	-enableThreadSanitizer [YES | NO]</span><br><span class="line">           Turns the thread sanitizer on or off. This overrides the setting</span><br><span class="line">           for the launch action of a scheme in a workspace.</span><br><span class="line"></span><br><span class="line">	-enableUndefinedBehaviorSanitizer [YES | NO]</span><br><span class="line">           Turns the undefined behavior sanitizer on or off. This overrides</span><br><span class="line">           the setting for the launch action of a scheme in a workspace.</span><br><span class="line"></span><br><span class="line">	-enableCodeCoverage [YES | NO]</span><br><span class="line">           Turns code coverage on or off during testing. This overrides the</span><br><span class="line">           setting for the test action of a scheme in a workspace.</span><br><span class="line"></span><br><span class="line">	-testLanguage language</span><br><span class="line">           Specifies ISO 639-1 language during testing. This overrides the</span><br><span class="line">           setting for the test action of a scheme in a workspace.</span><br><span class="line"></span><br><span class="line">	-testRegion region</span><br><span class="line">           Specifies ISO 3166-1 region during testing. This overrides the setting for the </span><br><span class="line">           test action of a scheme in a workspace.</span><br><span class="line">           </span><br><span class="line">	-derivedDataPath path</span><br><span class="line">           Overrides the folder that should be used for derived data when performing an action </span><br><span class="line">           on a scheme in a workspace.</span><br><span class="line"></span><br><span class="line">	-resultBundlePath path</span><br><span class="line">           Writes a bundle to the specified path with results from performing</span><br><span class="line">           an action on a scheme in a workspace. If the path already exists,</span><br><span class="line">           xcodebuild will exit with an error. Intermediate directories will be </span><br><span class="line">           created automatically. The bundle contains build logs, code coverage reports, </span><br><span class="line">           XML property lists with test results, screenshots</span><br><span class="line">           and other attachments collected during testing, and various diagnostic logs.</span><br><span class="line"></span><br><span class="line">	-allowProvisioningUpdates</span><br><span class="line">           Allow xcodebuild to communicate with the Apple Developer website.</span><br><span class="line">           For automatically signed targets, xcodebuild will create and update</span><br><span class="line">           profiles, app IDs, and certificates. For manually signed targets,</span><br><span class="line">           xcodebuild will download missing or updated provisioning profiles.</span><br><span class="line">           Requires a developer account to have been added in Xcode&#x27;s Accounts</span><br><span class="line">           preference pane.</span><br><span class="line">           </span><br><span class="line">           </span><br><span class="line">	-allowProvisioningDeviceRegistration</span><br><span class="line">           Allow xcodebuild to register your destination device on the Apple</span><br><span class="line">           Developer website if necessary. Requires -allowProvisioningUpdates.</span><br><span class="line"></span><br><span class="line">	-exportArchive</span><br><span class="line">           Specifies that an archive should be distributed. Requires</span><br><span class="line">           -archivePath and -exportOptionsPlist. For exporting, -exportPath is</span><br><span class="line">           also required. Cannot be passed along with an action.</span><br><span class="line"></span><br><span class="line">	-exportNotarizedApp</span><br><span class="line">           Export an archive that has been notarized by Apple. Requires</span><br><span class="line">           -archivePath and -exportPath.</span><br><span class="line"></span><br><span class="line">	-archivePath xcarchivepath</span><br><span class="line">           Specifies the path for the archive produced by the archive action,</span><br><span class="line">           or specifies the archive that should be exported when</span><br><span class="line">           -exportArchive or -exportNotarizedApp is passed.</span><br><span class="line"></span><br><span class="line">	-exportPath destinationpath</span><br><span class="line">           Specifies the destination for the exported product, including the</span><br><span class="line">           name of the exported file.</span><br><span class="line">           </span><br><span class="line">	-exportOptionsPlist path</span><br><span class="line">           Specifies options for -exportArchive.  xcodebuild -help can print</span><br><span class="line">           the full set of available options.</span><br><span class="line"></span><br><span class="line">	-exportLocalizations</span><br><span class="line">           Exports localizations to XLIFF files. Requires -project and -local-</span><br><span class="line">           izationPath. Cannot be passed along with an action.</span><br><span class="line"></span><br><span class="line">	-importLocalizations</span><br><span class="line">           Imports localizations from an XLIFF file. Requires -project and</span><br><span class="line">           -localizationPath. Cannot be passed along with an action.</span><br><span class="line"></span><br><span class="line">	-localizationPath</span><br><span class="line">           Specifies a path to a directory or a single XLIFF localization</span><br><span class="line">           file.</span><br><span class="line"></span><br><span class="line">	-exportLanguage language</span><br><span class="line">           Specifies optional ISO 639-1 languages included in a localization</span><br><span class="line">           export. May be repeated to specify multiple languages. May be</span><br><span class="line">           excluded to specify an export includes only development language</span><br><span class="line">           strings.</span><br><span class="line">           </span><br><span class="line">           action ...</span><br><span class="line">           Specify one or more actions to perform. Available actions are:</span><br><span class="line"></span><br><span class="line">           build                  Build the target in the build root</span><br><span class="line">                                  (SYMROOT).  This is the default action, and</span><br><span class="line">                                  is used if no action is given.</span><br><span class="line"></span><br><span class="line">           build-for-testing      Build the target and associated tests in the</span><br><span class="line">                                  build root (SYMROOT).  This will also pro-</span><br><span class="line">                                  duce an xctestrun file in the build root.</span><br><span class="line">                                  This requires specifying a scheme.</span><br><span class="line"></span><br><span class="line">           analyze                Build and analyze a target or scheme from</span><br><span class="line">                                  the build root (SYMROOT).  This requires</span><br><span class="line">                                  specifying a scheme.</span><br><span class="line"></span><br><span class="line">           archive                Archive a scheme from the build root</span><br><span class="line">                                  (SYMROOT).  This requires specifying a</span><br><span class="line">                                  scheme.</span><br><span class="line"></span><br><span class="line">           test                   Test a scheme from the build root (SYMROOT).</span><br><span class="line">                                  This requires specifying a scheme and</span><br><span class="line">                                  optionally a destination.</span><br><span class="line">                                  </span><br><span class="line">           test-without-building  Test compiled bundles. If a scheme is pro-</span><br><span class="line">                                  vided with -scheme then the command finds</span><br><span class="line">                                  bundles in the build root (SRCROOT).  If an</span><br><span class="line">                                  xctestrun file is provided with -xctestrun</span><br><span class="line">                                  then the command finds bundles at paths</span><br><span class="line">                                  specified in the xctestrun file.         </span><br><span class="line"></span><br><span class="line">           install-src            Copy the source of the project to the source</span><br><span class="line">                                  root (SRCROOT).</span><br><span class="line"></span><br><span class="line">           install                Build the target and install it into the</span><br><span class="line">                                  target&#x27;s installation directory in the dis-</span><br><span class="line">                                  tribution root (DSTROOT).</span><br><span class="line"></span><br><span class="line">           clean                  Remove build products and intermediate files</span><br><span class="line">                                  from the build root (SYMROOT).</span><br><span class="line">                                  </span><br><span class="line">                                  </span><br><span class="line">	-xcconfig filename</span><br><span class="line">           Load the build settings defined in filename when building all tar-</span><br><span class="line">           gets.  These settings will override all other settings, including</span><br><span class="line">           settings passed individually on the command line.</span><br><span class="line"></span><br><span class="line">	-xctestrun xctestrunpath</span><br><span class="line">           Specifies test run parameters. Can only be used with the</span><br><span class="line">           test-without-building action. Cannot be used with -workspace or</span><br><span class="line">           -project.   See &lt;x-man-page://5/xcodebuild.xctestrun&gt; for file for-</span><br><span class="line">           mat details.</span><br><span class="line"></span><br><span class="line">	-skip-testing:test-identifier, -only-testing:test-identifier</span><br><span class="line">           Constrain test actions.  -only-testing: constrains a test action to</span><br><span class="line">           only  testing a specified identifier, and excluding all other iden-</span><br><span class="line">           tifiers.  -skip-testing: constrains a test action to skip testing a</span><br><span class="line">           specified  identifier,  but  including  all other identifiers. Test</span><br><span class="line">           identifiers have the form TestTarget[/TestClass[/TestMethod]].  The</span><br><span class="line">           TestTarget  component  of an identifier is the name of a unit or UI</span><br><span class="line">           testing bundle as shown in the Test Navigator. An  xcodebuild  com-</span><br><span class="line">           mand  can  combine  multiple constraint options, but -only-testing:</span><br><span class="line">           has precedence over -skip-testing:.</span><br><span class="line">           </span><br><span class="line">	-disable-concurrent-destination-testing</span><br><span class="line">           Do not run tests on the specified  destinations  concurrently.  The</span><br><span class="line">           full  test  suite  will  run  to  completion on a given destination</span><br><span class="line">           before it begins on the next.</span><br><span class="line"></span><br><span class="line">	-maximum-concurrent-test-device-destinations number</span><br><span class="line">           If   multiple    device    destinations    are    specified    (and</span><br><span class="line">           -disable-concurrent-destination-testing  is  not passed), only test</span><br><span class="line">           on number devices at a time. For example, if four iOS  devices  are</span><br><span class="line">           specified,  but  number  is 2, the full test suite will run on each</span><br><span class="line">           device, but only two devices will be testing at a given time.</span><br><span class="line"></span><br><span class="line">	-maximum-concurrent-test-simulator-destinations number</span><br><span class="line">           If   multiple   simulator   destinations   are    specified    (and</span><br><span class="line">           -disable-concurrent-destination-testing  is  not passed), only test</span><br><span class="line">           on number simulators at a time. For example, if four iOS simulators</span><br><span class="line">           are  specified,  but  number  is 2, the full test suite will run on</span><br><span class="line">           each simulator, but only two simulators will be testing at a  given</span><br><span class="line">           time.</span><br><span class="line"></span><br><span class="line">	-parallel-testing-enabled [YES | NO]</span><br><span class="line">           Overrides the per-target setting in the scheme for running tests in</span><br><span class="line">           parallel.</span><br><span class="line">           </span><br><span class="line">	-parallel-testing-worker-count number</span><br><span class="line">           Spawn exactly number test runners when executing tests in parallel.</span><br><span class="line">           Overrides -maximum-parallel-testing-workers, if it is specified.</span><br><span class="line"></span><br><span class="line">	-maximum-parallel-testing-workers number</span><br><span class="line">           Limit  the number of test runners that will be spawned when running</span><br><span class="line">           tests in parallel to number.</span><br><span class="line"></span><br><span class="line">	-dry-run, -n</span><br><span class="line">           Print the commands that would be executed, but do not execute them.</span><br><span class="line"></span><br><span class="line">	-skipUnavailableActions</span><br><span class="line">           Skip  actions  that  cannot  be  performed instead of failing. This</span><br><span class="line">           option is only honored if -scheme is passed.</span><br><span class="line"></span><br><span class="line">	-buildsetting=value</span><br><span class="line">           Set the build setting buildsetting to value.</span><br><span class="line"></span><br><span class="line">           A detailed reference of Xcode build settings can be found at:</span><br><span class="line">           &lt;https://help.apple.com/xcode/mac/current/#/itcaec37c2a6&gt;</span><br><span class="line">           </span><br><span class="line">	-userdefault=value</span><br><span class="line">           Set the user default userdefault to value.</span><br><span class="line"></span><br><span class="line">	-toolchain [identifier | name]</span><br><span class="line">           Use a given toolchain, specified with either an identifier or name.</span><br><span class="line"></span><br><span class="line">	-quiet</span><br><span class="line">           Do not print any output except for warnings and errors.</span><br><span class="line"></span><br><span class="line">	-verbose</span><br><span class="line">           Provide additional status output.</span><br><span class="line"></span><br><span class="line">	-version</span><br><span class="line">           Display version information for this install  of  Xcode.  Does  not</span><br><span class="line">           initiate  a  build. When used in conjunction with -sdk, the version</span><br><span class="line">           of the specified SDK is displayed, or all SDKs if -sdk is given  no</span><br><span class="line">           argument.   Additionally,  a  single  line  of the reported version</span><br><span class="line">           information may be returned if infoitem is specified.</span><br><span class="line"></span><br><span class="line">	-license</span><br><span class="line">           Show the Xcode and SDK license agreements. Allows for accepting the</span><br><span class="line">           license  agreements without launching Xcode itself, which is useful</span><br><span class="line">           for headless systems. Must be run as a privileged user.</span><br><span class="line">           </span><br><span class="line">	-checkFirstLaunchStatus</span><br><span class="line">           Check if any First Launch tasks need to be performed.</span><br><span class="line"></span><br><span class="line">	-runFirstLaunch</span><br><span class="line">           Install packages and agree to the license.</span><br><span class="line"></span><br><span class="line">	-usage</span><br><span class="line">           Displays usage information for xcodebuild.</span><br><span class="line"></span><br><span class="line">   Destinations</span><br><span class="line">     The -destination option takes as its  argument  a  destination  specifier</span><br><span class="line">     describing  the  device (or devices) to use as a destination.  A destina-</span><br><span class="line">     tion specifier is a single argument consisting of a  set  of  comma-sepa-</span><br><span class="line">     rated key=value pairs.  The -destination option may be specified multiple</span><br><span class="line">     times to cause xcodebuild to perform the  specified  action  on  multiple</span><br><span class="line">     destinations.</span><br><span class="line"></span><br><span class="line">     Destination specifiers may include the platform key to specify one of the</span><br><span class="line">     supported destination platforms.  There are additional keys which  should</span><br><span class="line">     be supplied depending on the platform of the device you are selecting.</span><br><span class="line">     </span><br><span class="line">     Some devices may take time to look up. The -destination-timeout option</span><br><span class="line">     can be used to specify the amount of time to wait before a device is con-</span><br><span class="line">     sidered  unavailable.  If unspecified, the default timeout is 30 seconds.</span><br><span class="line"></span><br><span class="line">     Currently, xcodebuild supports these platforms:</span><br><span class="line"></span><br><span class="line">     macOS              The local Mac, referred to in the Xcode  interface  as</span><br><span class="line">                        My Mac, and which supports the following key:</span><br><span class="line"></span><br><span class="line">                        arch  The  architecture  to  use,  either  x86_64 (the</span><br><span class="line">                              default) or i386.</span><br><span class="line"></span><br><span class="line">     iOS                An iOS device, which supports the following keys:</span><br><span class="line"></span><br><span class="line">                        id    The identifier of the device to use, as shown in</span><br><span class="line">                              the  Devices  window. A valid destination speci-</span><br><span class="line">                              fier must provide either id  or  name,  but  not</span><br><span class="line">                              both.</span><br><span class="line"></span><br><span class="line">                        name  The  name of the device to use. A valid destina-</span><br><span class="line">                              tion specifier must provide either id  or  name,</span><br><span class="line">                              but not both.</span><br><span class="line">                              </span><br><span class="line">	iOS Simulator      A  simulated  iOS device, which supports the following</span><br><span class="line">                        keys:</span><br><span class="line"></span><br><span class="line">                        id    The identifier of the simulated device  to  use,</span><br><span class="line">                              as shown in the Devices window. A valid destina-</span><br><span class="line">                              tion specifier must provide either id  or  name,</span><br><span class="line">                              but not both.</span><br><span class="line"></span><br><span class="line">                        name  The name of the simulated device to use. A valid</span><br><span class="line">                              destination specifier must provide either id  or</span><br><span class="line">                              name, but not both.</span><br><span class="line"></span><br><span class="line">                        OS    When  specifying  the  simulated device by name,</span><br><span class="line">                              the iOS version for that simulated device,  such</span><br><span class="line">                              as  6.0,  or  the string latest (the default) to</span><br><span class="line">                              indicate the most recent  version  of  iOS  sup-</span><br><span class="line">                              ported by this version of Xcode.</span><br><span class="line">                              </span><br><span class="line"> 	 watchOS            A  watchOS  app  is  always  built and deployed nested</span><br><span class="line">                        inside of an iOS app. To use a watchOS device as  your</span><br><span class="line">                        destination,  specify  a scheme which is configured to</span><br><span class="line">                        run a WatchKit app, and specify the iOS platform  des-</span><br><span class="line">                        tination  that  is  paired with the watchOS device you</span><br><span class="line">                        want to use.</span><br><span class="line"></span><br><span class="line">     watchOS Simulator  A watchOS Simulator app is always built  and  deployed</span><br><span class="line">                        nested  inside  of  an  iOS  Simulator  app.  To use a</span><br><span class="line">                        watchOS Simulator device as your destination,  specify</span><br><span class="line">                        a  scheme  which  is configured to run a WatchKit app,</span><br><span class="line">                        and specify the  iOS  Simulator  platform  destination</span><br><span class="line">                        that  is  paired with the watchOS Simulator device you</span><br><span class="line">                        want to use.</span><br><span class="line"></span><br><span class="line">     tvOS               A tvOS device, which supports the following keys:</span><br><span class="line"></span><br><span class="line">                        id    The identifier of the device to use, as shown in</span><br><span class="line">                              the  Devices  window. A valid destination speci-</span><br><span class="line">                              fier must provide either id  or  name,  but  not</span><br><span class="line">                              both.</span><br><span class="line"></span><br><span class="line">                        name  The  name of the device to use. A valid destina-</span><br><span class="line">                              tion specifier must provide either id  or  name,</span><br><span class="line">                              but not both.</span><br><span class="line">                              </span><br><span class="line">    tvOS Simulator     A  simulated tvOS device, which supports the following</span><br><span class="line">                        keys:</span><br><span class="line"></span><br><span class="line">                        id    The identifier of the simulated device  to  use,</span><br><span class="line">                              as shown in the Devices window. A valid destina-</span><br><span class="line">                              tion specifier must provide either id  or  name,</span><br><span class="line">                              but not both.</span><br><span class="line"></span><br><span class="line">                        name  The name of the simulated device to use. A valid</span><br><span class="line">                              destination specifier must provide either id  or</span><br><span class="line">                              name, but not both.</span><br><span class="line"></span><br><span class="line">                        OS    When  specifying  the  simulated device by name,</span><br><span class="line">                              the tvOS version for that simulated device, such</span><br><span class="line">                              as  9.0,  or  the string latest (the default) to</span><br><span class="line">                              indicate the most recent version  of  tvOS  sup-</span><br><span class="line">                              ported by this version of Xcode.</span><br><span class="line"></span><br><span class="line">     Some actions (such as building) may be performed without an actual device</span><br><span class="line">     present.  To build against a platform generically instead of  a  specific</span><br><span class="line">     device,  the  destination  specifier  may  be  prefixed with the optional</span><br><span class="line">     string &quot;generic/&quot;, indicating that the platform should be targeted gener-</span><br><span class="line">     ically.   An example of a generic destination is the &quot;Generic iOS Device&quot;</span><br><span class="line">     destination displayed in Xcode&#x27;s  UI  when  no  physical  iOS  device  is</span><br><span class="line">     present.</span><br><span class="line"></span><br><span class="line">   Testing on Multiple Destinations</span><br><span class="line">     When more than one destination is specified with the -destination option,</span><br><span class="line">     xcodebuild tests  on  those  destinations  concurrently.  In  this  mode,</span><br><span class="line">     xcodebuild  automatically  chooses  the  number of devices and simulators</span><br><span class="line">     that are  used  simultaneously.  All  enabled  tests  in  the  scheme  or</span><br><span class="line">     xctestrun file are run on each destination.</span><br><span class="line"></span><br><span class="line">   Distributing Archives</span><br><span class="line">     The -exportArchive option specifies that xcodebuild should distribute the</span><br><span class="line">     archive  specified  by  -archivePath  using  the  options  specified   by</span><br><span class="line">     -exportOptionsPlist.   xcodebuild  -help can print the full set of avail-</span><br><span class="line">     able inputs to -exportOptionsPlist.  The product can either  be  uploaded</span><br><span class="line">     to  Apple or exported locally. The exported product will be placed at the</span><br><span class="line">     path specified by -exportPath.</span><br><span class="line"></span><br><span class="line">     Archives that have been uploaded to the Apple notary service can be  dis-</span><br><span class="line">     tributed  using  the  -exportNotarizedApp  option.  This  specifies  that</span><br><span class="line">     xcodebuild should export a notarized app from the  archive  specified  by</span><br><span class="line">     -archivePath  and  place  the  exported  product at the path specified by</span><br><span class="line">     -exportPath.  If the archive has not completed processing by  the  notary</span><br><span class="line">     service,  or processing failed, then xcodebuild will exit and emit infor-</span><br><span class="line">     mational or error messages.</span><br><span class="line"></span><br><span class="line">     When uploading an archive using the -exportArchive option, or exporting a</span><br><span class="line">     notarized  archive  using  the  -exportNotarizedApp  option,  an Apple ID</span><br><span class="line">     account belonging to the archive&#x27;s development team  is  required.  Enter</span><br><span class="line">     the  credentials  for the Apple ID account using Xcode&#x27;s Accounts prefer-</span><br><span class="line">     ence pane before invoking xcodebuild.</span><br><span class="line"></span><br><span class="line">Environment Variables</span><br><span class="line">     The following environment variables affect the execution of xcodebuild:</span><br><span class="line"></span><br><span class="line">     XCODE_XCCONFIG_FILE</span><br><span class="line">                     Set to a path to a file, build settings in that file will</span><br><span class="line">                     be loaded and used when building all targets.  These set-</span><br><span class="line">                     tings will override all other  settings,  including  set-</span><br><span class="line">                     tings  passed individually on the command line, and those</span><br><span class="line">                     in the file passed with the -xcconfig option.</span><br><span class="line"></span><br><span class="line">   Exit Codes</span><br><span class="line">     xcodebuild exits with codes defined by sysexits(3).  It  will  exit  with</span><br><span class="line">     EX_OK on success.  On failure, it will commonly exit with EX_USAGE if any</span><br><span class="line">     options appear malformed, EX_NOINPUT if any input files cannot be  found,</span><br><span class="line">     EX_IOERR  if  any files cannot be read or written, and EX_SOFTWARE if the</span><br><span class="line">     commands given to xcodebuild fail.  It may exit with other codes in  less</span><br><span class="line">     common scenarios.</span><br><span class="line"></span><br><span class="line">EXAMPLES</span><br><span class="line">	xcodebuild clean install</span><br><span class="line"></span><br><span class="line">              Cleans the build directory; then builds and installs the first</span><br><span class="line">              target in the Xcode project in the directory from which</span><br><span class="line">              xcodebuild was started.</span><br><span class="line"></span><br><span class="line">	xcodebuild -project MyProject.xcodeproj -target Target1 -target Target2</span><br><span class="line">              -configuration Debug</span><br><span class="line"></span><br><span class="line">              Builds the targets Target1 and Target2 in the project</span><br><span class="line">              MyProject.xcodeproj using the Debug configuration.</span><br><span class="line"></span><br><span class="line">	xcodebuild -target MyTarget OBJROOT=/Build/MyProj/Obj.root</span><br><span class="line">              SYMROOT=/Build/MyProj/Sym.root</span><br><span class="line"></span><br><span class="line">              Builds the target MyTarget in the Xcode project in the directory</span><br><span class="line">              from which xcodebuild was started, putting intermediate files in</span><br><span class="line">              the directory /Build/MyProj/Obj.root and the products of the</span><br><span class="line">              build in the directory /Build/MyProj/Sym.root.</span><br><span class="line"></span><br><span class="line">	xcodebuild -sdk macosx10.6</span><br><span class="line">	</span><br><span class="line">              Builds the Xcode project in the directory from which xcodebuild</span><br><span class="line">              was started against the macOS 10.6 SDK.  The canonical names of</span><br><span class="line">              all available SDKs can be viewed using the -showsdks option.</span><br><span class="line"></span><br><span class="line">	xcodebuild -workspace MyWorkspace.xcworkspace -scheme MyScheme</span><br><span class="line"></span><br><span class="line">              Builds the scheme MyScheme in the Xcode workspace</span><br><span class="line">              MyWorkspace.xcworkspace.</span><br><span class="line"></span><br><span class="line">	xcodebuild archive -workspace MyWorkspace.xcworkspace -scheme MyScheme</span><br><span class="line"></span><br><span class="line">              Archives the scheme MyScheme in the Xcode workspace</span><br><span class="line">              MyWorkspace.xcworkspace.</span><br><span class="line"></span><br><span class="line">	xcodebuild build-for-testing -workspace MyWorkspace.xcworkspace -scheme</span><br><span class="line">              MyScheme -destination generic/platform=iOS</span><br><span class="line"></span><br><span class="line">              Build tests and associated targets in the scheme MyScheme in the</span><br><span class="line">              Xcode workspace MyWorkspace.xcworkspace using the generic iOS</span><br><span class="line">              device destination. The command also writes test parameters from</span><br><span class="line">              the scheme to an xctestrun file in the built products directory.</span><br><span class="line">              </span><br><span class="line">	 xcodebuild test-without-building -workspace MyWorkspace.xcworkspace</span><br><span class="line">              -scheme MyScheme -destination &#x27;platform=iOS</span><br><span class="line">              Simulator,name=iPhone 5s&#x27; -destination &#x27;platform=iOS,name=My</span><br><span class="line">              iPad&#x27;</span><br><span class="line"></span><br><span class="line">              Tests the scheme MyScheme in the Xcode workspace</span><br><span class="line">              MyWorkspace.xcworkspace using both the iOS Simulator and the</span><br><span class="line">              device named iPhone 5s for the latest version of iOS. The com-</span><br><span class="line">              mand assumes the test bundles are in the build root (SYMROOT).</span><br><span class="line">              (Note that the shell requires arguments to be quoted or other-</span><br><span class="line">              wise escaped if they contain spaces.)</span><br><span class="line"></span><br><span class="line">	xcodebuild test-without-building -xctestrun MyTestRun.xctestrun</span><br><span class="line">              -destination &#x27;platform=iOS Simulator,name=iPhone 5s&#x27;</span><br><span class="line">              -destination &#x27;platform=iOS,name=My iPad&#x27;</span><br><span class="line"></span><br><span class="line">              Tests using both the iOS Simulator and the device named iPhone</span><br><span class="line">              5s.  Test bundle paths and other test parameters are specified</span><br><span class="line">              in MyTestRun.xctestrun.  The command requires project binaries</span><br><span class="line">              and does not require project source code.</span><br><span class="line">              </span><br><span class="line">	xcodebuild test -workspace MyWorkspace.xcworkspace -scheme MyScheme</span><br><span class="line">              -destination &#x27;platform=macOS,arch=x86_64&#x27;</span><br><span class="line"></span><br><span class="line">              Tests the scheme MyScheme in the Xcode workspace</span><br><span class="line">              MyWorkspace.xcworkspace using the destination described as My</span><br><span class="line">              Mac 64-bit in Xcode.</span><br><span class="line"></span><br><span class="line">	xcodebuild test -workspace MyWorkspace.xcworkspace -scheme MyScheme</span><br><span class="line">              -destination &#x27;platform=macOS,arch=x86_64&#x27; -only-</span><br><span class="line">              testing:MyTests/FooTests/testFooWithBar</span><br><span class="line"></span><br><span class="line">              Tests the scheme MyScheme in the Xcode workspace</span><br><span class="line">              MyWorkspace.xcworkspace using the destination described as My</span><br><span class="line">              Mac 64-bit in Xcode. Only the test testFooWithBar of the test</span><br><span class="line">              suite FooTests, part of the MyTests testing bundle target, will</span><br><span class="line">              be run.</span><br><span class="line"></span><br><span class="line">	xcodebuild -exportArchive -archivePath MyMobileApp.xcarchive -exportPath</span><br><span class="line">              ExportDestination -exportOptionsPlist &#x27;export.plist&#x27;</span><br><span class="line"></span><br><span class="line">              Exports the archive MyMobileApp.xcarchive to the path</span><br><span class="line">              ExportDestination using the options specified in export.plist.</span><br><span class="line"></span><br><span class="line">	xcodebuild -exportLocalizations -project MyProject.xcodeproj</span><br><span class="line">              -localizationPath MyDirectory -exportLanguage zh-hans</span><br><span class="line">              -exportLanguage es-MX</span><br><span class="line"></span><br><span class="line">              Exports two XLIFF files to MyDirectory from MyProject.xcodeproj</span><br><span class="line">              containing development language strings and translations for</span><br><span class="line">              Simplified Chinese and Mexican Spanish.</span><br><span class="line"></span><br><span class="line">	xcodebuild -exportLocalizations -project MyProject.xcodeproj</span><br><span class="line">              -localizationPath MyDirectory</span><br><span class="line"></span><br><span class="line">              Export a single XLIFF file to MyDirectory from</span><br><span class="line">              MyProject.xcodeproj containing only development language</span><br><span class="line">              strings. (In this case, the -exportLanguage parameter has been</span><br><span class="line">              excluded.)</span><br><span class="line"></span><br><span class="line">	xcodebuild -importLocalizations -project MyProject.xcodeproj</span><br><span class="line">              -localizationPath MyLocalizations.xliff</span><br><span class="line"></span><br><span class="line">              Imports localizations from MyLocalizations.xliff into</span><br><span class="line">              MyProject.xcodeproj.  Translations with issues will be reported</span><br><span class="line">              but not imported.</span><br><span class="line">              </span><br><span class="line"></span><br><span class="line">SEE ALSO</span><br><span class="line">     ibtool(1), sysexits(3), xcode-select(1), xcrun(1), xed(1)</span><br><span class="line"></span><br><span class="line">     Xcode Builds Settings Reference &lt;https://help.apple.com/xcode/mac/</span><br><span class="line">     current/#/itcaec37c2a6&gt;</span><br><span class="line"></span><br><span class="line">macOS                            June 20, 2016                           macOS</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/xcodebuild/" rel="tag"># xcodebuild</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/18/static-analyze/" rel="next" title="静态分析">
+                <i class="fa fa-chevron-left"></i> 静态分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/22/clang-compile/" rel="prev" title="强大的 Clang">
+                强大的 Clang <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/redye" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:sixwalnut@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小红</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

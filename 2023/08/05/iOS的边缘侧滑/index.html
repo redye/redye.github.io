@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="iOS7 之前，滑动返回这个事儿是不被官方支持的，开发者需要自己实现，进入 iOS7 时代，苹果为了提升用户体验，增加了边缘侧滑的手势。注意这里的边缘，如果需要实现全屏滑动返回 还是需要开发者自己来实现的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 的边缘侧滑">
+<meta property="og:url" content="http://redye.com/2023/08/05/iOS%E7%9A%84%E8%BE%B9%E7%BC%98%E4%BE%A7%E6%BB%91/index.html">
+<meta property="og:site_name" content="红红の">
+<meta property="og:description" content="iOS7 之前，滑动返回这个事儿是不被官方支持的，开发者需要自己实现，进入 iOS7 时代，苹果为了提升用户体验，增加了边缘侧滑的手势。注意这里的边缘，如果需要实现全屏滑动返回 还是需要开发者自己来实现的。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-08-05T02:35:23.000Z">
+<meta property="article:modified_time" content="2023-10-19T06:34:39.602Z">
+<meta property="article:author" content="小红">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://redye.com/2023/08/05/iOS的边缘侧滑/"/>
+
+
+
+
+
+  <title>iOS 的边缘侧滑 | 红红の</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红红の</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2023/08/05/iOS%E7%9A%84%E8%BE%B9%E7%BC%98%E4%BE%A7%E6%BB%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红红の">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS 的边缘侧滑</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-08-05T10:35:23+08:00">
+                2023-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/" itemprop="url" rel="index">
+                    <span itemprop="name">疑难杂症</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>iOS7 之前，滑动返回这个事儿是不被官方支持的，开发者需要自己实现，进入 iOS7 时代，苹果为了提升用户体验，增加了<strong>边缘侧滑</strong>的手势。注意这里的<strong>边缘</strong>，如果需要实现<strong>全屏</strong>滑动返回 还是需要开发者自己来实现的。</p>
+<span id="more"></span>
+
+<p>注意侧滑返回在以下几种情况下是会失效的：</p>
+<ol>
+<li>隐藏导航栏： <code>isNavigationBarHidden = true</code></li>
+<li>隐藏返回按钮： <code>navigationItem.hidesBackButton = true</code></li>
+<li>自定义了： <code>leftBarButtonItem 或者 leftBarButtonItems</code></li>
+</ol>
+<h3 id="基于自定义导航栏下解决边缘侧滑失效的问题"><a href="#基于自定义导航栏下解决边缘侧滑失效的问题" class="headerlink" title="基于自定义导航栏下解决边缘侧滑失效的问题"></a>基于自定义导航栏下解决边缘侧滑失效的问题</h3><p>我们知道，侧滑返回 的实现基于 <code>UINavigationController</code> 的手势 <code>interactivePopGestureRecognizer</code>，我们可以通过代理这个手势达到我们的目的。</p>
+<h4 id="边缘侧滑返回"><a href="#边缘侧滑返回" class="headerlink" title="边缘侧滑返回"></a>边缘侧滑返回</h4><p>首先自定义一个继承字 <code>UINavigationController</code> 的子类：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SMNavigationViewController</span>: <span class="title class_">UINavigationController</span> &#123; </span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">viewDidLoad</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        interactivePopGestureRecognizer<span class="operator">?</span>.delegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">        isNavigationBarHidden <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后实现手势的代理协议：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">SMNavigationViewController</span>: <span class="title class_">UIGestureRecognizerDelegate</span> &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">gestureRecognizerShouldBegin</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="comment">// 这里限制了当导航栈里元素的数量，只有大于1个的情况下才支持侧滑返回</span></span><br><span class="line">        <span class="keyword">return</span> viewControllers.count <span class="operator">&gt;</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里，我们已经实现了边缘侧滑返回的功能了。<br>当然，上面这种基本适用于因为导航栏导致的侧滑失效的问题了，但并不排除还有其他的解决办法。<br>例如返回按钮，可以自定义返回按钮等。<br>例如 <code>TZScrollViewPopGesture</code> 这个库，他不仅支持了边缘侧滑返回，更主要的是他解决了因为 scrollView 导致边缘侧滑失效的问题。<br>还有 <code>FDFullscreenPopGesture</code> 这个库，主要是实现了<strong>全屏侧滑</strong>的功能。</p>
+<h4 id="灵活控制侧滑功能"><a href="#灵活控制侧滑功能" class="headerlink" title="灵活控制侧滑功能"></a>灵活控制侧滑功能</h4><p>如果我们还想灵活控制某些页面不支持侧滑返回的话，可以自定义一个协议：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">SMPopGestureDelegate</span>: <span class="title class_">NSObjectProtocol</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">gestureRecognizerShouldBegin</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">UIViewController</span>:  <span class="title class_">SMPopGestureDelegate</span>&#123;</span><br><span class="line">    <span class="comment">// 给每个控制器一个默认实现，默认支持侧滑</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">gestureRecognizerShouldBegin</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在不需要侧滑返回的控制器：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">XxController</span>:  <span class="title class_">SMPopGestureDelegate</span>&#123;</span><br><span class="line">    <span class="comment">// 给每个控制器一个默认实现，默认支持侧滑</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">gestureRecognizerShouldBegin</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 interactivePopGestureRecognizer 的代理方法：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">SMNavigationViewController</span>: <span class="title class_">UIGestureRecognizerDelegate</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">gestureRecognizerShouldBegin</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> topController <span class="operator">=</span> <span class="keyword">self</span>.topViewController <span class="keyword">as?</span> <span class="type">SMPopGestureDelegate</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> topController.gestureRecognizerShouldBegin(gestureRecognizer)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> viewControllers.count <span class="operator">&gt;</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="当手势冲突时边缘侧滑返回失效的问题"><a href="#当手势冲突时边缘侧滑返回失效的问题" class="headerlink" title="当手势冲突时边缘侧滑返回失效的问题"></a>当手势冲突时边缘侧滑返回失效的问题</h3><p>在解决因手势冲突造成的侧滑返回失效的问题之前，我们先来了解下手势的优先级以及 UIGestureRecognizerDelegate 的几个方法。</p>
+<h4 id="手势优先级"><a href="#手势优先级" class="headerlink" title="手势优先级"></a>手势优先级</h4><p>如果有两个手势，我们需要设置优先级的时候，就会调用方法：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">require</span>(<span class="params">toFail</span> <span class="params">otherGestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个方法的作用就是在两个有可能冲突的手势之间创建一个关系，只有当 otherGestureRecognizer 手势失败的时候，才响应手势，例如同时添加的单击手势和双击手势的时候，当双击手势响应失败的时候才响应单击手势：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> singalTap <span class="operator">=</span> <span class="type">UITapGestureRecognizer</span>(target: <span class="keyword">self</span>, action: <span class="keyword">#selector</span>(onSingalTap))</span><br><span class="line"><span class="keyword">let</span> doubleTap <span class="operator">=</span> <span class="type">UITapGestureRecognizer</span>(target: <span class="keyword">self</span>, action: <span class="keyword">#selector</span>(onDoubleTap))</span><br><span class="line">doubleTap.numberOfTapsRequired <span class="operator">=</span> <span class="number">2</span></span><br><span class="line">singalTap.require(toFail: doubleTap)</span><br></pre></td></tr></table></figure>
+
+<h4 id="一些手势代理方法"><a href="#一些手势代理方法" class="headerlink" title="一些手势代理方法"></a>一些手势代理方法</h4><p>一般手势识别：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始进行手势识别时调用的方法，返回 false 则结束，不再触发手势</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">gestureRecognizerShouldBegin</span>(<span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">// ① 是否接收 touch，返回 false 则不在继续手势识别、方法触发等。</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">gestureRecognizer</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>, </span><br><span class="line">                         <span class="params">shouldReceive</span> <span class="params">touch</span>: <span class="type">UITouch</span>) -&gt; <span class="type">Bool</span></span><br><span class="line"><span class="comment">// ② 是否接收 press，返回 false 则阻止继续手势识别、方法触发等               </span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">gestureRecognizer</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>, </span><br><span class="line">                         <span class="params">shouldReceive</span> <span class="params">press</span>: <span class="type">UIPress</span>) -&gt; <span class="type">Bool</span></span><br><span class="line"><span class="comment">// 是否接收手势事件，返回 false 则不在响应手势。在方法 ①② 之前调用</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">gestureRecognizer</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>, </span><br><span class="line">                         <span class="params">shouldReceive</span> <span class="params">event</span>: <span class="type">UIEvent</span>) -&gt; <span class="type">Bool</span></span><br></pre></td></tr></table></figure>
+<p>手势同时识别：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 是否允许同时识别两个手势，默认返回 false, 返回 true 表示这两个手势同时识别</span><br><span class="line">// 返回 true 时能保证两个手势同时识别, 手势被传递给接受者处理</span><br><span class="line">// 返回 false 不能保证不被同时识别，因为另一个手势代理可能返回 true</span><br><span class="line">func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, </span><br><span class="line">shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -&gt; Bool</span><br></pre></td></tr></table></figure>
+
+<p>失败控制：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 当同时识别到另一个手势时，是否要求该手势失败</span></span><br><span class="line"><span class="comment">// 返回 true，第一个会失效, 默认返回 false</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">gestureRecognizer</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>, </span><br><span class="line">         <span class="params">shouldRequireFailureOf</span> <span class="params">otherGestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 当同时识别到另一个手势时，是否要求另一个手势失败</span></span><br><span class="line"><span class="comment">// 返回 true, 第二个手势会失效, 默认返回 false</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">gestureRecognizer</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>, </span><br><span class="line">       <span class="params">shouldBeRequiredToFailBy</span> <span class="params">otherGestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="侧滑冲突的解决办法"><a href="#侧滑冲突的解决办法" class="headerlink" title="侧滑冲突的解决办法"></a>侧滑冲突的解决办法</h4><p>什么情况下边缘侧滑会因为手势冲突时失效呢？这很好回答：</p>
+<ul>
+<li><p><code>Web Controller· 失效，webView 页面比较特殊，不仅右滑返回会失效，自定义的手势也会全部失效，因为 </code>WebView&#96; 中已经内部集成了点击、滑动等多个手势，上面的方法在 ·UIWebView· 中并没有作用，解决办法是允许多个手势并发的代理方法，即</p>
+  <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">WebViewController</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">gestureRecognizer</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>, <span class="params">shouldRecognizeSimultaneouslyWith</span> <span class="params">otherGestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当使用 <code>UIScrollView</code> 、<code>UITableView</code> 、<code>UICollectionView</code> 等滑动视图的左右滑动时，滑动手势就会和右滑返回的手势冲突，右滑返回就会失效。</p>
+</li>
+</ul>
+<p>针对上述第二种的解决办法：</p>
+<ol>
+<li><p>因为侧滑手势的优先级最大，所以可以在 NavigationController 中：</p>
+ <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">SMNavigationViewController</span>: <span class="title class_">UIGestureRecognizerDelegate</span> &#123;    </span><br><span class="line">    <span class="comment">// 侧滑优先级最大，当手势冲突时，直接让另一个手势失败，优先响应侧滑返回</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">gestureRecognizer</span>(<span class="keyword">_</span> <span class="params">gestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>, <span class="params">shouldBeRequiredToFailBy</span> <span class="params">otherGestureRecognizer</span>: <span class="type">UIGestureRecognizer</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>当然，具体的情况可能还需要结合自己的业务来决定。<br>2. 针对这种情况，有一种是直接在 controller 设置手势的优先级：</p>
+<pre><code><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> gesture <span class="operator">=</span> <span class="keyword">self</span>.navigationController<span class="operator">?</span>.interactivePopGestureRecognizer &#123;</span><br><span class="line">    scrollView.panGestureRecognizer.require(toFail: gesture)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>但是我并没有获得成功，原因暂未可知 o(╥﹏╥)o</p>
+<ol start="3">
+<li>使用 <code>TZScrollViewPopGesture</code> 库，主要思路是实现一个自己的侧滑手势</li>
+<li>还有另外一种奇淫技巧：<blockquote>
+<p>在 vc 的 view 的左侧贴一层宽 10 长 view 长度的透明 view</p>
+</blockquote>
+</li>
+</ol>
+<p>但是这种我并没有实验，有兴趣的可以试试 (*￣︶￣)</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/10f6c8b1844c">手势优先级</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6860656306630590477#heading-2">手势滑动返回</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/8170fea174da">一行代码，让你的应用中UIScrollView的滑动与侧滑返回并存</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/12/02/%E4%BA%86%E8%A7%A3urllib/" rel="next" title="从 Urllib 开始">
+                <i class="fa fa-chevron-left"></i> 从 Urllib 开始
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/08/08/%E4%BB%8EMoya%E5%88%B0Alamofire/" rel="prev" title="从 Moya 到 Alamofire">
+                从 Moya 到 Alamofire <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/redye" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:sixwalnut@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%BC%E8%88%AA%E6%A0%8F%E4%B8%8B%E8%A7%A3%E5%86%B3%E8%BE%B9%E7%BC%98%E4%BE%A7%E6%BB%91%E5%A4%B1%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">基于自定义导航栏下解决边缘侧滑失效的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98%E4%BE%A7%E6%BB%91%E8%BF%94%E5%9B%9E"><span class="nav-number">1.1.</span> <span class="nav-text">边缘侧滑返回</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%81%B5%E6%B4%BB%E6%8E%A7%E5%88%B6%E4%BE%A7%E6%BB%91%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.</span> <span class="nav-text">灵活控制侧滑功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E6%89%8B%E5%8A%BF%E5%86%B2%E7%AA%81%E6%97%B6%E8%BE%B9%E7%BC%98%E4%BE%A7%E6%BB%91%E8%BF%94%E5%9B%9E%E5%A4%B1%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">当手势冲突时边缘侧滑返回失效的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%BF%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.1.</span> <span class="nav-text">手势优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%89%8B%E5%8A%BF%E4%BB%A3%E7%90%86%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">一些手势代理方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%A7%E6%BB%91%E5%86%B2%E7%AA%81%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">侧滑冲突的解决办法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小红</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

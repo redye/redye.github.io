@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微信新添加了一个很有趣的东西 – 微信运动，相信已经有很多人都已经关注了，然后会每天都去看一眼自己今天走的步数，如果抢占了封面那就更好了。其实早在 iOS7 苹果就已经有计步器的接口了，但是在微信运动出现之前我还不知道它的存在而已。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计步器 -- 做自己的微信运动">
+<meta property="og:url" content="http://redye.com/2021/12/04/%E8%AE%A1%E6%AD%A5%E5%99%A8%20--%20%E5%81%9A%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BE%AE%E4%BF%A1%E8%BF%90%E5%8A%A8/index.html">
+<meta property="og:site_name" content="红红の">
+<meta property="og:description" content="微信新添加了一个很有趣的东西 – 微信运动，相信已经有很多人都已经关注了，然后会每天都去看一眼自己今天走的步数，如果抢占了封面那就更好了。其实早在 iOS7 苹果就已经有计步器的接口了，但是在微信运动出现之前我还不知道它的存在而已。">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.loli.net/2021/12/24/wKvJcfbug1yrh5M.png">
+<meta property="article:published_time" content="2021-12-04T09:20:23.000Z">
+<meta property="article:modified_time" content="2022-09-30T01:49:50.437Z">
+<meta property="article:author" content="小红">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/24/wKvJcfbug1yrh5M.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://redye.com/2021/12/04/计步器 -- 做自己的微信运动/"/>
+
+
+
+
+
+  <title>计步器 -- 做自己的微信运动 | 红红の</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红红の</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2021/12/04/%E8%AE%A1%E6%AD%A5%E5%99%A8%20--%20%E5%81%9A%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BE%AE%E4%BF%A1%E8%BF%90%E5%8A%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红红の">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计步器 -- 做自己的微信运动</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-04T17:20:23+08:00">
+                2021-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BB%A3%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">工具代码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>微信新添加了一个很有趣的东西 – 微信运动，相信已经有很多人都已经关注了，然后会每天都去看一眼自己今天走的步数，如果抢占了封面那就更好了。<br>其实早在 iOS7 苹果就已经有计步器的接口了，但是在微信运动出现之前我还不知道它的存在而已。</p>
+<span id="more"></span>
+
+<h3 id="计步器"><a href="#计步器" class="headerlink" title="计步器"></a>计步器</h3><p>要使用计步器的功能，要使用到 CoreMotion 框架，CoreMotion 封装了与一系列与运动相关的 API:<br><img src="https://s2.loli.net/2021/12/24/wKvJcfbug1yrh5M.png" alt="motion.png"></p>
+<p>从 CoreMotion 头文件中可以很明显的看出，与计步相关的 API 乃是 CMStepCounter.h，很好，我们进入到头文件查看一下，好吧，看到的第一句是什么呢？   </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">NS_CLASS_DEPRECATED_IOS(7_0,8_0,&quot;Use CMPedometer instead&quot;) __TVOS_PROHIBITED __WATCHOS_PROHIBITED </span><br><span class="line">@interface CMStepCounter : NSObject</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，<code>CMStepCounter</code> 在 iOS7 启用，iOS8 已经被废弃了，你可以使用 <code>CMPedometer</code> 代替(Pedometer 计步器、计数器，好吧，请原谅我的英语水平，就光看名字直奔 stepCounter 去了╮(╯▽╰)╭)。</p>
+<p>好了，那我们还是去看看 <code>CMPedometer</code> 吧。</p>
+<h3 id="CMPedometer"><a href="#CMPedometer" class="headerlink" title="CMPedometer"></a>CMPedometer</h3><p>在使用 CMPedometer 之前，你需要了解到一件事情 – 并不是所有的设备都支持记步功能的，所以在使用之前，你需要判断你的设备是否支持。还记得吗，在加入微信运动的时候，会提示你查看你的设备是否支持微信运动，下面列出了一堆支持微信运动，怎么支持微信运动的用户引导。</p>
+<ul>
+<li><p>第一步，判断设备是否支持</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//判断是否支持记步</span><br><span class="line">  if (![CMPedometer isStepCountingAvailable]) &#123;</span><br><span class="line">     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@&quot;温馨提示&quot; message:@&quot;您的设备不支持记步&quot; preferredStyle:UIAlertControllerStyleAlert];</span><br><span class="line">     UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@&quot;我知道了&quot; style:UIAlertActionStyleDefault handler:nil];</span><br><span class="line">     [alertController addAction:alertAction];</span><br><span class="line">     [self presentViewController:alertController animated:YES completion:nil];</span><br><span class="line">     return;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>  在 <code>CMPedometer</code> 的头文件中，你可以看到一系列包括 <strong>distance</strong>、<strong>floor</strong>、<strong>pace</strong>、<strong>cadence</strong> 是否支持在内的判断（后两者在 iOS9 以后支持），所以判断设备是否支持着希望功能是必要的，当然这些都需要在真机上测试才可以，而且我试过在 mini 上是不支持的（我使用的 mini4）。</p>
+</li>
+<li><p>第二步，可以查询过去某段时间内走过的步数</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[_pedometer queryPedometerDataFromDate:[NSDate dateWithTimeInterval:-24*60*60 sinceDate:localDate] toDate:localDate withHandler:^(CMPedometerData * _Nullable pedometerData, NSError * _Nullable error) &#123;</span><br><span class="line">    if (error) &#123;</span><br><span class="line">        NSLog(@&quot;查询错误 %@&quot;, error);</span><br><span class="line">        return ;</span><br><span class="line">    &#125;</span><br><span class="line">    NSLog(@&quot;%@&quot;, pedometerData);</span><br><span class="line">    dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        weakSelf.stepLabel.text = [NSString stringWithFormat:@&quot;%@&quot;, pedometerData];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第三步，更新从某个时间开始的步数变化</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[_pedometer startPedometerUpdatesFromDate:[NSDate dateWithTimeInterval:-24*60*60 sinceDate:localDate] withHandler:^(CMPedometerData * _Nullable pedometerData, NSError * _Nullable error) &#123;</span><br><span class="line">     if (error) &#123;</span><br><span class="line">           NSLog(@&quot;更新错误 %@&quot;, error);</span><br><span class="line">           return ;</span><br><span class="line">     &#125;</span><br><span class="line">     NSLog(@&quot;%@&quot;, pedometerData);</span><br><span class="line">     dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">         weakSelf.stepLabel.text = [NSString stringWithFormat:@&quot;%@&quot;, pedometerData];</span><br><span class="line">     &#125;);</span><br><span class="line"> 	&#125;];</span><br></pre></td></tr></table></figure>
+
+<p>  试着走几步，你回发现数据是在变化的，可能会有一点延迟。<code>CMPedometerData </code> 类对象 pedometerData 中可以访问到你当前走过的步数、距离、上楼、下楼、步速、节奏等数据，可以根据需要解析。</p>
+</li>
+<li><p>第四步，停止更新</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[_pedometer stopPedometerUpdates];</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><p>Demo 戳<a target="_blank" rel="noopener" href="https://github.com/redye/Demo/tree/master/Pedometer">这里</a>下载。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/23/%E8%B7%9D%E7%A6%BB%E4%BC%A0%E6%84%9F%E5%99%A8/" rel="next" title="距离传感器">
+                <i class="fa fa-chevron-left"></i> 距离传感器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/10/CAGradientLayer%20%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" rel="prev" title="CAGradientLayer">
+                CAGradientLayer <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/redye" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:sixwalnut@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%AD%A5%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">计步器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMPedometer"><span class="nav-number">2.</span> <span class="nav-text">CMPedometer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Demo"><span class="nav-number">2.1.</span> <span class="nav-text">Demo</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小红</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

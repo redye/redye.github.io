@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,Swift,Moya,Alamofire," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="如今 Moya + Alamofire 可以说是 Swift 工程必备框架了，今天我们就来聊聊是怎么通过 Moya 发起 Alamofire 请求的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 Moya 到 Alamofire">
+<meta property="og:url" content="http://redye.com/2023/08/08/%E4%BB%8EMoya%E5%88%B0Alamofire/index.html">
+<meta property="og:site_name" content="红红の">
+<meta property="og:description" content="如今 Moya + Alamofire 可以说是 Swift 工程必备框架了，今天我们就来聊聊是怎么通过 Moya 发起 Alamofire 请求的。">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.loli.net/2022/09/29/xh3AVKDz5amrUcO.png">
+<meta property="og:image" content="https://s2.loli.net/2022/09/29/XP6GRmWvNAJwZC2.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/09/29/sGIzRvEhpSCQY7O.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/09/29/RxWKpjvnt4SrAX3.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/09/29/V2Po5hjAueyU8KR.png">
+<meta property="article:published_time" content="2023-08-08T02:35:23.000Z">
+<meta property="article:modified_time" content="2022-09-30T01:49:50.436Z">
+<meta property="article:author" content="小红">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="Moya">
+<meta property="article:tag" content="Alamofire">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/09/29/xh3AVKDz5amrUcO.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://redye.com/2023/08/08/从Moya到Alamofire/"/>
+
+
+
+
+
+  <title>从 Moya 到 Alamofire | 红红の</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红红の</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2023/08/08/%E4%BB%8EMoya%E5%88%B0Alamofire/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红红の">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从 Moya 到 Alamofire</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-08-08T10:35:23+08:00">
+                2023-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS%E6%BA%90%E7%A0%81%E6%8E%A2%E7%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS源码探究</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>如今 <code>Moya + Alamofire</code> 可以说是 <code>Swift</code> 工程必备框架了，今天我们就来聊聊是怎么通过 <code>Moya</code> 发起 <code>Alamofire</code> 请求的。</p>
+<span id="more"></span>
+
+<h3 id="从-Moya-到-Alamofire"><a href="#从-Moya-到-Alamofire" class="headerlink" title="从 Moya 到 Alamofire"></a>从 Moya 到 Alamofire</h3><h4 id="Moya-网络请求与响应"><a href="#Moya-网络请求与响应" class="headerlink" title="Moya 网络请求与响应"></a>Moya 网络请求与响应</h4><p>Moya 通过 MoyaProvider 这个类来完成网络请求与响应。MoyaProvider 初始化方法：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">/// Initializes a provider.</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">init</span>(<span class="params">endpointClosure</span>: <span class="keyword">@escaping</span> <span class="type">EndpointClosure</span> <span class="operator">=</span> <span class="type">MoyaProvider</span>.defaultEndpointMapping,</span><br><span class="line">            <span class="params">requestClosure</span>: <span class="keyword">@escaping</span> <span class="type">RequestClosure</span> <span class="operator">=</span> <span class="type">MoyaProvider</span>.defaultRequestMapping,</span><br><span class="line">            <span class="params">stubClosure</span>: <span class="keyword">@escaping</span> <span class="type">StubClosure</span> <span class="operator">=</span> <span class="type">MoyaProvider</span>.neverStub,</span><br><span class="line">            <span class="params">callbackQueue</span>: <span class="type">DispatchQueue</span>? <span class="operator">=</span> <span class="literal">nil</span>,</span><br><span class="line">            <span class="params">session</span>: <span class="type">Session</span> <span class="operator">=</span> <span class="type">MoyaProvider</span>&lt;<span class="type">Target</span>&gt;.defaultAlamofireSession(),</span><br><span class="line">            <span class="params">plugins</span>: [<span class="type">PluginType</span>] <span class="operator">=</span> [],</span><br><span class="line">            <span class="params">trackInflights</span>: <span class="type">Bool</span> <span class="operator">=</span> <span class="literal">false</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">self</span>.endpointClosure <span class="operator">=</span> endpointClosure</span><br><span class="line">    <span class="keyword">self</span>.requestClosure <span class="operator">=</span> requestClosure</span><br><span class="line">    <span class="keyword">self</span>.stubClosure <span class="operator">=</span> stubClosure</span><br><span class="line">    <span class="keyword">self</span>.session <span class="operator">=</span> session</span><br><span class="line">    <span class="keyword">self</span>.plugins <span class="operator">=</span> plugins</span><br><span class="line">    <span class="keyword">self</span>.trackInflights <span class="operator">=</span> trackInflights</span><br><span class="line">    <span class="keyword">self</span>.callbackQueue <span class="operator">=</span> callbackQueue</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里看一下这几个参数：</p>
+<ul>
+<li><p>endpointClosure</p>
+<ul>
+<li>负责把 Target 转换成 Endpoint。</li>
+<li>默认转换方式： defaultEndpointMapping。</li>
+<li>endpoin 携带了 request 需要的信息，包括 url、mehod、task(任务类型)、http header（请求头信息）、sampleResponseClosure（样本数据，数据由 Target 提供），并且提供方法修改任务类型和添加更多的请求头信息。提供生成 request 的方法。</li>
+</ul>
+  <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">endpointsClosure</span>&lt;<span class="type">T</span>&gt;() -&gt; (<span class="type">T</span>) -&gt; <span class="type">Endpoint</span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">TargetType</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; target <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">let</span> endpoint <span class="operator">=</span> <span class="type">MoyaProvider</span>.defaultEndpointMapping(for: target)</span><br><span class="line">        <span class="comment">// 可以在这里添加请求头信息等</span></span><br><span class="line">        <span class="comment">// endpoint.add(httpHeaderFields: [&quot;auth&quot;: &quot;...&quot;])</span></span><br><span class="line">        <span class="keyword">return</span> endpoint</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>requestClosure</p>
+<ul>
+<li>负责把 endpoint 转换成 Request。</li>
+<li>默认转换方式： defaultRequestMapping。</li>
+</ul>
+</li>
+<li><p>stubClosure</p>
+<ul>
+<li>.never 从网络请求数据，即进行真正的网络请求</li>
+<li>本地提供样本数据，可以模拟及时和延时两种方式</li>
+</ul>
+</li>
+<li><p>callbackQueue<br>回调队列，如果为 nil 的话，就是用 alamofire 的默认队列</p>
+</li>
+<li><p>session</p>
+<ul>
+<li>实际请求的 alamofire 的 session。</li>
+<li>提供默认参数 defaultAlamofireSession。</li>
+</ul>
+</li>
+<li><p>plugins: 一组插件，用于日志记录、网络活动指示器或凭据。</p>
+</li>
+<li><p>trackInflights</p>
+<ul>
+<li><p>防止重复请求</p>
+  <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> trackInflights &#123;</span><br><span class="line">    <span class="comment">// inflightRequests 是一个计算属性，返回 internalInflightRequests</span></span><br><span class="line">    <span class="keyword">var</span> inflightCompletionBlocks <span class="operator">=</span> <span class="keyword">self</span>.inflightRequests[endpoint]</span><br><span class="line">    inflightCompletionBlocks<span class="operator">?</span>.append(pluginsWithCompletion)</span><br><span class="line">    <span class="keyword">self</span>.internalInflightRequests[endpoint] <span class="operator">=</span> inflightCompletionBlocks</span><br><span class="line">    <span class="comment">// 当前 endPoint 已经存在，则直接返回这个请求</span></span><br><span class="line">    <span class="keyword">if</span> inflightCompletionBlocks <span class="operator">!=</span> <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> cancellableToken</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.internalInflightRequests[endpoint] <span class="operator">=</span> [pluginsWithCompletion]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>追踪记录<br><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">		<span class="keyword">let</span> networkCompletion: <span class="type">Moya</span>.<span class="type">Completion</span> <span class="operator">=</span> &#123; result <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">self</span>.trackInflights &#123;</span><br><span class="line">    <span class="keyword">self</span>.inflightRequests[endpoint]<span class="operator">?</span>.forEach &#123; <span class="variable">$0</span>(result) &#125;</span><br><span class="line">    <span class="keyword">self</span>.internalInflightRequests.removeValue(forKey: endpoint)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    pluginsWithCompletion(result)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Provider 创建完成后，就可以发起请求了：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">MoyaProviderType</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">startRequest</span>(<span class="keyword">_</span> <span class="params">target</span>: <span class="type">Target</span>, <span class="params">callbackQueue</span>: <span class="type">DispatchQueue</span>? <span class="operator">=</span> <span class="literal">nil</span>, <span class="params">progress</span>: <span class="type">Moya</span>.<span class="type">ProgressBlock</span>? <span class="operator">=</span> <span class="literal">nil</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.request(token, callbackQueue: callbackQueue, progress: progress) &#123; result <span class="keyword">in</span></span><br><span class="line">             <span class="comment">// 这里针对 response 做一些统一处理：例如根据 code 判断接口是否成功</span></span><br><span class="line">             <span class="operator">...</span>  </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总的来说，Moya 就是在 Alamofire 的基础上再封装了一层。让我们能够更直观的看到我们的请求，也能更简单的编写单元测试。</p>
+<p>来一张官方解释图：</p>
+<p><img src="https://s2.loli.net/2022/09/29/xh3AVKDz5amrUcO.png" alt="diagram.png"></p>
+<h4 id="Moya-的插件功能"><a href="#Moya-的插件功能" class="headerlink" title="Moya 的插件功能"></a>Moya 的插件功能</h4><p>Moya 提供插件功能，插件必须实现 PluginType 协议。协议提供了四个方法，并且都提供了默认实现：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">protocol</span> <span class="title class_">PluginType</span> &#123;</span><br><span class="line">    <span class="comment">/// Called to modify a request before sending.</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">prepare</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">URLRequest</span>, <span class="params">target</span>: <span class="type">TargetType</span>) -&gt; <span class="type">URLRequest</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">/// Called immediately before a request is sent over the network (or stubbed).</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">willSend</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">RequestType</span>, <span class="params">target</span>: <span class="type">TargetType</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/// Called after a response has been received, but before the MoyaProvider has invoked its completion handler.</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">didReceive</span>(<span class="keyword">_</span> <span class="params">result</span>: <span class="type">Result</span>&lt;<span class="type">Moya</span>.<span class="type">Response</span>, <span class="type">MoyaError</span>&gt;, <span class="params">target</span>: <span class="type">TargetType</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/// Called to modify a result before completion.</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">process</span>(<span class="keyword">_</span> <span class="params">result</span>: <span class="type">Result</span>&lt;<span class="type">Moya</span>.<span class="type">Response</span>, <span class="type">MoyaError</span>&gt;, <span class="params">target</span>: <span class="type">TargetType</span>) -&gt; <span class="type">Result</span>&lt;<span class="type">Moya</span>.<span class="type">Response</span>, <span class="type">MoyaError</span>&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>插件的意义在于：无论发送或接收请求，Moya 插件都会接收回调以执行副作用。</p>
+<p>Moya 内置了一些插件 <code>AccessTokenPlugin</code>、<code>CredentialsPlugin</code>、<code>NetworkActivityPlugin</code>、<code>NetworkLoggerPlugin</code></p>
+<p>使用过程：在创建 Alamofire Request 时，创建一个拦截器 MoyaRequestInterceptor，绑定到 request 上。请求过程中通过拦截器执行插件的 prepare 和 willSend 方法，请求完成时通过回调执行 didReceive 和 process 方法。</p>
+<p>执行顺序为：prepare -&gt; willSend -&gt; didReceive -&gt; process</p>
+<h4 id="从-target-转换到-request-的过程："><a href="#从-target-转换到-request-的过程：" class="headerlink" title="从 target 转换到 request 的过程："></a>从 target 转换到 request 的过程：</h4><p><img src="https://s2.loli.net/2022/09/29/XP6GRmWvNAJwZC2.jpg" alt="UML 图.jpg"></p>
+<h4 id="Moya-发送请求流程图"><a href="#Moya-发送请求流程图" class="headerlink" title="Moya 发送请求流程图"></a>Moya 发送请求流程图</h4><p><img src="https://s2.loli.net/2022/09/29/sGIzRvEhpSCQY7O.jpg" alt="moya.jpg"></p>
+<h3 id="Alamofire"><a href="#Alamofire" class="headerlink" title="Alamofire"></a>Alamofire</h3><h4 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h4><p>Alamofire 的拦截器，实现 RequestInterceptor 协议，RequestInterceptor 继承 RequestAdapt 和 RequestRetrier：</p>
+<ul>
+<li>RequestAdapt：检查并在必要时以某种方式地调整“URLRequest”，对请求进行适配。</li>
+<li>RequestRetrier：用于确定请求在被指定的会话管理器执行并遇到错误后是否应重试</li>
+</ul>
+<p>所以实现拦截器时，需要实现这两个协议的方法。</p>
+<p>在使用拦截器的有两种方式：</p>
+<ul>
+<li>在创建 DataRequest 的时候给 request 绑定拦截器。例如 moya 的插件就是通过这种方式实现的</li>
+<li>以 session 拦截器的方式，即在初始化 session 的时候绑定。</li>
+</ul>
+<p>拦截器的执行也分两种方式：</p>
+<ul>
+<li><p>在接口创建完成时执行，会结合 Request 的拦截器和 Session 上的拦截器，依次调用（先执行 request 绑定的拦截器）。执行 RequestAdapt 协议的部分。</p>
+  <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">adapt</span>(<span class="keyword">_</span> <span class="params">urlRequest</span>: <span class="type">URLRequest</span>,</span><br><span class="line">                  <span class="params">using</span> <span class="params">state</span>: <span class="type">RequestAdapterState</span>,</span><br><span class="line">                  <span class="params">adapters</span>: [<span class="type">RequestAdapter</span>],</span><br><span class="line">                  <span class="params">completion</span>: <span class="keyword">@escaping</span> (<span class="type">Result</span>&lt;<span class="type">URLRequest</span>, <span class="type">Error</span>&gt;) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> pendingAdapters <span class="operator">=</span> adapters</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前已经没有适配器了，则调用成功回调，结束本地递归</span></span><br><span class="line">    <span class="keyword">guard</span> <span class="operator">!</span>pendingAdapters.isEmpty <span class="keyword">else</span> &#123; completion(.success(urlRequest)); <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> adapter <span class="operator">=</span> pendingAdapters.removeFirst()</span><br><span class="line"></span><br><span class="line">    adapter.adapt(urlRequest, using: state) &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">switch</span> result &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="keyword">let</span> .success(urlRequest):</span><br><span class="line">            <span class="comment">// 递归调用，直至所有适配器都执行完成</span></span><br><span class="line">            <span class="keyword">self</span>.adapt(urlRequest, using: state, adapters: pendingAdapters, completion: completion)</span><br><span class="line">        <span class="keyword">case</span> .failure:</span><br><span class="line">            <span class="comment">// 只要有一个适配器发生错误，则调用失败回调，结束本次递归</span></span><br><span class="line">            completion(result)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在接口请求完成并且发生错误的时候执行，同样也会结合 Request 和 Session 的拦截器，依次调用。这里主要执行的是 RequestRetrier 协议的方法。</p>
+  <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">retry</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>,</span><br><span class="line">                  <span class="params">for</span> <span class="params">session</span>: <span class="type">Session</span>,</span><br><span class="line">                  <span class="params">dueTo</span> <span class="params">error</span>: <span class="type">Error</span>,</span><br><span class="line">                  <span class="params">using</span> <span class="params">retriers</span>: [<span class="type">RequestRetrier</span>],</span><br><span class="line">                  <span class="params">completion</span>: <span class="keyword">@escaping</span> (<span class="type">RetryResult</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> pendingRetriers <span class="operator">=</span> retriers</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前没有重试器了，则调用不重试回调，结束本次递归</span></span><br><span class="line">    <span class="keyword">guard</span> <span class="operator">!</span>pendingRetriers.isEmpty <span class="keyword">else</span> &#123; completion(.doNotRetry); <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> retrier <span class="operator">=</span> pendingRetriers.removeFirst()</span><br><span class="line"></span><br><span class="line">    retrier.retry(request, for: session, dueTo: error) &#123; result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">switch</span> result &#123;</span><br><span class="line">        <span class="keyword">case</span> .retry, .retryWithDelay, .doNotRetryWithError:</span><br><span class="line">            <span class="comment">// 当决定重试，或者发生多无时，均不在继续下一个重试器，结束本地递归</span></span><br><span class="line">            completion(result)</span><br><span class="line">        <span class="keyword">case</span> .doNotRetry:</span><br><span class="line">            <span class="comment">// 当不重试且没有错误发生时继续执行下一个重试器</span></span><br><span class="line">            <span class="keyword">self</span>.retry(request, for: session, dueTo: error, using: pendingRetriers, completion: completion)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="事件监视器"><a href="#事件监视器" class="headerlink" title="事件监视器"></a>事件监视器</h4><p>Session 在初始化的时候，可以传入一组 eventMonitors。Session 内部还提供了一组默认的 defaultEventMonitors， 然后将这一组 eventMonitors 和默认提供的 defaultEventMonitors  合成成一个 CompositeEventMonitor，统一处理。</p>
+<p>事件监视器们都需要实现 EventMonitor 协议。监听请求发起到结束这段时间内的各种回调以及状态变化。</p>
+<p>Alamofire 内部提供并实现了一个 AlamofireNotifications 的监视器，通过通知将 request 的各个阶段抛出。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">AlamofireNotifications</span>: <span class="title class_">EventMonitor</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">requestDidResume</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>) &#123;</span><br><span class="line">        <span class="type">NotificationCenter</span>.default.postNotification(named: <span class="type">Request</span>.didResumeNotification, with: request)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">requestDidSuspend</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>) &#123;</span><br><span class="line">        <span class="type">NotificationCenter</span>.default.postNotification(named: <span class="type">Request</span>.didSuspendNotification, with: request)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">requestDidCancel</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>) &#123;</span><br><span class="line">        <span class="type">NotificationCenter</span>.default.postNotification(named: <span class="type">Request</span>.didCancelNotification, with: request)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">requestDidFinish</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>) &#123;</span><br><span class="line">        <span class="type">NotificationCenter</span>.default.postNotification(named: <span class="type">Request</span>.didFinishNotification, with: request)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">request</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>, <span class="params">didResumeTask</span> <span class="params">task</span>: <span class="type">URLSessionTask</span>) &#123;</span><br><span class="line">        <span class="type">NotificationCenter</span>.default.postNotification(named: <span class="type">Request</span>.didResumeTaskNotification, with: request)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">request</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>, <span class="params">didSuspendTask</span> <span class="params">task</span>: <span class="type">URLSessionTask</span>) &#123;</span><br><span class="line">        <span class="type">NotificationCenter</span>.default.postNotification(named: <span class="type">Request</span>.didSuspendTaskNotification, with: request)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">request</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>, <span class="params">didCancelTask</span> <span class="params">task</span>: <span class="type">URLSessionTask</span>) &#123;</span><br><span class="line">        <span class="type">NotificationCenter</span>.default.postNotification(named: <span class="type">Request</span>.didCancelTaskNotification, with: request)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">request</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">Request</span>, <span class="params">didCompleteTask</span> <span class="params">task</span>: <span class="type">URLSessionTask</span>, <span class="params">with</span> <span class="params">error</span>: <span class="type">AFError</span>?) &#123;</span><br><span class="line">        <span class="type">NotificationCenter</span>.default.postNotification(named: <span class="type">Request</span>.didCompleteTaskNotification, with: request)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Alamofire-失败认定"><a href="#Alamofire-失败认定" class="headerlink" title="Alamofire 失败认定"></a>Alamofire 失败认定</h4><p>请求失败认定分为两个过程：</p>
+<ol>
+<li><p>在本次 session 任务过程中发生错误，由客户端一侧造成的原因，例如无法解析主机(域名或者路径错误)或者网络原因导致链接不上等。</p>
+ <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// session 代理方法</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">urlSession</span>(<span class="keyword">_</span> <span class="params">session</span>: <span class="type">URLSession</span>, <span class="params">task</span>: <span class="type">URLSessionTask</span>, <span class="params">didCompleteWithError</span> <span class="params">error</span>: <span class="type">Error</span>?)</span><br></pre></td></tr></table></figure></li>
+<li><p>在任务过程中，没有发生错误并且成功拿到接口响应时，对 response 进行验证，验证方法有两种：</p>
+<ul>
+<li>对状态码进行验证：只有在指定的 http 状态码范围内，才算成功，否则返回一个状态码错误</li>
+<li>对返回的数据类型进行验证：数据为空时返回成功；当返回数据不为空时，验证 response 的 contentType</li>
+</ul>
+</li>
+<li><p>当请求认定为失败时，会继续重试逻辑。</p>
+</li>
+</ol>
+<h4 id="Alamofire-的重试流程"><a href="#Alamofire-的重试流程" class="headerlink" title="Alamofire 的重试流程"></a>Alamofire 的重试流程</h4><p>重试流程分为两个阶段：</p>
+<ol>
+<li><p>当请求认定为失败时，询问是否进行重试流程。</p>
+<ul>
+<li>没有拦截器时不重试<ul>
+<li>询问拦截器重试策略：<ul>
+<li>doNotRetry， doNotRetryWithError 不重试</li>
+<li>retry 或 retryWithDelay 重试</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>开始重试流程</p>
+</li>
+<li><p>重试前的准备工作：记录重试次数 -&gt; 重置所有与任务和响应序列化程序相关的状态 -&gt; 响应数据清空 -&gt; 事件监听器分发状态</p>
+</li>
+<li><p>执行请求</p>
+</li>
+</ol>
+<h4 id="Alamofire-主流程"><a href="#Alamofire-主流程" class="headerlink" title="Alamofire 主流程"></a>Alamofire 主流程</h4><p><img src="https://s2.loli.net/2022/09/29/RxWKpjvnt4SrAX3.jpg" alt="alamofire.jpg"></p>
+<h3 id="代码阅读"><a href="#代码阅读" class="headerlink" title="代码阅读"></a>代码阅读</h3><h4 id="dispatchPrecondition"><a href="#dispatchPrecondition" class="headerlink" title="dispatchPrecondition"></a>dispatchPrecondition</h4><p>用于在当前执行上下文中进行断言，用于验证一个闭包是否在预期的队列中被执行</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">performDataStreamRequest</span>(<span class="keyword">_</span> <span class="params">request</span>: <span class="type">DataStreamRequest</span>) &#123;</span><br><span class="line">    <span class="comment">// dispatchPrecondition： 检查当前线程是否你希望的线程</span></span><br><span class="line">    dispatchPrecondition(condition: .onQueue(requestQueue))</span><br><span class="line"> </span><br><span class="line">    performSetupOperations(for: request, convertible: request.convertible)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="队列调度与-targetQueue"><a href="#队列调度与-targetQueue" class="headerlink" title="队列调度与 targetQueue"></a>队列调度与 targetQueue</h4><p>以下代码，为什么会保证 <code>setup</code> 在 <code>performSetupOperations</code> 之前执行（这里保证能够执行到Moya 插件的 prepare 和 willSend 回调）。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> initialRequest: <span class="type">DataRequest</span> <span class="operator">=</span> session.requestQueue.sync &#123;</span><br><span class="line">    <span class="comment">// 在创建 request 时，会在 requestQueue 异步执行 performSetupOperations</span></span><br><span class="line">    <span class="keyword">let</span> initialRequest <span class="operator">=</span> session.request(request, interceptor: interceptor)</span><br><span class="line">    setup(interceptor: interceptor, with: target, and: initialRequest)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> initialRequest</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原因在于 sesstion 初始化时，创建的队列：</p>
+<p>rootQueue 是串行队列，负责所有内部回调和状态更新。</p>
+<p>requestQueue 用来异步创建 request，默认情况下是以 rootQueue 为 target 的队列。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Retarget the incoming rootQueue for safety, unless it&#x27;s the main queue, which we know is safe.</span></span><br><span class="line"><span class="keyword">let</span> serialRootQueue <span class="operator">=</span> (rootQueue <span class="operator">===</span> <span class="type">DispatchQueue</span>.main) <span class="operator">?</span> rootQueue : <span class="type">DispatchQueue</span>(label: rootQueue.label,</span><br><span class="line">                                                                                     target: rootQueue) </span><br><span class="line"><span class="keyword">self</span>.requestQueue <span class="operator">=</span> requestQueue <span class="operator">??</span> <span class="type">DispatchQueue</span>(label: <span class="string">&quot;<span class="subst">\(rootQueue.label)</span>.requestQueue&quot;</span>, target: rootQueue)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">convenience</span> <span class="keyword">init</span>(<span class="params">label</span>: <span class="type">String</span>, <span class="params">qos</span>: <span class="type">DispatchQoS</span> <span class="operator">=</span> .unspecified, </span><br><span class="line">    <span class="params">attributes</span>: <span class="type">DispatchQueue</span>.<span class="type">Attributes</span> <span class="operator">=</span> [], </span><br><span class="line">    <span class="params">autoreleaseFrequency</span>: <span class="type">DispatchQueue</span>.<span class="type">AutoreleaseFrequency</span> <span class="operator">=</span> .inherit, </span><br><span class="line">    <span class="params">target</span>: <span class="type">DispatchQueue</span>? <span class="operator">=</span> <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
+
+<p>requestQueue 是以 rootQueue 为 targetQueue 的串行队列。</p>
+<p>设置队列的 targetQueue，向队列提交的任务，都会被放到它的目标队列来执行。串行队列的 targetQueue 是一个支持 overcommit 的全局队列，而全局队列的底层则是一个线程池<a target="_blank" rel="noopener" href="https://xiaozhuanlan.com/topic/7193856240">【深入浅出 GCD】</a>。</p>
+<p>你创建的任何队列都包含一个目标队列。默认情况下，这些队列的目标队列是优先级为<code>DISPATCH_QUEUE_PRIORITY_DEFAULT </code>的全局队列。</p>
+<p>自定义队列里每一个准备好要执行的block，将会被重新加入到这个队列的目标队列里去执行。</p>
+<blockquote>
+<p>因为所有自己创建的队列（包括串行队列）都会把默认优先级的全局并发队列当做目标队列，全局并发队列不会被阻塞，等待工作都是在提交的队列中的，一旦轮到执行，就会被提交到目标队列中，并立刻开始执行。所以除非是你自定义目标队列，否则你完全可以抽象的认为任务就是在你提交的队列中开始执行的。</p>
+</blockquote>
+<blockquote>
+<p>只有全局并发队列和主队列才能执行block。所有其他的队列都必须以这两种队列中的一种为目标队列。</p>
+</blockquote>
+<p>指定一个串行队列作为目标队列，其实核心思想就是说，不管有多少独立的线程在竞争资源，同一时刻我们只做一件事<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bd2609cac26b">【GCD Target Queues】</a>。</p>
+<p>下图是队列示意图，由此图，requestQueue 队列的任务最终会放到 Default Priority Queue 的队列执行。</p>
+<p><img src="https://s2.loli.net/2022/09/29/V2Po5hjAueyU8KR.png" alt="queue-target.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+            <a href="/tags/Moya/" rel="tag"># Moya</a>
+          
+            <a href="/tags/Alamofire/" rel="tag"># Alamofire</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/08/05/iOS%E7%9A%84%E8%BE%B9%E7%BC%98%E4%BE%A7%E6%BB%91/" rel="next" title="iOS 的边缘侧滑">
+                <i class="fa fa-chevron-left"></i> iOS 的边缘侧滑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/08/10/Alamofire%E7%9A%84%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E6%8B%A6%E6%88%AA%E5%99%A8/" rel="prev" title="Alamofire 的身份验证拦截器">
+                Alamofire 的身份验证拦截器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/redye" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:sixwalnut@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E-Moya-%E5%88%B0-Alamofire"><span class="nav-number">1.</span> <span class="nav-text">从 Moya 到 Alamofire</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Moya-%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94"><span class="nav-number">1.1.</span> <span class="nav-text">Moya 网络请求与响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Moya-%E7%9A%84%E6%8F%92%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.</span> <span class="nav-text">Moya 的插件功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E-target-%E8%BD%AC%E6%8D%A2%E5%88%B0-request-%E7%9A%84%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">从 target 转换到 request 的过程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Moya-%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">1.4.</span> <span class="nav-text">Moya 发送请求流程图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alamofire"><span class="nav-number">2.</span> <span class="nav-text">Alamofire</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="nav-number">2.1.</span> <span class="nav-text">拦截器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9B%91%E8%A7%86%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">事件监视器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Alamofire-%E5%A4%B1%E8%B4%A5%E8%AE%A4%E5%AE%9A"><span class="nav-number">2.3.</span> <span class="nav-text">Alamofire 失败认定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Alamofire-%E7%9A%84%E9%87%8D%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">Alamofire 的重试流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Alamofire-%E4%B8%BB%E6%B5%81%E7%A8%8B"><span class="nav-number">2.5.</span> <span class="nav-text">Alamofire 主流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-number">3.</span> <span class="nav-text">代码阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dispatchPrecondition"><span class="nav-number">3.1.</span> <span class="nav-text">dispatchPrecondition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%9F%E5%88%97%E8%B0%83%E5%BA%A6%E4%B8%8E-targetQueue"><span class="nav-number">3.2.</span> <span class="nav-text">队列调度与 targetQueue</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小红</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

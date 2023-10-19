@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,Swift,RxSwift," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Cold Observable 和观察者是一对一的关系，也就是每次产生订阅时，都会是一个新的资料流。而 Hot Observable 和观察者是一对多的关系，也就是每次产生订阅时，都会使用 「同一份资料流」，将 Cold Observable 转换成 Hot Observable 的过程，就是将原来的资料流公用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxSwift 冷信号转换成热信号">
+<meta property="og:url" content="http://redye.com/2023/10/18/RxSwift%E5%86%B7%E4%BF%A1%E5%8F%B7%E8%BD%AC%E6%8D%A2%E6%88%90%E7%83%AD%E4%BF%A1%E5%8F%B7/index.html">
+<meta property="og:site_name" content="红红の">
+<meta property="og:description" content="Cold Observable 和观察者是一对一的关系，也就是每次产生订阅时，都会是一个新的资料流。而 Hot Observable 和观察者是一对多的关系，也就是每次产生订阅时，都会使用 「同一份资料流」，将 Cold Observable 转换成 Hot Observable 的过程，就是将原来的资料流公用。">
+<meta property="og:locale">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f8f28c458853aefd919c1.jpg">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f8f28c458853aefd91950.jpg">
+<meta property="article:published_time" content="2023-10-18T02:35:23.000Z">
+<meta property="article:modified_time" content="2023-10-18T07:56:11.081Z">
+<meta property="article:author" content="小红">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="RxSwift">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.imgdb.cn/item/652f8f28c458853aefd919c1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://redye.com/2023/10/18/RxSwift冷信号转换成热信号/"/>
+
+
+
+
+
+  <title>RxSwift 冷信号转换成热信号 | 红红の</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红红の</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2023/10/18/RxSwift%E5%86%B7%E4%BF%A1%E5%8F%B7%E8%BD%AC%E6%8D%A2%E6%88%90%E7%83%AD%E4%BF%A1%E5%8F%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红红の">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RxSwift 冷信号转换成热信号</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-10-18T10:35:23+08:00">
+                2023-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS%E6%BA%90%E7%A0%81%E6%8E%A2%E7%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS源码探究</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Cold Observable 和观察者是一对一的关系，也就是每次产生订阅时，都会是一个新的资料流。而 Hot Observable 和观察者是一对多的关系，也就是每次产生订阅时，都会使用 「同一份资料流」，将 Cold Observable 转换成 Hot Observable 的过程，就是将原来的资料流公用。</p>
+<span id="more"></span>
+
+<h3 id="multicast"><a href="#multicast" class="headerlink" title="multicast"></a>multicast</h3><p>Cold Observable 每次订阅只会对应一个观察者，因此也可以说成将资料播放给唯一的观察者，因此也称为单播，而 multicast 就是将 Observable 变成多播的情况。</p>
+<p>在 multicast 内必须指定一个产生 Hot Observable 的工厂方法，也就是建立 Subject、BehaviorSubject 等逻辑。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">cold2Hot</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> ob <span class="operator">=</span> <span class="type">Observable</span>&lt;<span class="type">String</span>&gt;.create &#123; observer -&gt; <span class="type">Disposable</span> <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">        logDebug(<span class="string">&quot;开始发送信号&quot;</span>)</span><br><span class="line">        observer.onNext(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        observer.onNext(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        observer.onNext(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() <span class="operator">+</span> <span class="number">1</span>) &#123;</span><br><span class="line">            observer.onNext(<span class="string">&quot;4&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="type">Disposables</span>.create()</span><br><span class="line">    &#125;.multicast(<span class="type">PublishSubject</span>&lt;<span class="type">String</span>&gt;())</span><br><span class="line">    </span><br><span class="line">    logDebug(<span class="string">&quot;add observer 1&quot;</span>)</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">_</span> <span class="operator">=</span> ob.subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">        logDebug(<span class="string">&quot;o1: <span class="subst">\(String(describing: event.element))</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    logDebug(<span class="string">&quot;connect...&quot;</span>)</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">_</span> <span class="operator">=</span> ob.connect()</span><br><span class="line"></span><br><span class="line">    <span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() <span class="operator">+</span> <span class="number">1</span>) &#123;</span><br><span class="line">        logDebug(<span class="string">&quot;add observer 2&quot;</span>)</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">_</span> <span class="operator">=</span> ob.subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">            logDebug(<span class="string">&quot;o2: <span class="subst">\(String(describing: event.element))</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    logDebug(<span class="string">&quot;add observer 3&quot;</span>)</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">_</span> <span class="operator">=</span> ob.subscribe &#123; event <span class="keyword">in</span></span><br><span class="line">        logDebug(<span class="string">&quot;o3: <span class="subst">\(String(describing: event.element))</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">22.050847</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] add observer <span class="number">1</span></span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">22.052584</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] connect<span class="operator">...</span></span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">22.054300</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] 开始发送信号</span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">22.058999</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] o1: <span class="type">Optional</span>(<span class="string">&quot;1&quot;</span>)</span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">22.059369</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] o1: <span class="type">Optional</span>(<span class="string">&quot;2&quot;</span>)</span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">22.059418</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] o1: <span class="type">Optional</span>(<span class="string">&quot;3&quot;</span>)</span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">22.061188</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] add observer <span class="number">3</span></span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">22.610973</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] add observer <span class="number">2</span></span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">23.161118</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] o1: <span class="type">Optional</span>(<span class="string">&quot;4&quot;</span>)</span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">23.168742</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] o3: <span class="type">Optional</span>(<span class="string">&quot;4&quot;</span>)</span><br><span class="line"><span class="number">2022</span><span class="operator">-</span><span class="number">10</span><span class="operator">-</span><span class="number">21</span> <span class="number">16</span>:<span class="number">49</span>:<span class="number">23.168950</span><span class="operator">+</span><span class="number">0800</span> <span class="type">RxDemo</span>[<span class="number">87512</span>:<span class="number">4847046</span>] o2: <span class="type">Optional</span>(<span class="string">&quot;4&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当使用 multicast 时，新的 Observable 是一个 <code>ConnectableObservable</code>，和一般的 Observable 的差别在于 ConnectableObservable 是多播的，而且必须调用 connect 方法，才会开始进行多播操作。</p>
+<p>看上面的例子，也可看出只有在 connect 后才开始发送信号。</p>
+<p><img src="https://pic.imgdb.cn/item/652f8f28c458853aefd919c1.jpg"></p>
+<p>转换过程：</p>
+<p><img src="https://pic.imgdb.cn/item/652f8f28c458853aefd91950.jpg"></p>
+<h3 id="shareReplay"><a href="#shareReplay" class="headerlink" title="shareReplay"></a>shareReplay</h3><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">share</span>(<span class="params">replay</span>: <span class="type">Int</span> <span class="operator">=</span> <span class="number">0</span>, <span class="params">scope</span>: <span class="type">SubjectLifetimeScope</span> <span class="operator">=</span> .whileConnected) -&gt; <span class="type">Observable</span>&lt;<span class="type">Element</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> scope &#123;</span><br><span class="line">    <span class="keyword">case</span> .forever:</span><br><span class="line">        <span class="keyword">switch</span> replay &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>: <span class="keyword">return</span> <span class="keyword">self</span>.multicast(<span class="type">PublishSubject</span>()).refCount()</span><br><span class="line">        <span class="keyword">default</span>: <span class="keyword">return</span> <span class="keyword">self</span>.multicast(<span class="type">ReplaySubject</span>.create(bufferSize: replay)).refCount()</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">case</span> .whileConnected:</span><br><span class="line">        <span class="keyword">switch</span> replay &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>: <span class="keyword">return</span> <span class="type">ShareWhileConnected</span>(source: <span class="keyword">self</span>.asObservable())</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>: <span class="keyword">return</span> <span class="type">ShareReplay1WhileConnected</span>(source: <span class="keyword">self</span>.asObservable())</span><br><span class="line">        <span class="keyword">default</span>: <span class="keyword">return</span> <span class="keyword">self</span>.multicast(makeSubject: &#123; <span class="type">ReplaySubject</span>.create(bufferSize: replay) &#125;).refCount()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>shareReplay 的返回值是一个 &#96;Observable<Element>，那么他转换成的热信号，就存在冷信号的特点 – 只有在被订阅后才开始发送信号。</p>
+<p>但同时，他已经转换成了热信号，那么他就也有热信号的特点：当有新的订阅者时，并不会从头开始发送信号 – 只有在被第一次订阅时，从头开始发送信号，新的订阅者只能接收到在其订阅后发送的信号。</p>
+<p>scope &#x3D;&#x3D; .forever 时实现的核心逻辑在 RefCountSink 的 run 方法中：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 只有当第一次被订阅时</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">self</span>.parent.count <span class="operator">==</span> <span class="number">0</span> &#123;</span><br><span class="line">    <span class="keyword">self</span>.parent.count <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    <span class="comment">// 执行 connect，开发发送信号</span></span><br><span class="line">    <span class="keyword">self</span>.parent.connectableSubscription <span class="operator">=</span> <span class="keyword">self</span>.parent.source.connect()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">self</span>.parent.count <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当 scope &#x3D;&#x3D; .whileConnected 时，replay 的次数为 0 或 1 时做了特殊处理，但是他们发送信号的处理逻辑是一样的：在 ShareWhileConnected 或者 ShareReplay1WhileConnected 的 subscribe 方法中：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">subscribe</span>&lt;<span class="type">Observer</span>: <span class="type">ObserverType</span>&gt;(<span class="keyword">_</span> <span class="params">observer</span>: <span class="type">Observer</span>) -&gt; <span class="type">Disposable</span> <span class="keyword">where</span> <span class="type">Observer</span>.<span class="type">Element</span> <span class="operator">==</span> <span class="type">Element</span> &#123;</span><br><span class="line">    <span class="keyword">self</span>.lock.lock()</span><br><span class="line">    <span class="keyword">let</span> connection <span class="operator">=</span> <span class="keyword">self</span>.synchronized_subscribe(observer)</span><br><span class="line">    <span class="keyword">let</span> count <span class="operator">=</span> connection.observers.count</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> disposable <span class="operator">=</span> connection.synchronized_subscribe(observer)</span><br><span class="line">    <span class="keyword">self</span>.lock.unlock()</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 只有第一次被订阅时 connect，开始发送信号</span></span><br><span class="line">    <span class="keyword">if</span> count <span class="operator">==</span> <span class="number">0</span> &#123;</span><br><span class="line">        connection.connect()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> disposable</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="publish-与-replay"><a href="#publish-与-replay" class="headerlink" title="publish 与 replay"></a>publish 与 replay</h3><p>publish 与 replay 都是对multicast 的封装，使用了不同的热信号类型进行转换。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">publish</span>() -&gt; <span class="type">ConnectableObservable</span>&lt;<span class="type">Element</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">self</span>.multicast &#123; <span class="type">PublishSubject</span>() &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">replay</span>(<span class="keyword">_</span> <span class="params">bufferSize</span>: <span class="type">Int</span>) -&gt; <span class="type">ConnectableObservable</span>&lt;<span class="type">Element</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">self</span>.multicast &#123; <span class="type">ReplaySubject</span>.create(bufferSize: bufferSize) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+            <a href="/tags/RxSwift/" rel="tag"># RxSwift</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/10/16/RxSwift%E7%9A%84%E5%86%B7%E7%83%AD%E4%BF%A1%E5%8F%B7/" rel="next" title="RxSwift 的冷热信号">
+                <i class="fa fa-chevron-left"></i> RxSwift 的冷热信号
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/redye" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:sixwalnut@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#multicast"><span class="nav-number">1.</span> <span class="nav-text">multicast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shareReplay"><span class="nav-number">2.</span> <span class="nav-text">shareReplay</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#publish-%E4%B8%8E-replay"><span class="nav-number">3.</span> <span class="nav-text">publish 与 replay</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小红</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

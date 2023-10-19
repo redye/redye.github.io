@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,Swift,RxSwift," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="序列销毁的两种方式在前两篇我们注意到，我们在创建一个序列（不论是 Observable 还是 Single 序列）的实现时，都需要返回一个 Disposable 实例。我们已 Observable 序列为例：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxSwift 序列的销毁">
+<meta property="og:url" content="http://redye.com/2023/10/15/RxSwift%E5%BA%8F%E5%88%97%E7%9A%84%E9%94%80%E6%AF%81/index.html">
+<meta property="og:site_name" content="红红の">
+<meta property="og:description" content="序列销毁的两种方式在前两篇我们注意到，我们在创建一个序列（不论是 Observable 还是 Single 序列）的实现时，都需要返回一个 Disposable 实例。我们已 Observable 序列为例：">
+<meta property="og:locale">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f910bc458853aefde1927.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f910cc458853aefde1a06.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f9183c458853aefdf42ec.jpg">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f91d7c458853aefe0230a.jpg">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f921fc458853aefe0dfe8.jpg">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f9617c458853aefeb93d4.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/652f9618c458853aefeb9526.png">
+<meta property="article:published_time" content="2023-10-15T02:35:23.000Z">
+<meta property="article:modified_time" content="2023-10-18T08:26:26.207Z">
+<meta property="article:author" content="小红">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="RxSwift">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.imgdb.cn/item/652f910bc458853aefde1927.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://redye.com/2023/10/15/RxSwift序列的销毁/"/>
+
+
+
+
+
+  <title>RxSwift 序列的销毁 | 红红の</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红红の</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2023/10/15/RxSwift%E5%BA%8F%E5%88%97%E7%9A%84%E9%94%80%E6%AF%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红红の">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RxSwift 序列的销毁</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-10-15T10:35:23+08:00">
+                2023-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS%E6%BA%90%E7%A0%81%E6%8E%A2%E7%A9%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS源码探究</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="序列销毁的两种方式"><a href="#序列销毁的两种方式" class="headerlink" title="序列销毁的两种方式"></a>序列销毁的两种方式</h3><p>在前两篇我们注意到，我们在创建一个序列（不论是 Observable 还是 Single 序列）的实现时，都需要返回一个 <code>Disposable</code> 实例。我们已 Observable 序列为例：</p>
+<span id="more"></span>
+
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">createRxTest</span>() &#123;</span><br><span class="line">    <span class="comment">// 1. 创建</span></span><br><span class="line">    <span class="keyword">let</span> ob <span class="operator">=</span> <span class="type">Observable</span>&lt;<span class="type">String</span>&gt;.create &#123; observer -&gt; <span class="type">Disposable</span> <span class="keyword">in</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 3. 发送信号</span></span><br><span class="line">        observer.onNext(<span class="string">&quot;1&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() <span class="operator">+</span> <span class="number">1</span>) &#123;</span><br><span class="line">            observer.onNext(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">            observer.onCompleted()</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 返回一个 Disposables 实例</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">Disposables</span>.create()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 订阅</span></span><br><span class="line">    <span class="keyword">let</span> observer <span class="operator">=</span> ob.subscribe(onNext: &#123; (text) <span class="keyword">in</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;订阅到: <span class="subst">\(text)</span>&quot;</span>)</span><br><span class="line">            &#125;, onError: &#123; (error) <span class="keyword">in</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;error: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">            &#125;, onCompleted: &#123;</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;完成&quot;</span>)</span><br><span class="line">            &#125;) &#123;</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;销毁&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">    observer.dispose()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pic.imgdb.cn/item/652f910bc458853aefde1927.png"></p>
+<p><img src="https://pic.imgdb.cn/item/652f910cc458853aefde1a06.png"></p>
+<p>观察上面两幅图，序列销毁有两种方式：</p>
+<ol>
+<li>发送一个 completed 或者 一个 error 信号，这种可以看成是事件正常结束或者发生异常</li>
+<li>调用 dispose 主动销毁，在销毁后事件发送的信号将不会在接收</li>
+</ol>
+<p>接下来我们再继续看序列在事件发送信号的过程中做了哪些操作，或者主动销毁又是怎么操作的。</p>
+<p>首先下面是一个类图：</p>
+<p><img src="https://pic.imgdb.cn/item/652f9183c458853aefdf42ec.jpg"></p>
+<p>Disposables 是一个工厂类，根据不同的需要创建对应的 disposable，在序列发出完成或者产生错误时，销毁</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Disposables</span> &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/// Creates a disposable with the given disposables.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">create</span>(<span class="keyword">_</span> <span class="params">disposable1</span>: <span class="type">Disposable</span>, <span class="keyword">_</span> <span class="params">disposable2</span>: <span class="type">Disposable</span>) -&gt; <span class="type">Cancelable</span> &#123;</span><br><span class="line">        <span class="type">BinaryDisposable</span>(disposable1, disposable2)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">Disposables</span> &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/// Constructs a new disposable with the given action used for disposal.</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - parameter dispose: Disposal action which will be run upon calling `dispose`.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">create</span>(<span class="params">with</span> <span class="params">dispose</span>: <span class="keyword">@escaping</span> () -&gt; <span class="type">Void</span>) -&gt; <span class="type">Cancelable</span> &#123;</span><br><span class="line">        <span class="type">AnonymousDisposable</span>(disposeAction: dispose)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="序列发送-error-事件或者-completed-事件"><a href="#序列发送-error-事件或者-completed-事件" class="headerlink" title="序列发送 error 事件或者 completed 事件"></a>序列发送 error 事件或者 completed 事件</h3><p><img src="https://pic.imgdb.cn/item/652f91d7c458853aefe0230a.jpg"></p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">on</span>(<span class="keyword">_</span> <span class="params">event</span>: <span class="type">Event</span>&lt;<span class="type">Element</span>&gt;) &#123;</span><br><span class="line">    <span class="keyword">#if</span> <span class="type">DEBUG</span></span><br><span class="line">        <span class="keyword">self</span>.synchronizationTracker.register(synchronizationErrorMessage: .default)</span><br><span class="line">        <span class="keyword">defer</span> &#123; <span class="keyword">self</span>.synchronizationTracker.unregister() &#125;</span><br><span class="line">    <span class="keyword">#endif</span></span><br><span class="line">    <span class="keyword">switch</span> event &#123;</span><br><span class="line">    <span class="keyword">case</span> .next:</span><br><span class="line">        <span class="comment">// 接收到 next 事件，首先判断当前序列状态，已停止则不在进行事件转发</span></span><br><span class="line">        <span class="keyword">if</span> load(<span class="keyword">self</span>.isStopped) <span class="operator">==</span> <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">self</span>.forwardOn(event)</span><br><span class="line">    <span class="keyword">case</span> .error, .completed:</span><br><span class="line">        <span class="comment">// 当接收到是 error 或 completed 事件，查询并修改状态</span></span><br><span class="line">        <span class="comment">// 注意这里的 isStoped，他是一个 AtomicInt 类型</span></span><br><span class="line">        <span class="comment">// AtomicInt 是一个类，fetchOr 返回原值，并赋新值</span></span><br><span class="line">        <span class="comment">// 在 RxSwift 中，AtomicInt 有大量应用</span></span><br><span class="line">        <span class="keyword">if</span> fetchOr(<span class="keyword">self</span>.isStopped, <span class="number">1</span>) <span class="operator">==</span> <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">self</span>.forwardOn(event)</span><br><span class="line">            <span class="keyword">self</span>.dispose()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过发送 .error 或者 .completed 事件结束序列，核心的处理方法就是在 AnonymousObservableSink 的 on 方法里，如果是这两个事件，在执行完成后就堵住这个管道，后序如果在接收到事件，就不在进行转发了。</p>
+<p>在 dispose 方法里，更新 disposed 值，并销毁 sink 和 创建序列时的 subscribtion，即改变他们 disposed 状态。</p>
+<h3 id="调用-dispose-方法销毁序列"><a href="#调用-dispose-方法销毁序列" class="headerlink" title="调用 dispose 方法销毁序列"></a>调用 dispose 方法销毁序列</h3><p><img src="https://pic.imgdb.cn/item/652f921fc458853aefe0dfe8.jpg"></p>
+<p>Dispose 方法改变的是 disposed 的状态，在事件转发过程中，会判断当前是否被销毁：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">func</span> <span class="title function_">forwardOn</span>(<span class="keyword">_</span> <span class="params">event</span>: <span class="type">Event</span>&lt;<span class="type">Observer</span>.<span class="type">Element</span>&gt;) &#123;</span><br><span class="line">    <span class="keyword">#if</span> <span class="type">DEBUG</span></span><br><span class="line">        <span class="keyword">self</span>.synchronizationTracker.register(synchronizationErrorMessage: .default)</span><br><span class="line">        <span class="keyword">defer</span> &#123; <span class="keyword">self</span>.synchronizationTracker.unregister() &#125;</span><br><span class="line">    <span class="keyword">#endif</span></span><br><span class="line">    <span class="comment">// 判断当前状态，若已销毁则不在继续转发事件</span></span><br><span class="line">    <span class="keyword">if</span> isFlagSet(<span class="keyword">self</span>.disposed, <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">self</span>.observer.on(event)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DisposedBag"><a href="#DisposedBag" class="headerlink" title="DisposedBag"></a>DisposedBag</h3><p>Dispose 还有另外一种使用方法：</p>
+<p><img src="https://pic.imgdb.cn/item/652f9617c458853aefeb93d4.png"></p>
+<p><img src="https://pic.imgdb.cn/item/652f9618c458853aefeb9526.png"></p>
+<p>观察上面两幅图，导致这种结果的原因在于 disposeBag 的作用域。当 disposeBag 被释放时，销毁序列。</p>
+<p>这一点从 DisposeBag 的实现中也可以看出来：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Disposable</span> &#123;</span><br><span class="line">    <span class="comment">/// 1. 将序列加入到回收袋</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">disposed</span>(<span class="params">by</span> <span class="params">bag</span>: <span class="type">DisposeBag</span>) &#123;</span><br><span class="line">        bag.insert(<span class="keyword">self</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">DisposeBag</span>: <span class="title class_">DisposeBase</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> lock <span class="operator">=</span> <span class="type">SpinLock</span>()</span><br><span class="line">    <span class="comment">// state</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> disposables <span class="operator">=</span> [<span class="type">Disposable</span>]()</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> isDisposed <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// Constructs new empty dispose bag.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/// 2. 当回收袋将要释放时销毁序列</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">insert</span>(<span class="keyword">_</span> <span class="params">disposable</span>: <span class="type">Disposable</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>._insert(disposable)<span class="operator">?</span>.dispose()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">_insert</span>(<span class="keyword">_</span> <span class="params">disposable</span>: <span class="type">Disposable</span>) -&gt; <span class="type">Disposable</span>? &#123;</span><br><span class="line">        <span class="keyword">self</span>.lock.performLocked &#123;</span><br><span class="line">            <span class="comment">/// 当前回收袋已经被回收，则直接回收序列</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">self</span>.isDisposed &#123;</span><br><span class="line">                <span class="keyword">return</span> disposable</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">/// 存储序列</span></span><br><span class="line">            <span class="keyword">self</span>.disposables.append(disposable)</span><br><span class="line"> </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/// 4. 销毁这个回收袋里的所有可回收序列</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">dispose</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> oldDisposables <span class="operator">=</span> <span class="keyword">self</span>._dispose()</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">for</span> disposable <span class="keyword">in</span> oldDisposables &#123;</span><br><span class="line">            disposable.dispose()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">_dispose</span>() -&gt; [<span class="type">Disposable</span>] &#123;</span><br><span class="line">        <span class="keyword">self</span>.lock.performLocked &#123;</span><br><span class="line">            <span class="keyword">let</span> disposables <span class="operator">=</span> <span class="keyword">self</span>.disposables</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">self</span>.disposables.removeAll(keepingCapacity: <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">self</span>.isDisposed <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> disposables</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 3. 对象被释放时，开始销毁序列</span></span><br><span class="line">    <span class="keyword">deinit</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.dispose()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一般情况下，我们都需要使用 disposeBag，我们不希望序列被立即销毁。想象一下，我们在一个页面中发出请求序列，我们希望拿到 response 时在去处理。但当页面被释放的时候，我们需要销毁队列（否则有可能会造成内存泄露等问题），这个时候我们就可以让 controller 持有这个 bag，controller 被释放的时候释放 bag，从而销毁序列。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从代码层面可以看出来，销毁序列都是通过阻断事件转发来实现的，即订阅者不再继续接收事件。即对于被订阅者来说，还是可以继续发送事件，只是没有接收对象了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+            <a href="/tags/RxSwift/" rel="tag"># RxSwift</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/10/14/Single%E5%BA%8F%E5%88%97%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E8%AE%A2%E9%98%85/" rel="next" title="Single 序列的创建与订阅">
+                <i class="fa fa-chevron-left"></i> Single 序列的创建与订阅
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/10/16/RxSwift%E7%9A%84%E5%86%B7%E7%83%AD%E4%BF%A1%E5%8F%B7/" rel="prev" title="RxSwift 的冷热信号">
+                RxSwift 的冷热信号 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/redye" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:sixwalnut@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E9%94%80%E6%AF%81%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">序列销毁的两种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8F%91%E9%80%81-error-%E4%BA%8B%E4%BB%B6%E6%88%96%E8%80%85-completed-%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">序列发送 error 事件或者 completed 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%94%A8-dispose-%E6%96%B9%E6%B3%95%E9%94%80%E6%AF%81%E5%BA%8F%E5%88%97"><span class="nav-number">3.</span> <span class="nav-text">调用 dispose 方法销毁序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DisposedBag"><span class="nav-number">4.</span> <span class="nav-text">DisposedBag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小红</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

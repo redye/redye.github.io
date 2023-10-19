@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,Cocoapods," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="私有库打包 framework">
+<meta property="og:url" content="http://redye.com/2019/04/14/private-pods-framework/index.html">
+<meta property="og:site_name" content="红红の">
+<meta property="og:description" content="制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。cocoapods 提供了一个插件来帮助你。">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.loli.net/2018/09/29/5baf282dc3a1c.png">
+<meta property="og:image" content="https://i.loli.net/2018/09/29/5baf282fc137b.png">
+<meta property="article:published_time" content="2019-04-14T09:20:23.000Z">
+<meta property="article:modified_time" content="2022-09-28T07:01:46.754Z">
+<meta property="article:author" content="小红">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Cocoapods">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/09/29/5baf282dc3a1c.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://redye.com/2019/04/14/private-pods-framework/"/>
+
+
+
+
+
+  <title>私有库打包 framework | 红红の</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">红红の</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://redye.com/2019/04/14/private-pods-framework/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="红红の">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">私有库打包 framework</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T17:20:23+08:00">
+                2019-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BB%A3%E7%A0%81/" itemprop="url" rel="index">
+                    <span itemprop="name">工具代码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>制作一个 framework 除了使用 Xcode 创建一个 framework 的工程外，还有没有别的办法呢？这里既然是一个 CocoaPods 的教程，那么我们自然是希望能通过 cocoapods 来完成。<br>cocoapods 提供了一个插件来帮助你。</p>
+<span id="more"></span>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/CocoaPods/cocoapods-packager">CocoaPods-Packager</a></p>
+<h3 id="CocoaPods-Packager-安装与使用"><a href="#CocoaPods-Packager-安装与使用" class="headerlink" title="CocoaPods-Packager 安装与使用"></a>CocoaPods-Packager 安装与使用</h3><p>接下来就是，使用下面的命令安装它</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo gem install cocoapods-packager</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，使用下面的命令打包 framework</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod package <span class="title class_">WFRFoundation</span>.podspec [--force] [--library] [--verbose] ...</span><br></pre></td></tr></table></figure>
+
+<p>命令后面的参数说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 强制覆盖之前已经生成过的二进制库</span><br><span class="line">--force </span><br><span class="line"></span><br><span class="line"># 生成嵌入式 .framework (静态 framework)</span><br><span class="line">--embedded </span><br><span class="line"></span><br><span class="line"># 生成静态 .a </span><br><span class="line">--library </span><br><span class="line"></span><br><span class="line"># 生成动态 .framework </span><br><span class="line">--dynamic </span><br><span class="line"></span><br><span class="line"># 动态 .framework 是需要签名的，所以只有生成动态库的时候需要这个 BundleId </span><br><span class="line">--bundle-identifier</span><br><span class="line"></span><br><span class="line"># 不包含依赖的符号表，生成动态库的时候不能包含这个命令</span><br><span class="line"># 动态库一定需要包含依赖的符号表。 </span><br><span class="line">--exclude-deps</span><br><span class="line"></span><br><span class="line"># 表示生成的库是 debug 还是 release，默认是 release</span><br><span class="line"># --configuration=Debug </span><br><span class="line">--configuration</span><br><span class="line"></span><br><span class="line"># 表示不使用 name mangling 技术，pod package 默认是使用这个技术的。</span><br><span class="line"># * 我们能在用 pod package 生成二进制库的时候会看到终端有输出 Mangling symbols 和 Building mangled framework，表示使用了这个技术。</span><br><span class="line"># * 如果你的 pod 库没有其他静态库(*.a/*.framework)依赖的话，那么不使用这个命令也不会报错。</span><br><span class="line"># * 但是如果有其他静态库依赖，不使用 --no-mangle 这个命令的话，那么你在工程里使用生成的二进制库的时候就会报错：Undefined symbols for architecture x86_64。</span><br><span class="line">--no-mangle</span><br><span class="line"></span><br><span class="line"># 如果你的 pod 库有 subspec，那么加上这个命名表示只给某个或几个 subspec 生成二进制库</span><br><span class="line"># * --subspecs=subspec1,subspec2</span><br><span class="line"># * 生成的库的名字就是你 podspec 的名字，如果你想生成的库的名字跟 subspec 的名字一样，那么就需要修改 podspec 的名字。 </span><br><span class="line"># * 这个脚本就是批量生成 subspec 的二进制库</span><br><span class="line">--subspecs</span><br><span class="line"></span><br><span class="line"># 一些依赖的 source</span><br><span class="line"># * 如果你有依赖是来自于私有库的，那就需要加上那个私有库的 source</span><br><span class="line"># * 默认是 cocoapods 的 Specs 仓库。</span><br><span class="line"># * --spec-sources=private,https://github.com/CocoaPods/Specs.git。</span><br><span class="line">--spec-sources</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意，在 <code>pod package</code> 之前，你需要将代码提交到远程，并且打上 tag，因为 pod package 是通过git 的 commit 索引或者 tag 来找源码的.因此对外发布时候一定要在 s.version 中指定tag 的标签，在 git 中给定的 commit 打上 tag。</strong></p>
+<p>🌰🌰🌰</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod package <span class="title class_">WFRFoundation</span>.podspec --force</span><br></pre></td></tr></table></figure>
+<p>在这个过程中还是无法避免踩到坑，编译执行后会报了如下错误</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Undefined symbols for architecture x86_64:</span><br><span class="line">  &quot;_OBJC_CLASS_$_ASIdentifierManager&quot;, referenced from:</span><br><span class="line">      objc-class-ref in WFRFoundation(WFRXxx.o)</span><br><span class="line">ld: symbol(s) not found for architecture arm64</span><br><span class="line">clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
+<p>原谅此处的我 o((⊙﹏⊙))o<br>大家看到这个错误，是不是都有一种很熟悉的感觉，基本上每个做过 iOS 开发的小伙伴应该都遇到过，特别是开发过程中涉及到第三方库或框架的时候。</p>
+<p>从错误来看，他说不支持 x86_64 的架构，那好，换成真机再试一次，这次换成不支持 arm64 的架构了…</p>
+<p>pod package 真的这么蠢的吗，相信我，做为一个经过时间检验的工具不会这么 low 的，错的还是自己</p>
+<p>用如下命令查看 framework 支持的架构</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lipo -info WFRFoundation.framework/WFRFoundation</span><br></pre></td></tr></table></figure>
+<p>输出的结果很正常，模拟器、手机架构都支持</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Architectures in the fat file: WFRFoundation.framework/WFRFoundation are: armv7 armv7s i386 x86_64 arm64 </span><br></pre></td></tr></table></figure>
+<p>那为什么还会出现这种错误呢，首先我们查看下 framework 是静态的还是动态的，cd 到 WFRFoundation.framework 目录下，<code>file WFRFoundation</code> 查看库文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">WFRFoundation: Mach-O universal binary with 5 architectures: [arm_v7:current ar archive] [arm64]</span><br><span class="line">WFRFoundation (for architecture armv7):	current ar archive</span><br><span class="line">WFRFoundation (for architecture armv7s):	current ar archive</span><br><span class="line">WFRFoundation (for architecture i386):	current ar archive</span><br><span class="line">WFRFoundation (for architecture x86_64):	current ar archive</span><br><span class="line">WFRFoundation (for architecture arm64):	current ar archive</span><br></pre></td></tr></table></figure>
+<p>有 dynamically 标识着是动态库，反之则是静态库。</p>
+<p>从这里看出来，<code>pod package</code> 默认打包静态库。</p>
+<p>既然不是指令集的问题，那就应该是链接静态库的时候出问题了，按照大多数的解决办法，只需要在 Linked Frameworks and Libraries 中添加指定的静态库。但是这里会不一样，这根 CocoaPods 的运行原理有关，我们可以在 Build Phases 处看到，要以来的 framework 是存在的，那么为什么还是会报错呢？</p>
+<p>最后注意到 **<code>_ASIdentifierManager</code>**，因为这里有引用到 <code>AdSupport</code> 的库，而静态库在使用的时候，需要手动导入静态库所有依赖的其他类库（当然也包括系统类库啦，这真是一件悲伤的事情 😭），知道了原因就好说了，解决办法有三个：</p>
+<ol>
+<li><p>在 Build Phases -&gt; Linked Frameworks and Libraries 下面添加 AdSupport.framework，这样就失去了使用 cocoapods 的优势了啊喂👎</p>
+</li>
+<li><p>在 podspecs 中加入系统类库的依赖</p>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 这里我顺便把 Foundation 的依赖也加进去了</span><br><span class="line"># * 为什么 Foundation 没加之前没报错呢</span><br><span class="line"># * iOS 工程是离不开 Foundation 的，会自动引入</span><br><span class="line">s.frameworks = &#x27;AdSupport&#x27;, &#x27;Foundation&#x27;</span><br></pre></td></tr></table></figure></li>
+<li><p>使用动态类库</p>
+ <figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod package <span class="title class_">WFRFoundation</span>.podspec --force --dynamic</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>打包完成后，我们可以在本地先测试一下，修改 Podfile 文件</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pod &#x27;WFRFoundation&#x27;, :path =&gt; &#x27;../&#x27;</span></span><br><span class="line">pod <span class="string">&#x27;WFRFoundation&#x27;</span>, <span class="symbol">:path</span> =&gt; <span class="string">&#x27;../WFRFoundation-0.1.0/&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><code>pod install</code> 或者 <code>pod update</code> 都是通过 podspec 文件来进行读取的，所以 <code>path =&gt;</code> 指定的路径即 podspec 文件所在的路径，<code>pod package</code> 在打包完成后会帮我们生成自己的 podspec 文件，我们只需要正确指定这个路径就可以了</p>
+<p>需要注意的是，<code>pod package</code> 生成的 podspec 文件里并没有我们指定的需要的依赖，需要我们手动加上</p>
+<p>在 <code>pod update</code> 后，我们可以看到我们的 framework 被正确的引入进来了，so happy~</p>
+<p>这里有个小技巧，直接执行 <code>pod update</code> 会默认先去更新 Cocoapods 的 repo 仓库，遇上网速渣的时候，那就呵呵了🙃。这里我们是直接从本地的 path 链接 framework，是不需要更新的，带上下面的参数</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod update --no-repo-update</span><br></pre></td></tr></table></figure>
+<p>这样，pod 更新的速度很快，咻~</p>
+<p>现在，需要我们修改我们的 podspec 文件了，我们只需要正确的链接 framework</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">s.ios.deployment_target    = <span class="string">&#x27;8.0&#x27;</span></span><br><span class="line"><span class="comment"># s.ios.vendored_frameworks   = &#x27;WFRFoundation-0.1.0/ios/WFRFoundation.framework&#x27;</span></span><br><span class="line">s.ios.vendored_frameworks = <span class="string">&quot;<span class="subst">#&#123;s.name&#125;</span>-<span class="subst">#&#123;s.version.to_s&#125;</span>/ios/<span class="subst">#&#123;s.name&#125;</span>.framework&quot;</span></span><br><span class="line">s.frameworks = <span class="string">&#x27;AdSupport&#x27;</span>, <span class="string">&#x27;Foundation&#x27;</span></span><br><span class="line">s.dependency <span class="string">&#x27;CocoaLumberjack&#x27;</span>, <span class="string">&#x27;&gt;=3.2.0&#x27;</span></span><br><span class="line">s.dependency <span class="string">&#x27;YYModel&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>这里我是使用的变量的方式，来引入 framework 的，仔细看 <strong><code>s.ios.vendored_framework = &quot;...&quot;</code></strong> 这里必须要使用 <strong>双引号</strong>， 这个是 ruby 的语法，单引号的话，表示的字符串，会原样输出里面的内容 🤷‍♀️。可以打印看看结果 </p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">puts <span class="string">&#x27;<span class="subst">#&#123;s.name&#125;</span>-<span class="subst">#&#123;s.version.to_s&#125;</span>/ios/<span class="subst">#&#123;s.name&#125;</span>.framework&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，需要我们做的工作都做完了，那我们就愉快的将 podspec 文件 push 的 spec 仓库试试吧</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod repo push specName <span class="title class_">WFRFoundation</span>.podspec --allow-warnings --use-libraries --verbose</span><br></pre></td></tr></table></figure>
+<p>在 push  操作之前，还可以验证下我们的 podspec（一般我们会允许警告的😈），当然，不验证也没关系，push 阶段还是会先帮你验证它的，不通过验证，是推送不成功的。</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod lib lint <span class="title class_">WFRFoundation</span>.podspec --allow-warnings --verbose</span><br></pre></td></tr></table></figure>
+<p>虽然我们很愉快的尝试 push，但是很可惜</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- ERROR | [iOS] file patterns: The `vendored_frameworks` pattern did not match any file.</span><br></pre></td></tr></table></figure>
+<p>这句话的意思是指定的第三方 framework 找不到匹配的文件。这是为什么呢</p>
+<p>在验证 podspec 文件时，同样是根据 podspec 文件里面 git 的 tag 来查找源码的，而我们的 pod package 也是在 tag 之后才进行的，那么我们提交的 framework 就不在这个 tag 下<br><img src="https://i.loli.net/2018/09/29/5baf282dc3a1c.png" alt="commit"></p>
+<p>这种情况应该如何解决呢？</p>
+<p>我能想到的解决办法是，重新打 tag，并推送到远程覆盖之前的标签，这种方法不知道是不是有点傻，但是我还是没有想到更好的解决办法 😂</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git tag -d 0.1.0  # 删除本地标签</span><br><span class="line">git tag 0.1.0	   # 新的标签</span><br><span class="line">git push origin --delete tag 0.1.0 # 删除远程标签</span><br><span class="line">git push origin --tags  # 推送标签到远程</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2018/09/29/5baf282fc137b.png" alt="commit"><br>重新验证，通过了 🎉🎉🎉</p>
+<p><strong>另外一种解决办法</strong></p>
+<p>我们知道 pod package 是根据 podspec 里面 source 所在 tag 下载源码的，我们可以尝试先将 source 改成本地的</p>
+<blockquote>
+<p>s.source是工程地址。可以是本地路径，svn，zip包，或者是git上的代码。只是写法不一样。</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">/<span class="regexp">/ 本地文件</span></span><br><span class="line"><span class="regexp">s.source = &#123; :path =&gt; &#x27;~/</span><span class="title class_">Document</span>/<span class="title class_">WFRFoundation</span><span class="string">&#x27;, :tag =&gt; s.version.to_s &#125;    </span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">// git</span></span><br><span class="line"><span class="string">s.source = &#123; :git =&gt; &#x27;</span><span class="symbol">https:</span>/<span class="regexp">/github.com/redye</span><span class="regexp">/wfrfoundation.git&#x27;, :tag =&gt; s.version.to_s &#125;    </span></span><br><span class="line"><span class="regexp">	</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ zip </span></span><br><span class="line"><span class="regexp">s.source = &#123; :http=&gt; &#x27;http:/</span><span class="regexp">/xxx.zip&#x27;, :tag =&gt; &quot;1.0.0&quot; &#125;</span></span><br><span class="line"><span class="regexp">	</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ svn</span></span><br><span class="line"><span class="regexp">s.source = &#123; :svn=&gt; &#x27;http:/</span><span class="regexp">/path&#x27;, :tag =&gt; &quot;1.0.0&quot; &#125;</span></span><br><span class="line"><span class="regexp">	</span></span><br></pre></td></tr></table></figure>
+
+<p>很可惜，pod package 并不支持 path 的方式</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Unsupported</span> download strategy <span class="string">`&#123;:path=&gt;&quot;~/Documents/WFRFoundation&quot;, :tag=&gt;&quot;0.1.0&quot;&#125;`</span>.</span><br></pre></td></tr></table></figure>
+
+<h3 id="use-frameworks"><a href="#use-frameworks" class="headerlink" title="use_frameworks!"></a>use_frameworks!</h3><p>如果不使用 <code>use_frameworks!</code>，Pods 项目最终会编译成一个名为 libPods-ProjectName.a 的文件，主项目只需要依赖这个 .a 文件即可。</p>
+<p>使用 <code>use_frameworks!</code>，Pods 项目最终会编译成一个名为 Pods-ProjectName.framework 的文件，主项目只需要依赖这个 .framework 文件即可。</p>
+<p>在 Swift 项目中是不支持静态库的，所以在 Swift 项目，CocoaPods 提供了动态 Framework 的支持，通过 use_frameworks! 选项控制。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h4 id="静态库传递问题"><a href="#静态库传递问题" class="headerlink" title="静态库传递问题"></a>静态库传递问题</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">target has transitive dependencies that include static binaries</span><br></pre></td></tr></table></figure>
+<p>场景：</p>
+<blockquote>
+<p>libB dependency libA <br /><br>use_frameworks! <br /><br>libA 是一个静态 framework</p>
+</blockquote>
+<p>原因：</p>
+<p>在不使用 <code>use_frameworks!</code> 标记时，嵌套的第三方库直接通过 <code>-l</code> 的方式链接到项目中，而 B 库只编译自己的部分，所以所有的互相传递的依赖的静态库都能最终被导入。但是在使用 <code>use_frameworks!</code>，打包的 framework 可能会包含 <code>vendored_libraries </code> 或者 <code>vendored_frameworks </code> 库中的内容，所以这里就有一个符号冲突的问题了。而 CocoaPods 对于这种问题，统一通过报错来拒绝这种情况。</p>
+<p>静态库链接的三种方式</p>
+<ul>
+<li>-ObjC</li>
+<li>-all_load</li>
+<li>-force_load</li>
+</ul>
+<p>参考 <a target="_blank" rel="noopener" href="https://www.valiantcat.cn/index.php/2017/04/24/45.html#menu_index_7">组件化-动态库实战</a></p>
+<p>解决方法：</p>
+<p>第一种：libA 打包成动态 framework。这是最简单和快速的方法了。但是一般并不推荐打包成动态 framework 。至于为什么不推荐，<a target="_blank" rel="noopener" href="https://github.com/Damonvvong/DevNotes/blob/master/Notes/framework2.md">iOS 开发中的『库』</a></p>
+<blockquote>
+<p>能否动态库的方式来动态更新AppStore上的版本呢？</p>
+<ul>
+<li><p>原本是打算国庆的时候试一试 AppStore 上到底行不行的，结果还是托 <a target="_blank" rel="noopener" href="https://weibo.com/casatwy?display=0&retcode=6102">@Casa Taloyum 大神</a> 老司机的福，他已经踩过这个坑了，他的结论是：使用动态库的方式来动态更新只能用在 in house 和develop 模式却但不能在使用到 AppStore。</p>
+</li>
+<li><p>因为在上传打包的时候，苹果会对我们的代码进行一次 Code Singing，包括 app 可执行文件和所有Embedded 的动态库。因此，只要你修改了某个动态库的代码，并重新签名，那么 MD5 的哈希值就会不一样，在加载动态库的时候，苹果会检验这个 hash 值，当苹果监测到这个动态库非法时，就会造成 Crash。</p>
+</li>
+</ul>
+</blockquote>
+<p>第二种：首先，强行设置在运行时动态查找符号</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">s.pod_target_xcconfig = &#123;</span><br><span class="line">    <span class="string">&#x27;OTHER_LDFLAGS&#x27;</span> =&gt; <span class="string">&#x27;$(inherited) -undefined dynamic_lookup&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后设置CocoaPods不要检查静态库嵌套依赖 (static_framework_transitive_dependencies)。</p>
+<p>在自己项目的 Podfile 中添加 pre_install 脚本：</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pre_install <span class="keyword">do</span> |<span class="params">installer</span>|</span><br><span class="line">    <span class="comment"># workaround for https://github.com/CocoaPods/CocoaPods/issues/3289</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">installer</span>.verify_no_static_framework_transitive_dependencies; <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>但是在实践过程中，遇到头文件 not found 的问题，原因在于 framework 的连接路径，需要指定</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">s.pod_target_xcconfig = &#123;</span><br><span class="line">    <span class="string">&#x27;FRAMEWORK_SEARCH_PATHS&#x27;</span> =&gt; <span class="string">&#x27;$(inherited) $&#123;PODS_ROOT&#125;/WFRFoundation/WFRFoundation-0.1.0/ios&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;OTHER_LDFLAGS&#x27;</span> =&gt; <span class="string">&#x27;$(inherited) -undefined dynamic_lookup&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的路径即 WFRFoundation.framework 所在的路径，这里还有一点需要注意的是上面的路径里面包含了 WFRFoundation 的版本，但是我们我们在 libB 里面并不关心版本(其实依赖最新版本，并不能知道当前是哪个版本 ☹️)，我们可以在 libA framework 的路径上简单一点，上面是因为直接使用了 pod package 打包时的路径。</p>
+<p>参考</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CocoaPods/CocoaPods/issues/2926">iOS 7 &amp; Dynamic Frameworks</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/qiuxiang/react-native-amap3d/issues/370">Static Transitive Dependencies</a></p>
+<h4 id="pod-package-时依赖库传递问题"><a href="#pod-package-时依赖库传递问题" class="headerlink" title="pod package 时依赖库传递问题"></a>pod package 时依赖库传递问题</h4><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">[!] <span class="title class_">Unable</span> to find a specification <span class="keyword">for</span> <span class="string">`WFRFoundation`</span> depended upon by <span class="string">`WFRXxx/Core`</span></span><br></pre></td></tr></table></figure>
+
+<p>场景：</p>
+<blockquote>
+<p>B dependency A <br /><br>pod package <br /></p>
+</blockquote>
+<p>原因：找不到依赖的私有库</p>
+<p>解决方法：指定私有库地址</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod package <span class="title class_">WFRFoundation</span>.podspec --force --spec-sources=<span class="symbol">https:</span>/<span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git,https:/</span><span class="regexp">/github.com/</span><span class="title class_">CocoaPods</span>/<span class="title class_">Specs</span>.git</span><br></pre></td></tr></table></figure>
+
+<h4 id="pod-repo-push-时依赖库传递问题"><a href="#pod-repo-push-时依赖库传递问题" class="headerlink" title="pod repo push 时依赖库传递问题"></a>pod repo push 时依赖库传递问题</h4><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Encountered</span> an unknown error (<span class="title class_">Unable</span> to find a specification <span class="keyword">for</span> <span class="string">`WFRFoundation`</span> depended upon by <span class="string">`WFRXxx`</span></span><br></pre></td></tr></table></figure>
+
+<p>添加依赖库所在私有库地址</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod repo push <span class="title class_">YHSpecs</span> <span class="title class_">WFRFoundation</span>.podspec --allow-warnings --sources=<span class="symbol">https:</span>/<span class="regexp">/github.com/redye</span><span class="regexp">/YHSpecs.git,https:/</span><span class="regexp">/github.com/</span><span class="title class_">CocoaPods</span>/<span class="title class_">Specs</span>.git</span><br></pre></td></tr></table></figure>
+
+<h4 id="私有库相互依赖时的导入问题"><a href="#私有库相互依赖时的导入问题" class="headerlink" title="私有库相互依赖时的导入问题"></a>私有库相互依赖时的导入问题</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Include of non-modular header inside framework module &#x27;WFRXxx.WFXxxMacros&#x27;: &#x27;~/WFRXxx/Example/Pods/WFRFoundation/WFRFoundation-Framework/ios/WFRFoundation.embeddedframework/WFRFoundation.framework/Headers/WFRFoundation.h&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>原因：</p>
+<p>在使用 <code>use_frameworks!</code> 时，因为链接方式是通过 embeded framework，Framework 中都包涵了一个自动生成的 Module 和一个 umbrella 文件，Module 文件在工程中是不可见的，是在编译时生成的一个文件，我们可以在生成的.framework文件中找到module.modulemap这个文件，就是前面我们所说的 Module。依赖第三方静态库时，第三方的静态库 Framework 并没有使用 Module，在 .h 文件中直接引入，在进行Framework 化的过程中，一旦引用了这样的 Framework，就会报错。</p>
+<p>解决方法：</p>
+<ul>
+<li>不使用 <code>use_frameworks!</code> 。</li>
+<li>在 Build Settings 设置 Allow Non-modular Includes In Framework Modules 为 yes，允许我们忽略掉这个错误则可以在 Framework 中使用模块外的 Include，这种方法过于粗暴，而且只针对于在目标工程中，而不是我们现在正要打包的 WFRXxx 库。</li>
+<li>需要升级 Cocoapods 和 cocoapods-packager，在 2.7 版本以上修复了 modulemap 的问题。</li>
+</ul>
+<p>参考 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a1d2d148fdd3">让CocoaPods static library支持Module</a></p>
+<h4 id="依赖静态库时打包错误"><a href="#依赖静态库时打包错误" class="headerlink" title="依赖静态库时打包错误"></a>依赖静态库时打包错误</h4><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">[!] podspec has binary-only depedencies, mangling <span class="keyword">not</span> possible.</span><br></pre></td></tr></table></figure>
+
+<p>场景：<br>依赖了第三方的静态库</p>
+<p>解决方法：</p>
+<p>加上 <code>--no-mangle</code> 选项，表示有依赖。</p>
+<p>加上 <code>--exclude-deps</code> 选项，表示在打包的时候排除依赖库的符号表，如果没有这个选项，同样会报错 <code>Undefined symbols for architecture x86_64</code> 。</p>
+<p>即 <code>--no-mangle</code> 与 <code>--exclude-deps</code> 需要同时使用。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">pod cache clean <span class="title class_">WFFoundation</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://nshipster.cn/cocoapods/">Cocoa​Pods</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zybuluo.com/qidiandasheng/note/595740">Pod二进制化</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a243b62b2e72">iOS经典错误Undefined symbols for architecture XXX</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zybuluo.com/qidiandasheng/note/603907">iOS里的动态库和静态库</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.skyfox.org/ios-framework-commoncrypto.html">iOS开发基于Objective-C的Framework中使用CommonCrypto</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Cocoapods/" rel="tag"># Cocoapods</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/12/create-private-pods/" rel="next" title="创建私有库">
+                <i class="fa fa-chevron-left"></i> 创建私有库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/17/crash-symbol/" rel="prev" title="崩溃日志符号化">
+                崩溃日志符号化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/redye" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:sixwalnut@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CocoaPods-Packager-%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">CocoaPods-Packager 安装与使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#use-frameworks"><span class="nav-number">2.</span> <span class="nav-text">use_frameworks!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%BA%93%E4%BC%A0%E9%80%92%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">静态库传递问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pod-package-%E6%97%B6%E4%BE%9D%E8%B5%96%E5%BA%93%E4%BC%A0%E9%80%92%E9%97%AE%E9%A2%98"><span class="nav-number">3.2.</span> <span class="nav-text">pod package 时依赖库传递问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pod-repo-push-%E6%97%B6%E4%BE%9D%E8%B5%96%E5%BA%93%E4%BC%A0%E9%80%92%E9%97%AE%E9%A2%98"><span class="nav-number">3.3.</span> <span class="nav-text">pod repo push 时依赖库传递问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%81%E6%9C%89%E5%BA%93%E7%9B%B8%E4%BA%92%E4%BE%9D%E8%B5%96%E6%97%B6%E7%9A%84%E5%AF%BC%E5%85%A5%E9%97%AE%E9%A2%98"><span class="nav-number">3.4.</span> <span class="nav-text">私有库相互依赖时的导入问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E9%9D%99%E6%80%81%E5%BA%93%E6%97%B6%E6%89%93%E5%8C%85%E9%94%99%E8%AF%AF"><span class="nav-number">3.5.</span> <span class="nav-text">依赖静态库时打包错误</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98"><span class="nav-number">4.1.</span> <span class="nav-text">清除缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小红</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
